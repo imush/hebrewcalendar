@@ -54,11 +54,11 @@ public abstract class AbstractDate<D extends HDate>
 
     /**
      * 1 - Sunday .. 7 - Saturday
-     * @return
+     * @return day of week 1-7
      */
     public final int getDayOfWeek()
     {
-        return (int)(getAbsDay()+2)%7 + 1;
+        return (int)(getAbsDay()+1)%7 + 1;
     }
 
     @Override
