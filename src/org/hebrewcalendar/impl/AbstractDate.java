@@ -58,7 +58,7 @@ public abstract class AbstractDate<D extends HDate>
      */
     public final int getDayOfWeek()
     {
-        return (int)(getAbsDay()+1)%7 + 1;
+        return (int)(getAbsDay()+6)%7 + 1;
     }
 
     @Override

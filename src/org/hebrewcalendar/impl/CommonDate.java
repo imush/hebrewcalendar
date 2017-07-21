@@ -76,20 +76,22 @@ public abstract class CommonDate<C extends CommonDate>
 
         HCalendar cal = getCalendar();
         while (m > 1) {
-            toReturn += cal.monthLength(y,m);
+            toReturn += cal.monthLength(y,m-1);
             --m;
         }
 
         y -= 1;
 
-        int twoHundredYearCycles = (y-1)/200;
+        int fourHundredYearCycles = (y-1)/400;
 
-        int monthsInTwoHundredYears = 365*200+49 + cal.monthLength(2000, 2)-28;
-        toReturn += twoHundredYearCycles * monthsInTwoHundredYears;
+        boolean isJulian = cal.monthLength(1900, 2)==29;
 
-        y -= (200*twoHundredYearCycles);
+        int monthsInTwoHundredYears = 365*400 + (isJulian ? 100 : 97);
+        toReturn += fourHundredYearCycles * monthsInTwoHundredYears;
 
-        while (y > 1) {
+        y -= (400*fourHundredYearCycles);
+
+        while (y > 0) {
             toReturn += (cal.isLeap(y) ? 366 : 365);
             --y;
         }
