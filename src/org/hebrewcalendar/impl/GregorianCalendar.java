@@ -21,12 +21,6 @@ public final class GregorianCalendar
     }
 
     @Override
-    public HDate fromYMD(int year, int month, int day)
-    {
-        return new GregorianDate(year, month, day);
-    }
-
-    @Override
     public HCalendarType getType()
     {
         return HCalendarType.GREGORIAN;

@@ -20,12 +20,6 @@ public final class JulianCalendar
     }
 
     @Override
-    public HDate fromYMD(int year, int month, int day)
-    {
-        return new JulianDate(year, month, day);
-    }
-
-    @Override
     public HCalendarType getType()
     {
         return HCalendarType.JULIAN;

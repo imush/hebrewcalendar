@@ -8,7 +8,7 @@ import org.hebrewcalendar.HDate;
  * Created by itz on 7/20/17.
  */
 public class HebrewCalendar
-    implements HCalendar
+    extends AbstractCalendar
 {
     public static final HebrewCalendar INSTANCE = new HebrewCalendar();
 
@@ -36,12 +36,6 @@ public class HebrewCalendar
     public int monthLength(int year, int month)
     {
         return 29;
-    }
-
-    @Override
-    public HDate fromYMD(int year, int month, int day)
-    {
-        return new HebrewDate(year, month, day);
     }
 
     /**
@@ -81,4 +75,33 @@ public class HebrewCalendar
     {
         return isLeap(year) ? 13 : 12;
     }
+
+    @Override
+    long absDay(HDate date)
+    {
+        return 0;
+    }
+
+    @Override
+    final int[] nextYearMonth(int year, int month)
+    {
+        if (month == 6)
+            return new int[] {year+1, 7};
+        if (month < monthsInYear(year))
+            return new int[] {year, month+1};
+        else
+            return new int[] {year, 1};
+
+    }
+
+    @Override
+    final int[] prevYearMonth(int year, int month)
+    {
+        if (month == 7)
+            return new int[] {year-1, 6};
+        if (month > 1)
+            return new int[] {year, month -1};
+        return new int[] {year, monthsInYear(year)};
+    }
+
 }

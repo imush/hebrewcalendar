@@ -7,25 +7,23 @@ import org.hebrewcalendar.HDate;
 /**
  * Created by itz on 7/19/17.
  */
-public abstract class AbstractDate<D extends HDate>
+public class HDateImpl
     implements HDate
 
 {
     private final int _day;
     private final int _month;
     private final int _year;
-    private HCalendar _calendar;
+    private AbstractCalendar _calendar;
 
 
-    AbstractDate(HCalendar calendar, int year, int month, int day)
+    HDateImpl(AbstractCalendar calendar, int year, int month, int day)
     {
         _calendar = calendar;
         _year = year;
         _month = month;
         _day = day;
     }
-
-    abstract D fromYMD(int year, int month, int day);
 
     @Override
     public final int getYear() { return _year;}
@@ -42,7 +40,20 @@ public abstract class AbstractDate<D extends HDate>
     @Override
     public final HCalendarType getCalendarType() { return _calendar.getType(); }
 
-    public abstract long getAbsDay();
+    public long getAbsDay()
+    {
+        return _calendar.absDay(this);
+    }
+
+    public final HDate addDays(int numDays)
+    {
+        return _calendar.addDays(this, numDays);
+    }
+
+    public final HDate subtractDays(int numDays)
+    {
+        return _calendar.subtractDays(this, numDays);
+    }
 
     @Override
     public final boolean isValid()

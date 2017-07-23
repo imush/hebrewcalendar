@@ -1,20 +1,11 @@
 package org.hebrewcalendar.impl;
 
-import org.hebrewcalendar.HCalendar;
-import org.hebrewcalendar.HDate;
-
 public class HebrewDate
-    extends AbstractDate<HebrewDate>
+    extends HDateImpl
 {
     HebrewDate(int year, int month, int day)
     {
-        super(HCalendar.HEBREW, year, month, day);
-    }
-
-    @Override
-    HebrewDate fromYMD(int year, int month, int day)
-    {
-        return null;
+        super(HebrewCalendar.INSTANCE, year, month, day);
     }
 
     @Override
@@ -23,9 +14,5 @@ public class HebrewDate
         return 0;
     }
 
-    @Override
-    public HDate addDays(int numDays)
-    {
-        return null;
-    }
+
 }
