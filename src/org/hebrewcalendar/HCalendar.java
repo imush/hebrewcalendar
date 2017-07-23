@@ -9,23 +9,61 @@ import org.hebrewcalendar.impl.JulianCalendar;
  */
 public interface HCalendar
 {
-    public HCalendar GREGORIAN = GregorianCalendar.INSTANCE;
-    public HCalendar JULIAN = JulianCalendar.INSTANCE;
-    public HCalendar HEBREW = HebrewCalendar.INSTANCE;
+    HCalendar GREGORIAN = GregorianCalendar.INSTANCE;
+    HCalendar JULIAN = JulianCalendar.INSTANCE;
+    HCalendar HEBREW = HebrewCalendar.INSTANCE;
 
-    public boolean isLeap(int year);
+    /**
+     * Tests whether a given year is leap. For common calendars (Julian or Gregorian),
+     * leapness means addition of one day (Feb 29). For Hebrew, it means addition of
+     * a month.
+     * @param year year
+     * @return whether the year is "leap"
+     */
+    boolean isLeap(int year);
 
     /**
      * Length of the given month in the given year
-     * @param year
-     * @param month
-     * @return
+     * @param year year
+     * @param month month number (see {@link HebrewCalendar} for Hebrew month numberings).
+     * @return the length of month in days
      */
-    public int monthLength(int year, int month);
+    int monthLength(int year, int month);
 
-    public HDate fromYMD(int year, int month, int day);
+    /**
+     * Create a date obj
+     * @param year year
+     * @param month month
+     * @param day day of month
+     * @return an {@link HDate} object
+     */
+    HDate fromYMD(int year, int month, int day);
 
-    public HCalendarType getType();
+    /**
+     * @return calendar type
+     */
+    HCalendarType getType();
 
-    public int monthsInYear(int year);
+    /**
+     * Calculate the number of months in year.
+     * @param year year
+     * @return always 12 for common (Gregorian or Julian) calendar, 13 for Hebrew leap year.
+     */
+    int monthsInYear(int year);
+
+    /**
+     * Increment date by given number of days.
+     * @param date date
+     * @param days number of days to add
+     * @return a new {@link HDate} object
+     */
+    HDate addDays(HDate date, int days);
+
+    /**
+     * Decrement date by given number of days.
+     * @param date date
+     * @param days number of days to subtract
+     * @return a new {@link HDate} object
+     */
+    HDate subtractDays(HDate date, int days);
 }

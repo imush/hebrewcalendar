@@ -80,6 +80,11 @@ public abstract class CommonCalendar
             toReturn += (isLeap(y) ? 366 : 365);
             --y;
         }
+
+        // Julian calendar aligned in year 200, so on 1-1-1 Gregorian
+        // it was 2 days ahead
+        if (isJulian)
+            toReturn -= 2;
         return toReturn;
     }
 
