@@ -24,4 +24,10 @@ public final class JulianCalendar
     {
         return HCalendarType.JULIAN;
     }
+
+    long getStart()
+    {
+        return 1373427;
+    }
+
 }

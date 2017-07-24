@@ -28,11 +28,18 @@ public interface HDate
     boolean isValid();
 
     /**
-     * Increment or decrement by given number of days
-     * @param numDays
-     * @return
+     * Increment by given number of days
+     * @param numDays days to add
+     * @return new date object
      */
     HDate addDays(int numDays);
+
+    /**
+     * Decrement by given number of days
+     * @param numDays days to subtract
+     * @return new date object
+     */
+    HDate subtractDays(int numDays);
 
     /**
      * @return the {@link HCalendarType} for which this date was created.

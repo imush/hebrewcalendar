@@ -12,8 +12,6 @@ import java.util.Date;
 public abstract class CommonCalendar
     extends AbstractCalendar
 {
-    public static final long COMMON_START = 1373429;
-
     @Override
     public final int monthLength(int year, int month)
     {
@@ -52,7 +50,7 @@ public abstract class CommonCalendar
     @Override
     long absDay(HDate date)
     {
-        long toReturn = COMMON_START;
+        long toReturn = getStart();
 
         int d = date.getDay();
         toReturn += d;
@@ -80,12 +78,20 @@ public abstract class CommonCalendar
             toReturn += (isLeap(y) ? 366 : 365);
             --y;
         }
-
-        // Julian calendar aligned in year 200, so on 1-1-1 Gregorian
-        // it was 2 days ahead
-        if (isJulian)
-            toReturn -= 2;
         return toReturn;
+    }
+
+    @Override
+    HDateImpl fromAbs(long absDay)
+    {
+        long absDayFromStart = absDay-getStart();
+        final boolean isJulian = monthLength(1900, 2)==29;
+        final int daysin400 = 365*400 + (isJulian ? 100 : 97);
+
+        final int cycles = (int)((absDayFromStart-1)/daysin400);
+        HDate d0 = new HDateImpl(this, 1 + 400*cycles, 1, 1);
+
+        return (HDateImpl)d0.addDays((int)(absDayFromStart - cycles*daysin400-1));
     }
 
 }

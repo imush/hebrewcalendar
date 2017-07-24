@@ -26,4 +26,8 @@ public final class GregorianCalendar
         return HCalendarType.GREGORIAN;
     }
 
+    long getStart()
+    {
+        return 1373429;
+    }
 }

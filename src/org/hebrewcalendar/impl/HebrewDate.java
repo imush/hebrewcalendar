@@ -5,7 +5,7 @@ public class HebrewDate
 {
     HebrewDate(int year, int month, int day)
     {
-        super(HebrewCalendar.INSTANCE, year, month, day);
+        super(JewishCalendar.INSTANCE, year, month, day);
     }
 
     @Override

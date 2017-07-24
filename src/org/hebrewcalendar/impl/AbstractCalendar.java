@@ -13,7 +13,7 @@ public abstract class AbstractCalendar
      * @param day the day
      * @return an {@link HDate} object
      */
-    public final HDate fromYMD(int year, int month, int day)
+    public final HDateImpl fromYMD(int year, int month, int day)
     {
         return new HDateImpl(this, year, month, day);
     }
@@ -25,7 +25,7 @@ public abstract class AbstractCalendar
      * @return a new {@link HDate} object
      */
     @Override
-    public final HDate addDays(final HDate date, final int numDays)
+    public final HDateImpl addDays(final HDate date, final int numDays)
     {
         if (numDays < 0)
             return subtractDays(date, -numDays);
@@ -53,7 +53,7 @@ public abstract class AbstractCalendar
      * @return a new {@link HDate} object
      */
     @Override
-    public HDate subtractDays(final HDate date, final int numDays)
+    public HDateImpl subtractDays(final HDate date, final int numDays)
     {
         if (numDays < 0)
             return addDays(date, -numDays);
@@ -92,4 +92,15 @@ public abstract class AbstractCalendar
      * @return array of 2 ints [year, month]
      */
     abstract int[] prevYearMonth(int y, int m);
+
+    abstract long getStart();
+
+    abstract HDateImpl fromAbs(long absDay);
+
+    @Override
+    public final HDateImpl convert(HDate otherDate)
+    {
+        long absDay = ((HDateImpl)otherDate).getAbsDay();
+        return fromAbs(absDay);
+    }
 }

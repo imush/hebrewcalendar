@@ -23,6 +23,8 @@ public class HDateImpl
         _year = year;
         _month = month;
         _day = day;
+        if (!isValid())
+            throw new IllegalStateException("Invalid date created for calendar " + _calendar.getType() + ": " + this);
     }
 
     @Override
@@ -45,12 +47,14 @@ public class HDateImpl
         return _calendar.absDay(this);
     }
 
-    public final HDate addDays(int numDays)
+    @Override
+    public final HDateImpl addDays(int numDays)
     {
         return _calendar.addDays(this, numDays);
     }
 
-    public final HDate subtractDays(int numDays)
+    @Override
+    public final HDateImpl subtractDays(int numDays)
     {
         return _calendar.subtractDays(this, numDays);
     }
@@ -58,9 +62,8 @@ public class HDateImpl
     @Override
     public final boolean isValid()
     {
-        if (_year < 1 || _month < 1 || _month > _calendar.monthsInYear(_year))
-            return false;
-        return (_day >= 1 && _day <= _calendar.monthLength(_year, _month));
+        return _year >= 1 && _month >= 1 && _month <= _calendar.monthsInYear(_year) &&
+            _day >= 1 && _day <= _calendar.monthLength(_year, _month);
     }
 
     /**
@@ -75,13 +78,8 @@ public class HDateImpl
     @Override
     public String toString()
     {
-        return new StringBuffer()
-                .append(getYear())
-                .append('-')
-                .append(getMonth())
-                .append('-')
-                .append(getDay())
-                .toString();
+
+        return String.format("%04d-%02d-%02d", getYear(), getMonth(), getDay()) + _calendar.getType().toString().substring(0,1);
     }
 
     @Override
