@@ -2,15 +2,15 @@ package org.hebrewcalendar.impl;
 
 import org.hebrewcalendar.HCalendarType;
 import org.hebrewcalendar.HDate;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-class GregorianCalendarTest
+public class GregorianCalendarTest
 {
     private static final AbstractCalendar cal = GregorianCalendar.INSTANCE;
     @Test
-    void addDays()
+    public void addDays()
     {
         HDate d1 = new HDateImpl(GregorianCalendar.INSTANCE, 2000,1,1);
         HDate d2 = new HDateImpl(GregorianCalendar.INSTANCE, 1900,1,1);
@@ -22,7 +22,7 @@ class GregorianCalendarTest
     }
 
     @Test
-    void subtractDays()
+    public void subtractDays()
     {
         HDateImpl d0 = new HDateImpl(cal,1900,2,4);
         HDateImpl d1 = new HDateImpl(cal,1901,2,4);
@@ -30,7 +30,7 @@ class GregorianCalendarTest
     }
 
     @Test
-    void getAbsDay()
+    public void getAbsDay()
     {
         HDateImpl d0 = new HDateImpl(cal,1,1,1);
         assertEquals(1373430, d0.getAbsDay());
@@ -67,7 +67,7 @@ class GregorianCalendarTest
     }
 
     @Test
-    void getCalendarType()
+    public void getCalendarType()
     {
         HDate d0 = new HDateImpl(cal, 2017,7,31);
 
@@ -75,7 +75,7 @@ class GregorianCalendarTest
     }
 
     @Test
-    void isValid()
+    public void isValid()
     {
         assertTrue(new HDateImpl(cal,1997,12, 31).isValid());
         try {
@@ -102,7 +102,7 @@ class GregorianCalendarTest
     }
 
     @Test
-    void absDay()
+    public void absDay()
     {
         HDateImpl d0 = new HDateImpl(cal,1,1,1);
         assertEquals(1373430, d0.getAbsDay());
@@ -122,7 +122,7 @@ class GregorianCalendarTest
 
 
     @Test
-    void getDayOfWeek()
+    public void getDayOfWeek()
     {
         HDateImpl d0 = new HDateImpl(cal, 1,1,1);
         assertEquals(2, d0.getDayOfWeek());
@@ -157,7 +157,7 @@ class GregorianCalendarTest
     }
 
     @Test
-    void testIsLeap()
+    public void testIsLeap()
     {
         assertFalse(cal.isLeap(100));
         assertFalse(cal.isLeap(1011));
@@ -168,7 +168,7 @@ class GregorianCalendarTest
     }
 
     @Test
-    void testMonthLength()
+    public void testMonthLength()
     {
         assertEquals(31, cal.monthLength(2010, 7));
         assertEquals(31, cal.monthLength(2010, 8));
@@ -181,7 +181,7 @@ class GregorianCalendarTest
     }
 
     @Test
-    void stringRepresentation()
+    public void stringRepresentation()
     {
         assertEquals("0001-01-01G", cal.fromYMD(1,1,1).toString());
         assertEquals("2017-07-09G", cal.fromYMD(2017,7,9).toString());

@@ -1,16 +1,16 @@
 package org.hebrewcalendar.impl;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 /**
  * Created by itz on 7/20/17.
  */
-class HTimeTest
+public class HTimeTest
 {
     @Test
-    void add1()
+    public void add1()
     {
         HTime t0 = new HTime(0l, 17, 19);
         HTime t1 = new HTime(0l, 22, 1076);
@@ -22,7 +22,7 @@ class HTimeTest
     }
 
     @Test
-    void add2()
+    public void add2()
     {
         HTime t0 = new HTime(10000l, 17,19);
         HTime t1 = new HTime(10000l, 22,1076);
@@ -34,7 +34,7 @@ class HTimeTest
     }
 
     @Test
-    void subtract1()
+    public void subtract1()
     {
         HTime t0 = new HTime(10000l, 17,19);
         HTime t1 = new HTime(10000l, 22,1076);
@@ -47,7 +47,7 @@ class HTimeTest
     }
 
     @Test
-    void subtract2()
+    public void subtract2()
     {
         HTime t0 = new HTime(10000l, 22,1076);
         HTime t1 = new HTime(10001l, 17,19);
@@ -60,14 +60,14 @@ class HTimeTest
     }
 
     @Test
-    void subtract3()
+    public void subtract3()
     {
         HTime t0 = new HTime(10000l, 22,1076);
         assertEquals(new HTime(0,0,0), t0.subtract(t0));
     }
 
     @Test
-    void times1()
+    public void times1()
     {
         HTime t0 = new HTime(10000l, 22,1076);
         assertEquals(new HTime(20001,21,1072), t0.times(2));
@@ -75,7 +75,7 @@ class HTimeTest
     }
 
     @Test
-    void times2()
+    public void times2()
     {
         HTime t0 = new HTime(0, 0,1076);
         assertEquals(new HTime(0,1,1072), t0.times(2));

@@ -152,7 +152,7 @@ public class JewishCalendar
         // search for abs day last RoshHashana
         final int year = date.getYear();
         final int month = date.getMonth();
-        long toReturn = absDayRoshHashana(year);
+        long toReturn = absDayRoshHashana(year)-1;
         int m = 7;
         while (m != month) {
             toReturn += monthLength(date.getYear(), m);

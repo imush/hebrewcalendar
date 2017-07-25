@@ -2,11 +2,11 @@ package org.hebrewcalendar.impl;
 
 import org.hebrewcalendar.HCalendarType;
 import org.hebrewcalendar.HJewishCalendar;
-import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
-class JewishCalendarTest
+public class JewishCalendarTest
 {
     private static final HTime FIRST_MOLAD = new HTime(2, 5, 204);
     private static final HTime ONE_MONTH = new HTime(29, 12, 793);
@@ -14,7 +14,7 @@ class JewishCalendarTest
     private static final JewishCalendar hc = JewishCalendar.INSTANCE;
 
     @Test
-    void testIsLeap()
+    public void testIsLeap()
     {
         assertFalse(JewishCalendar.INSTANCE.isLeap(5777));
         assertFalse(JewishCalendar.INSTANCE.isLeap(5778));
@@ -23,7 +23,7 @@ class JewishCalendarTest
     }
 
     @Test
-    void testMolad()
+    public void testMolad()
     {
         assertEquals(FIRST_MOLAD, hc.molad(1,7));
         assertEquals(FIRST_MOLAD.add(ONE_MONTH.times(12)), hc.molad(2,7));
@@ -61,26 +61,24 @@ class JewishCalendarTest
     }
 
     @Test
-    void testYearType()
+    public void testYearType()
     {
-        System.out.println("molad 5777: " + hc.molad(5777, 7));
-        HDateImpl gregDay = GregorianCalendar.INSTANCE.fromAbs(hc.molad(5777,7).getDay());
-        System.out.println("molad 5777: " + gregDay + " dow=" + gregDay.getDayOfWeek());
-        System.out.println("rh 5777: " + hc.absDayRoshHashana(5777));
-        System.out.println("rh 5777: " + GregorianCalendar.INSTANCE.fromAbs(hc.absDayRoshHashana(5777)));
-        System.out.println("rh 5777: " + GregorianCalendar.INSTANCE.fromAbs(hc.absDayRoshHashana(5777)).getDayOfWeek());
-        assertEquals(HJewishCalendar.YearType.NORMAL, hc.getYearType(5777));
+        assertEquals(HJewishCalendar.YearType.SHORT, hc.getYearType(5777));
+        assertEquals(HJewishCalendar.YearType.NORMAL, hc.getYearType(5778));
+        assertEquals(HJewishCalendar.YearType.FULL, hc.getYearType(5779));
+        assertEquals(HJewishCalendar.YearType.FULL, hc.getYearType(5780));
+        assertEquals(HJewishCalendar.YearType.SHORT, hc.getYearType(5781));
     }
 
     @Test
-    void testAddSubtractDays()
+    public void testAddSubtractDays()
     {
         HDateImpl d1 = new HDateImpl(hc, 5777,9,1);
         assertEquals(new HDateImpl(hc, 5777,8,29), d1.subtractDays(1));
     }
 
     @Test
-    void testDayOfWeek()
+    public void testDayOfWeek()
     {
         HDateImpl d20161003 = new HDateImpl(hc, 5777,7,1);
 
@@ -95,7 +93,7 @@ class JewishCalendarTest
     }
 
     @Test
-    void testRoshHashana()
+    public void testRoshHashana()
     {
         assertEquals(2, hc.absDayRoshHashana(1));
         assertEquals(GregorianCalendar.INSTANCE.fromYMD(2016,10,3).getAbsDay(), hc.absDayRoshHashana(5777));
@@ -103,13 +101,13 @@ class JewishCalendarTest
     }
 
     @Test
-    void getCalendarType()
+    public void getCalendarType()
     {
         assertEquals(HCalendarType.HEBREW, JewishCalendar.INSTANCE.getType());
     }
 
     @Test
-    void stringRepresentation()
+    public void stringRepresentation()
     {
         assertEquals("0001-01-01H", hc.fromYMD(1, JewishCalendar.NISAN,1).toString());
         assertEquals("5777-07-09H", hc.fromYMD(5777, JewishCalendar.TISHREI,9).toString());
