@@ -6,6 +6,7 @@ import org.hebrewcalendar.impl.HebrewDate;
  * Created by itz on 7/20/17.
  */
 public interface HDate
+    extends Comparable<HDate>
 {
     /**
      * @return the year
@@ -21,11 +22,6 @@ public interface HDate
      * @return day of month
      */
     int getDay();
-
-    /**
-     * @return check that the date is valid
-     */
-    boolean isValid();
 
     /**
      * Increment by given number of days
@@ -56,4 +52,17 @@ public interface HDate
      * @return the {@link HCalendar} for which this date was created.
      */
     HCalendar getCalendar();
+
+    /**
+     * Compare dates and return true if this {@link HDate} is strictly before the arg one
+     * @return
+     */
+    boolean before(HDate otherDate);
+
+    /**
+     * Compare dates and return true if this {@link HDate} is strictly after the arg one
+     * @return
+     */
+    boolean after(HDate otherDate);
+
 }

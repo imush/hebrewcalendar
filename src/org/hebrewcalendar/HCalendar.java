@@ -73,4 +73,19 @@ public interface HCalendar
      * @return the {@link HDate} representing the same day in this calendar.
      */
     HDate convert(HDate otherDate);
+
+    /**
+     * @param year year
+     * @return first day of the year
+     */
+    HDate firstDayOfYear(int year);
+
+    /**
+     * Check if given year, month and day represent a valid date in this calendar.
+     * @param year year
+     * @param month month may be negative to represent count from tail, e.g. -1 is the last month of year
+     * @param day day may be negative to represent count from end of month, e.g. -1 is the last day of month.
+     * @return whether the given args are valid to construct an {@link HDate}.
+     */
+    boolean isValidDate(int year, int month, int day);
 }

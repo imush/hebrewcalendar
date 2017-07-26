@@ -23,7 +23,7 @@ public class HDateImpl
         _year = year;
         _month = month;
         _day = day;
-        if (!isValid())
+        if (!_calendar.isValidDate(year, month, day))
             throw new IllegalStateException("Invalid date created for calendar " + _calendar.getType() + ": " + this);
     }
 
@@ -38,6 +38,18 @@ public class HDateImpl
 
     @Override
     public final HCalendar getCalendar() { return _calendar; }
+
+    @Override
+    public boolean before(HDate otherDate)
+    {
+        return compareTo(otherDate) < 0;
+    }
+
+    @Override
+    public boolean after(HDate otherDate)
+    {
+        return compareTo(otherDate) > 0;
+    }
 
     @Override
     public final HCalendarType getCalendarType() { return _calendar.getType(); }
@@ -59,8 +71,7 @@ public class HDateImpl
         return _calendar.subtractDays(this, numDays);
     }
 
-    @Override
-    public final boolean isValid()
+    final boolean isValid()
     {
         return _year >= 1 && _month >= 1 && _month <= _calendar.monthsInYear(_year) &&
             _day >= 1 && _day <= _calendar.monthLength(_year, _month);
@@ -92,5 +103,39 @@ public class HDateImpl
                 other.getYear() == getYear() &&
                 other.getMonth() == getMonth() &&
                 other.getDay() == getDay();
+    }
+
+
+    @Override
+    public int compareTo(HDate o)
+    {
+        if (!o.getCalendarType().equals(getCalendarType())) {
+            return Long.compare(absDay(), ((HDateImpl)o).absDay());
+        }
+
+        HDateImpl other = (HDateImpl)o;
+        if (other._year != _year)
+            return other._year-_year;
+
+        if (other._month != _month)
+            return Integer.compare(chronologicalMonthOrder(_month), chronologicalMonthOrder(other._month));
+        return Integer.compare(_day, other._day);
+    }
+
+    /**
+     * Return chronological order of month in year. This helps deal with Hebrew year which starts wuth
+     * month 7 and runs through 12 or 13, and then ends with 1-6. Aside from biblical considerations, it
+     * is also convenient because the leap month is added as the 13th month before Nisan (1st month).
+     * @param m
+     * @return
+     */
+    private int chronologicalMonthOrder(int m)
+    {
+        boolean isHebrew = _calendar.getType().equals(HCalendarType.HEBREW);
+        if (isHebrew) {
+            return m < 7 ? m + 13 : m;
+        } else {
+            return m;
+        }
     }
 }

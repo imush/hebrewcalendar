@@ -15,7 +15,18 @@ public abstract class AbstractCalendar
      */
     public final HDateImpl fromYMD(int year, int month, int day)
     {
-        return new HDateImpl(this, year, month, day);
+        int m = month > 0 ? month : monthsInYear(year) + 1 + month;
+        int d = day > 0 ? day : monthLength(year, m) + 1 + day;
+        return new HDateImpl(this, year, m, d);
+    }
+
+    @Override
+    public boolean isValidDate(int year, int month, int day)
+    {
+        if (year <= 0 || month == 0 || day == 0 || Math.abs(month) > monthsInYear(year))
+            return false;
+        int m = month > 0 ? month : monthsInYear(year) + 1 + month;
+        return Math.abs(day) <= monthLength(year, m);
     }
 
     /**
@@ -98,8 +109,10 @@ public abstract class AbstractCalendar
     abstract HDateImpl fromAbs(long absDay);
 
     @Override
-    public final HDateImpl convert(HDate otherDate)
+    public final HDate convert(HDate otherDate)
     {
+        if (getType().equals(otherDate.getCalendarType()))
+            return otherDate;
         long absDay = ((HDateImpl)otherDate).absDay();
         return fromAbs(absDay);
     }

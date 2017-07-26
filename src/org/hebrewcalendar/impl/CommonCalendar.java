@@ -94,4 +94,9 @@ public abstract class CommonCalendar
         return (HDateImpl)d0.addDays((int)(absDayFromStart - cycles*daysin400-1));
     }
 
+    @Override
+    public HDateImpl firstDayOfYear(int year)
+    {
+        return fromYMD(year, 1, 1);
+    }
 }

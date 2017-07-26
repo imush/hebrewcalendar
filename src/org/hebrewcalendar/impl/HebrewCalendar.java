@@ -222,4 +222,10 @@ public class HebrewCalendar
                 throw new IllegalStateException("Invalid year length " + yearLength + " for year=" + year);
         }
     }
+
+    @Override
+    public HDateImpl firstDayOfYear(int year)
+    {
+        return fromYMD(year, 7 ,1);
+    }
 }
