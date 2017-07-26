@@ -108,7 +108,6 @@ public class HebrewCalendarTest
 
         HDateImpl d1 = new HDateImpl(hc, 5777,9,1);
         assertEquals(5, d1.getDayOfWeek());
-
     }
 
     @Test
