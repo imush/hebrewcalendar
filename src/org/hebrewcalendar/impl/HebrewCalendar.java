@@ -7,7 +7,7 @@ import org.hebrewcalendar.HJewishCalendar;
 /**
  * Created by itz on 7/20/17.
  */
-public class JewishCalendar
+public class HebrewCalendar
     extends AbstractCalendar
     implements HJewishCalendar
 {
@@ -25,9 +25,9 @@ public class JewishCalendar
     public static final int ADAR = 12;
     public static final int ADAR_2 = 13;
 
-    public static final JewishCalendar INSTANCE = new JewishCalendar();
+    public static final HebrewCalendar INSTANCE = new HebrewCalendar();
 
-    private JewishCalendar() {}
+    private HebrewCalendar() {}
 
     private static final boolean[] LEAP_CYCLE = new boolean[] {
         true, false, false,
@@ -49,7 +49,7 @@ public class JewishCalendar
 
     /**
      * @param year year
-     * @param month month number (see {@link JewishCalendar} for Hebrew month numberings).
+     * @param month month number (see {@link HebrewCalendar} for Hebrew month numberings).
      * @return length of Jewish month, 29 or 30 days.
      */
     @Override
@@ -93,7 +93,7 @@ public class JewishCalendar
         // 0th year did not exist; it would be leap
         int preMonths = 235*cycles;
 
-        for (int i = 1; i < year%19; i++)
+        for (int i = 1; i <= (year-1)%19; i++)
         {
             preMonths += isLeap(i) ? 13 : 12;
         }

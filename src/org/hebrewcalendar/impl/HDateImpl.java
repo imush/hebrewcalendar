@@ -42,7 +42,7 @@ public class HDateImpl
     @Override
     public final HCalendarType getCalendarType() { return _calendar.getType(); }
 
-    public long getAbsDay()
+    public long absDay()
     {
         return _calendar.absDay(this);
     }
@@ -72,7 +72,7 @@ public class HDateImpl
      */
     public final int getDayOfWeek()
     {
-        return (int)(getAbsDay()+6)%7 + 1;
+        return (int)(absDay()+6)%7 + 1;
     }
 
     @Override

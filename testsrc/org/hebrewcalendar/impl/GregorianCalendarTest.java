@@ -33,21 +33,21 @@ public class GregorianCalendarTest
     public void getAbsDay()
     {
         HDateImpl d0 = new HDateImpl(cal,1,1,1);
-        assertEquals(1373430, d0.getAbsDay());
-        assertEquals(GregorianCalendar.INSTANCE.getStart()+1, d0.getAbsDay());
+        assertEquals(1373430, d0.absDay());
+        assertEquals(GregorianCalendar.INSTANCE.getStart()+1, d0.absDay());
 
         HDateImpl d1 = new HDateImpl(cal,2,1,1);
-        assertEquals(1373430+365, d1.getAbsDay());
+        assertEquals(1373430+365, d1.absDay());
 
         HDateImpl d1996 = new HDateImpl(cal, 1996,1,11);
         HDateImpl d1997 = new HDateImpl(cal,1997,1,11);
-        assertEquals(366, d1997.getAbsDay()-d1996.getAbsDay());
+        assertEquals(366, d1997.absDay()-d1996.absDay());
 
         HDateImpl d1998 = new HDateImpl(cal,1998,1,11);
-        assertEquals(365, d1998.getAbsDay()-d1997.getAbsDay());
+        assertEquals(365, d1998.absDay()-d1997.absDay());
 
         HDateImpl d1898 = new HDateImpl(cal,1898,1,11);
-        assertEquals(365*100+24, d1998.getAbsDay()-d1898.getAbsDay());
+        assertEquals(365*100+24, d1998.absDay()-d1898.absDay());
 
 
         for (int y = 1; y < 2100; y+=111) {
@@ -55,14 +55,14 @@ public class GregorianCalendarTest
                 for (int d =1; d <= cal.monthLength(y,m); d++) {
                     HDateImpl nextDate = new HDateImpl(cal, y, m, d);
                     //System.out.println(nextDate);
-                    assertEquals(nextDate, cal.fromAbs(nextDate.getAbsDay()));
-                    if (nextDate.getAbsDay() > cal.getStart()+1)
-                        assertEquals(nextDate.getAbsDay(), nextDate.subtractDays(1).getAbsDay()+1);
+                    assertEquals(nextDate, cal.fromAbs(nextDate.absDay()));
+                    if (nextDate.absDay() > cal.getStart()+1)
+                        assertEquals(nextDate.absDay(), nextDate.subtractDays(1).absDay()+1);
                 }
             }
         }
         HDateImpl d20161003 = new HDateImpl(cal, 2016,10, 3);
-        assertEquals(d20161003, cal.fromAbs(d20161003.getAbsDay()));
+        assertEquals(d20161003, cal.fromAbs(d20161003.absDay()));
 
     }
 
@@ -105,19 +105,19 @@ public class GregorianCalendarTest
     public void absDay()
     {
         HDateImpl d0 = new HDateImpl(cal,1,1,1);
-        assertEquals(1373430, d0.getAbsDay());
+        assertEquals(1373430, d0.absDay());
         HDateImpl d1 = new HDateImpl(cal,2,1,1);
-        assertEquals(1373430+365, d1.getAbsDay());
+        assertEquals(1373430+365, d1.absDay());
 
         HDateImpl d1996 = new HDateImpl(cal, 1996,1,11);
         HDateImpl d1997 = new HDateImpl(cal,1997,1,11);
-        assertEquals(366, d1997.getAbsDay()-d1996.getAbsDay());
+        assertEquals(366, d1997.absDay()-d1996.absDay());
 
         HDateImpl d1998 = new HDateImpl(cal,1998,1,11);
-        assertEquals(365, d1998.getAbsDay()-d1997.getAbsDay());
+        assertEquals(365, d1998.absDay()-d1997.absDay());
 
         HDateImpl d1898 = new HDateImpl(cal,1898,1,11);
-        assertEquals(365*100+24, d1998.getAbsDay()-d1898.getAbsDay());
+        assertEquals(365*100+24, d1998.absDay()-d1898.absDay());
     }
 
 

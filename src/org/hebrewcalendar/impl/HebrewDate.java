@@ -5,11 +5,11 @@ public class HebrewDate
 {
     HebrewDate(int year, int month, int day)
     {
-        super(JewishCalendar.INSTANCE, year, month, day);
+        super(HebrewCalendar.INSTANCE, year, month, day);
     }
 
     @Override
-    public long getAbsDay()
+    public long absDay()
     {
         return 0;
     }

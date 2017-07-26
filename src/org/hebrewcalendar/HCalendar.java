@@ -1,7 +1,7 @@
 package org.hebrewcalendar;
 
 import org.hebrewcalendar.impl.GregorianCalendar;
-import org.hebrewcalendar.impl.JewishCalendar;
+import org.hebrewcalendar.impl.HebrewCalendar;
 import org.hebrewcalendar.impl.JulianCalendar;
 
 /**
@@ -11,7 +11,7 @@ public interface HCalendar
 {
     HCalendar GREGORIAN = GregorianCalendar.INSTANCE;
     HCalendar JULIAN = JulianCalendar.INSTANCE;
-    HCalendar HEBREW = JewishCalendar.INSTANCE;
+    HCalendar HEBREW = HebrewCalendar.INSTANCE;
 
     /**
      * Tests whether a given year is leap. For common calendars (Julian or Gregorian),
@@ -25,7 +25,7 @@ public interface HCalendar
     /**
      * Length of the given month in the given year
      * @param year year
-     * @param month month number (see {@link JewishCalendar} for Hebrew month numberings).
+     * @param month month number (see {@link HebrewCalendar} for Hebrew month numberings).
      * @return the length of month in days
      */
     int monthLength(int year, int month);

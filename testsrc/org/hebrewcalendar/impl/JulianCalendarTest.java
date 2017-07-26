@@ -30,16 +30,16 @@ public class JulianCalendarTest
     public void getAbsDay()
     {
         HDateImpl d0 = new HDateImpl(cal, 1,1,1);
-        assertEquals(cal.getStart()+1, d0.getAbsDay());
+        assertEquals(cal.getStart()+1, d0.absDay());
 
         HDateImpl d20170101 = new HDateImpl(cal, 2017,1,1);
-        assertEquals(cal.getStart()+2016*365+504+1, d20170101.getAbsDay());
+        assertEquals(cal.getStart()+2016*365+504+1, d20170101.absDay());
 
         HDateImpl d20170701 = new HDateImpl(cal, 2017,7,1);
-        assertEquals(cal.getStart()+2016*365+504+31+28+31+30+31+30+1, d20170701.getAbsDay());
+        assertEquals(cal.getStart()+2016*365+504+31+28+31+30+31+30+1, d20170701.absDay());
 
         HDateImpl greg = new HDateImpl(GregorianCalendar.INSTANCE, 2017,1,1);
-        assertEquals(13, d20170101.getAbsDay()-greg.getAbsDay());
+        assertEquals(13, d20170101.absDay()-greg.absDay());
     }
 
     @Test
@@ -47,43 +47,43 @@ public class JulianCalendarTest
     {
         HDateImpl j0 = new HDateImpl(JulianCalendar.INSTANCE, 1,1,3);
         HDateImpl g0 = new HDateImpl(GregorianCalendar.INSTANCE, 1,1,1);
-        assertEquals(j0.getAbsDay(), g0.getAbsDay());
+        assertEquals(j0.absDay(), g0.absDay());
 
         HDateImpl j1 = new HDateImpl(JulianCalendar.INSTANCE, 2,1,3);
         HDateImpl g1 = new HDateImpl(GregorianCalendar.INSTANCE, 2,1,1);
-        assertEquals(j1.getAbsDay(), g1.getAbsDay());
+        assertEquals(j1.absDay(), g1.absDay());
 
         HDateImpl j101 = new HDateImpl(JulianCalendar.INSTANCE, 101,1,2);
         HDateImpl g101 = new HDateImpl(GregorianCalendar.INSTANCE, 101,1,1);
-        assertEquals(j101.getAbsDay(), g101.getAbsDay());
+        assertEquals(j101.absDay(), g101.absDay());
 
         HDateImpl j101a = new HDateImpl(JulianCalendar.INSTANCE, 100,2,29);
         HDateImpl g101a = new HDateImpl(GregorianCalendar.INSTANCE, 100,2,27);
-        assertEquals(j101a.getAbsDay(), g101a.getAbsDay());
+        assertEquals(j101a.absDay(), g101a.absDay());
 
         HDateImpl j101b = new HDateImpl(JulianCalendar.INSTANCE, 100,3,1);
         HDateImpl g101b = new HDateImpl(GregorianCalendar.INSTANCE, 100,2,28);
-        assertEquals(j101b.getAbsDay(), g101b.getAbsDay());
+        assertEquals(j101b.absDay(), g101b.absDay());
 
         HDateImpl j101c = new HDateImpl(JulianCalendar.INSTANCE, 100,3,2);
         HDateImpl g101c = new HDateImpl(GregorianCalendar.INSTANCE, 100,3,1);
-        assertEquals(j101c.getAbsDay(), g101c.getAbsDay());
+        assertEquals(j101c.absDay(), g101c.absDay());
 
         HDateImpl j1900a = new HDateImpl(JulianCalendar.INSTANCE, 1900,2,17);
         HDateImpl g1900a = new HDateImpl(GregorianCalendar.INSTANCE, 1900,3,1);
-        assertEquals(j1900a.getAbsDay(), g1900a.getAbsDay());
+        assertEquals(j1900a.absDay(), g1900a.absDay());
 
         HDateImpl j1900b = new HDateImpl(JulianCalendar.INSTANCE, 1900,2,29);
         HDateImpl g1900b = new HDateImpl(GregorianCalendar.INSTANCE, 1900,3,13);
-        assertEquals(j1900b.getAbsDay(), g1900b.getAbsDay());
+        assertEquals(j1900b.absDay(), g1900b.absDay());
 
         HDateImpl j1900c = new HDateImpl(JulianCalendar.INSTANCE, 1900,3,1);
         HDateImpl g1900c = new HDateImpl(GregorianCalendar.INSTANCE, 1900,3,14);
-        assertEquals(j1900c.getAbsDay(), g1900c.getAbsDay());
+        assertEquals(j1900c.absDay(), g1900c.absDay());
 
         HDateImpl j20170709 = new HDateImpl(JulianCalendar.INSTANCE, 2017,7, 9);
         HDateImpl g20170722 = new HDateImpl(GregorianCalendar.INSTANCE, 2017,7,22);
-        assertEquals(j20170709.getAbsDay(), g20170722.getAbsDay());
+        assertEquals(j20170709.absDay(), g20170722.absDay());
 
 
     }

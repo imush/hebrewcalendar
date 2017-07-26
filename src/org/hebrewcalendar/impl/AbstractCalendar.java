@@ -100,7 +100,7 @@ public abstract class AbstractCalendar
     @Override
     public final HDateImpl convert(HDate otherDate)
     {
-        long absDay = ((HDateImpl)otherDate).getAbsDay();
+        long absDay = ((HDateImpl)otherDate).absDay();
         return fromAbs(absDay);
     }
 }
