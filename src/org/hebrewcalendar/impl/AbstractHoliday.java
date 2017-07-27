@@ -27,6 +27,4 @@ public abstract class AbstractHoliday
     {
         return _calendar;
     }
-
-    abstract boolean matches(HDate date);
 }

@@ -70,7 +70,7 @@ class NthDayOfWeekInMonthHoliday
     }
 
     @Override
-    boolean matches(HDate date0)
+    public boolean matches(HDate date0)
     {
         HCalendar cal = getCalendar();
         int m0 = date0.getMonth();
