@@ -1,6 +1,7 @@
 package org.hebrewcalendar.impl;
 
 import org.hebrewcalendar.HCalendar;
+import org.hebrewcalendar.impl.holiday.NthDayOfWeekInMonthHoliday;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

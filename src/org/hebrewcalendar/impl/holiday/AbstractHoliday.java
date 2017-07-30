@@ -1,4 +1,4 @@
-package org.hebrewcalendar.impl;
+package org.hebrewcalendar.impl.holiday;
 
 import org.hebrewcalendar.HCalendar;
 import org.hebrewcalendar.HDate;

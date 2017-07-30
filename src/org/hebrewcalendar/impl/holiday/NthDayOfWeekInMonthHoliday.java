@@ -1,7 +1,6 @@
-package org.hebrewcalendar.impl;
+package org.hebrewcalendar.impl.holiday;
 
 import org.hebrewcalendar.HCalendar;
-import org.hebrewcalendar.HCalendarType;
 import org.hebrewcalendar.HDate;
 
 /**
@@ -27,7 +26,7 @@ class NthDayOfWeekInMonthHoliday
      *          e.g. Thanksgiving in US is last Thursday in November, so would use constructor args (11, 5, -1)
 
      */
-    NthDayOfWeekInMonthHoliday(HCalendar calendar, String name, int month, int dayOfWeek, int n)
+    public NthDayOfWeekInMonthHoliday(HCalendar calendar, String name, int month, int dayOfWeek, int n)
     {
         super(calendar, name);
         _month = month;

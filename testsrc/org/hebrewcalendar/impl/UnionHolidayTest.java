@@ -3,6 +3,8 @@ package org.hebrewcalendar.impl;
 import org.hebrewcalendar.HCalendar;
 import org.hebrewcalendar.HDate;
 import org.hebrewcalendar.HHoliday;
+import org.hebrewcalendar.impl.holiday.MonthDayHoliday;
+import org.hebrewcalendar.impl.holiday.UnionHoliday;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
