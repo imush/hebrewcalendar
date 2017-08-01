@@ -1,6 +1,6 @@
 package org.hebrewcalendar.impl;
 
-enum HebrewMonth
+public enum HebrewMonth
 {
     NISAN(1),
     IYAR(2),
@@ -17,7 +17,15 @@ enum HebrewMonth
     ADAR_2(13);
 
     private int _n;
-    private HebrewMonth(int n) { _n = n; }
+    HebrewMonth(int n) { _n = n; }
+
 
     public int getN() { return _n; }
+
+    public HebrewMonth get(int n) {
+        for (HebrewMonth m : HebrewMonth.values())
+            if (m.getN() == n)
+                return m;
+        return null;
+    }
 }

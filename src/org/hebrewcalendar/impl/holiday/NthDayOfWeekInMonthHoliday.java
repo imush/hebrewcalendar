@@ -7,7 +7,7 @@ import org.hebrewcalendar.HDate;
  * Represents a holiday that occurs yearly on the same date.
  * It is initialized with month and day.
  */
-class NthDayOfWeekInMonthHoliday
+public class NthDayOfWeekInMonthHoliday
     extends AbstractHoliday
 {
     private final int _month;
@@ -54,8 +54,6 @@ class NthDayOfWeekInMonthHoliday
         HDate date0 = getCalendar().convert(date);
         int y0 = date0.getYear();
         for (HDate candidate = date0; candidate.getYear() < y0 + 5; candidate = nextCandidate(candidate)) {
-            if (candidate == null)
-                return null;
             if (matches(candidate))
                 return candidate;
         }
@@ -78,9 +76,7 @@ class NthDayOfWeekInMonthHoliday
         boolean monthMatch = _month == 0 ||
                 _month > 0 && _month == m0 ||
                 _month < 0 && m0 == _month + 1 + cal.monthsInYear(y0);
-        if (!monthMatch)
-            return false;
-        return d0 == getNthDayOfWeekInMonth(y0, m0);
+        return monthMatch && d0 == getNthDayOfWeekInMonth(y0, m0);
     }
 
     private int getNthDayOfWeekInMonth(int year, int month)
