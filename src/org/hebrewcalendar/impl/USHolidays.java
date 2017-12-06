@@ -14,5 +14,6 @@ public final class USHolidays
     public static final HHoliday JULY_4 = new MonthDayHoliday(HCalendar.GREGORIAN, "July 4", 7, 4);
     public static final HHoliday MEMORIAL_DAY = new NthDayOfWeekInMonthHoliday(HCalendar.GREGORIAN, "Memorial Day", 5, 2, -1);
     public static final HHoliday LABOR_DAY = new NthDayOfWeekInMonthHoliday(HCalendar.GREGORIAN, "Labor Day", 9, 2, 1);
+    public static final HHoliday THANKSGIVING = new NthDayOfWeekInMonthHoliday(HCalendar.GREGORIAN, "Thanksgiving", 11, 5, -1);
     public static final HHoliday X_HOLIDAY = new MonthDayHoliday(HCalendar.GREGORIAN, "Dec 25", 12, 25);
 }
