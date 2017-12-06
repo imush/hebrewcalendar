@@ -4,12 +4,12 @@ import org.hebrewcalendar.HDate;
 import org.hebrewcalendar.HHoliday;
 
 /**
- * A conjunction of conditions for two {@HHoliday}s.
+ * A conjunction of conditions for two {@link HHoliday}s.
  */
 public final class ConjunctionHoliday
     extends AbstractHoliday
 {
-    final HHoliday[] _underlying;
+    private final HHoliday[] _underlying;
 
     /**
      * @param name name
@@ -19,27 +19,6 @@ public final class ConjunctionHoliday
     {
         super(underlying[0].getCalendar(), name);
         _underlying = underlying;
-    }
-
-    /**
-     * @param date reference date to search from
-     * @return next day when all holidays match, null if not found within 4 years.
-     */
-    @Override
-    public HDate getNextOccurrenceOnOrAfter(HDate date)
-    {
-        for (HDate d = _underlying[0].getNextOccurrenceOnOrAfter(date); d.before(date.addDays(4*366));
-                d = _underlying[0].getNextOccurrenceOnOrAfter(d)) {
-            boolean match = true;
-            for (int i = 1; i < _underlying.length; i++) {
-                if (!_underlying[i].matches(d)) {
-                    match = false;
-                    break;
-                }
-            }
-            return d;
-        }
-        return null;
     }
 
     /**

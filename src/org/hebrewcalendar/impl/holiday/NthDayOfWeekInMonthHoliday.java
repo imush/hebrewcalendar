@@ -49,27 +49,10 @@ public class NthDayOfWeekInMonthHoliday
     public final int getN() { return _n; }
 
     @Override
-    public HDate getNextOccurrenceOnOrAfter(HDate date)
-    {
-        HDate date0 = getCalendar().convert(date);
-        int y0 = date0.getYear();
-        for (HDate candidate = date0; candidate.getYear() < y0 + 5; candidate = nextCandidate(candidate)) {
-            if (matches(candidate))
-                return candidate;
-        }
-        return null;
-    }
-
-    private HDate nextCandidate(HDate date0)
-    {
-        // TODO improve this
-        return date0.addDays(1);
-    }
-
-    @Override
-    public boolean matches(HDate date0)
+    public boolean matches(final HDate date)
     {
         HCalendar cal = getCalendar();
+        HDate date0 = cal.convert(date);
         int m0 = date0.getMonth();
         int y0 = date0.getYear();
         int d0 = date0.getDay();

@@ -41,23 +41,6 @@ public class MonthDayHoliday
     }
 
     @Override
-    public HDate getNextOccurrenceOnOrAfter(HDate date)
-    {
-        for (HDate candidate = getCalendar().convert(date); candidate.getYear() < date.getYear()+5;
-             candidate = nextCandidate(candidate)) {
-            if (matches(candidate))
-                return candidate;
-        }
-        throw new IllegalStateException("Invalid holiday does not match any day within 4 years " + this);
-    }
-
-    private HDate nextCandidate(HDate date0)
-    {
-        // TODO improve this
-        return date0.addDays(1);
-    }
-
-    @Override
     public boolean matches(HDate date)
     {
         HCalendar cal = getCalendar();
@@ -65,12 +48,10 @@ public class MonthDayHoliday
         boolean monthMatch = _month == 0 ||
                 (_month > 0 && _month == toMatch.getMonth()) ||
                 (_month < 0 && toMatch.getMonth() == cal.monthsInYear(date.getYear()) + 1 + _month);
-        if (!monthMatch)
-            return false;
-        boolean dayMatch = _day == 0 ||
+        return monthMatch &&
+                (_day == 0 ||
                 (_day > 0 && _day == toMatch.getDay()) ||
-                (_day < 0 && toMatch.getDay() == cal.monthLength(date.getYear(), toMatch.getMonth()) + 1 + _day);
-        return dayMatch;
+                (_day < 0 && toMatch.getDay() == cal.monthLength(date.getYear(), toMatch.getMonth()) + 1 + _day));
     }
 
     public String toString()

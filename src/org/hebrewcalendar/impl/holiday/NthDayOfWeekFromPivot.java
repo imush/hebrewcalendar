@@ -38,28 +38,6 @@ public class NthDayOfWeekFromPivot
     }
 
     @Override
-    public HDate getNextOccurrenceOnOrAfter(HDate date)
-    {
-        HDate date0 = getCalendar().convert(date);
-        int y0 = date0.getYear();
-        for (HDate candidate = date0; candidate.getYear() < y0 + 5; candidate = nextCandidate(candidate)) {
-            if (candidate == null)
-                return null;
-            if (matches(candidate))
-                return candidate;
-        }
-        return null;
-    }
-
-    private HDate nextCandidate(HDate date0)
-    {
-        if (date0.getDayOfWeek() == _dayOfWeek)
-            return date0.addDays(7);
-        else
-            return date0.addDays((_dayOfWeek - date0.getDayOfWeek() + 7)%7);
-    }
-
-    @Override
     public boolean matches(HDate date0)
     {
         if (date0.getDayOfWeek() != _dayOfWeek)

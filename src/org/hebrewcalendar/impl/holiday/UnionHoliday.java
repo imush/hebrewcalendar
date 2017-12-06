@@ -4,28 +4,17 @@ import org.hebrewcalendar.HDate;
 import org.hebrewcalendar.HHoliday;
 
 /**
- * A disjunction of conditions for two {@HHoliday}s.
+ * A disjunction of conditions for two {@link HHoliday}s.
  */
 public final class UnionHoliday
     extends AbstractHoliday
 {
-    final HHoliday[] _underlying;
+    private final HHoliday[] _underlying;
 
     public UnionHoliday(String name, HHoliday[] underlying)
     {
         super(underlying[0].getCalendar(), name);
         _underlying = underlying;
-    }
-    @Override
-    public HDate getNextOccurrenceOnOrAfter(HDate date)
-    {
-        HDate candidate = null;
-        for (HHoliday h : _underlying) {
-            HDate nextCandidate = h.getNextOccurrenceOnOrAfter(date);
-            if (candidate == null || nextCandidate.before(candidate))
-                candidate = nextCandidate;
-        }
-        return candidate;
     }
 
     @Override

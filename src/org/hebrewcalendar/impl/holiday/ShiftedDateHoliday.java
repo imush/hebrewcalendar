@@ -2,6 +2,7 @@ package org.hebrewcalendar.impl.holiday;
 
 import org.hebrewcalendar.HDate;
 import org.hebrewcalendar.HHoliday;
+import org.hebrewcalendar.impl.NoSuchHolidayException;
 
 public final class ShiftedDateHoliday
     extends AbstractHoliday
@@ -22,10 +23,19 @@ public final class ShiftedDateHoliday
     }
 
     @Override
-    public HDate getNextOccurrenceOnOrAfter(HDate date)
+    public HDate getNextOccurrence(HDate date, final boolean strict)
+            throws NoSuchHolidayException
     {
-        return _referenceDay.getNextOccurrenceOnOrAfter(date.subtractDays(_shift)).addDays(_shift);
+        return _referenceDay.getNextOccurrence(date.subtractDays(_shift), strict).addDays(_shift);
     }
+
+    @Override
+    public HDate getPrevOccurrence(HDate date, final boolean strict)
+            throws NoSuchHolidayException
+    {
+        return _referenceDay.getPrevOccurrence(date.subtractDays(_shift), strict).addDays(_shift);
+    }
+
 
     @Override
     public boolean matches(HDate date)
