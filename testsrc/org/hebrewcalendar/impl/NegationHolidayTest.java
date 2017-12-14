@@ -14,14 +14,15 @@ public class NegationHolidayTest
             new MonthDayHoliday(HCalendar.HEBREW, "Rosh Hashana", 7, 1);
 
     @Test
-    public void testGetNextOccurrenceOnOrAfter()
+    public void testGetNextOccurrence()
             throws Exception
     {
         NegationHoliday notRoshHashana = new NegationHoliday("neg", roshHashana);
         HDate d0 = HCalendar.GREGORIAN.fromYMD(2016, 10, 3);
-        assertEquals(d0.addDays(1), notRoshHashana.getNextOccurrenceOnOrAfter(d0));
-        assertEquals(d0.addDays(1), notRoshHashana.getNextOccurrenceOnOrAfter(d0.addDays(1)));
-        assertEquals(d0.addDays(10), notRoshHashana.getNextOccurrenceOnOrAfter(d0.addDays(10)));
+        assertEquals(d0.addDays(1), notRoshHashana.getNextOccurrence(d0, false));
+        assertEquals(d0.addDays(1), notRoshHashana.getNextOccurrence(d0.subtractDays(1), true));
+        assertEquals(d0.addDays(1), notRoshHashana.getNextOccurrence(d0.addDays(1), false));
+        assertEquals(d0.addDays(10), notRoshHashana.getNextOccurrence(d0.addDays(10), false));
     }
 
     @Test

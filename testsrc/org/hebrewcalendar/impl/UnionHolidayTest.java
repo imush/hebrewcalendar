@@ -30,10 +30,12 @@ public class UnionHolidayTest
         HDate kislev30 = HCalendar.HEBREW.fromYMD(5778, 9, 30);
         HDate teveth1 = HCalendar.HEBREW.fromYMD(5778, 10, 1);
 
-        assertEquals(kislev1, roshChodesh.getNextOccurrenceOnOrAfter(cheshvan11));
-        assertEquals(shvat30, roshChodesh.getNextOccurrenceOnOrAfter(shvat11));
-        assertEquals(kislev30, roshChodesh.getNextOccurrenceOnOrAfter(kislev2));
-        assertEquals(teveth1, roshChodesh.getNextOccurrenceOnOrAfter(teveth1));
+        assertEquals(kislev1, roshChodesh.getNextOccurrence(cheshvan11, false));
+        assertEquals(shvat30, roshChodesh.getNextOccurrence(shvat11, false));
+        assertEquals(kislev30, roshChodesh.getNextOccurrence(kislev2, true));
+        assertEquals(teveth1, roshChodesh.getNextOccurrence(teveth1, false));
+        assertEquals(teveth1, roshChodesh.getPrevOccurrence(teveth1, false));
+        assertEquals(kislev30, roshChodesh.getPrevOccurrence(teveth1, true));
 
     }
 

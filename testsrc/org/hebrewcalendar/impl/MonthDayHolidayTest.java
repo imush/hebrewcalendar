@@ -35,30 +35,64 @@ public class MonthDayHolidayTest
     }
 
     @Test
-    public void getNextOccurrenceOnOrAfter()
+    public void getNextOccurrence()
             throws Exception
     {
         assertEquals(HCalendar.GREGORIAN.fromYMD(2017,1,1),
-                jan1G.getNextOccurrenceOnOrAfter(HCalendar.GREGORIAN.fromYMD(2017,1,1)));
+                jan1G.getNextOccurrence(HCalendar.GREGORIAN.fromYMD(2017,1,1), false));
+        assertEquals(HCalendar.GREGORIAN.fromYMD(2019,1,1),
+                jan1G.getNextOccurrence(HCalendar.GREGORIAN.fromYMD(2018,1,1), true));
         assertEquals(HCalendar.GREGORIAN.fromYMD(2017,1,1),
-                jan1G.getNextOccurrenceOnOrAfter(HCalendar.GREGORIAN.fromYMD(2016,1,2)));
+                jan1G.getNextOccurrence(HCalendar.GREGORIAN.fromYMD(2016,1,2), false));
         assertEquals(HCalendar.GREGORIAN.fromYMD(2017,1,1),
-                jan1G.getNextOccurrenceOnOrAfter(HCalendar.GREGORIAN.fromYMD(2016,11,2)));
+                jan1G.getNextOccurrence(HCalendar.GREGORIAN.fromYMD(2016,11,2), false));
 
         assertEquals(HCalendar.HEBREW.fromYMD(5777,1,15),
-                pesach.getNextOccurrenceOnOrAfter(HCalendar.HEBREW.fromYMD(5777,1,15)));
+                pesach.getNextOccurrence(HCalendar.HEBREW.fromYMD(5777,1,15), false));
         assertEquals(HCalendar.HEBREW.fromYMD(5777,1,15),
-                pesach.getNextOccurrenceOnOrAfter(HCalendar.HEBREW.fromYMD(5777,12,15)));
+                pesach.getNextOccurrence(HCalendar.HEBREW.fromYMD(5777,12,15), false));
         assertEquals(HCalendar.HEBREW.fromYMD(5777,1,15),
-                pesach.getNextOccurrenceOnOrAfter(HCalendar.HEBREW.fromYMD(5777,7,15)));
+                pesach.getNextOccurrence(HCalendar.HEBREW.fromYMD(5777,7,15), false));
         assertEquals(HCalendar.HEBREW.fromYMD(5777,1,15),
-                pesach.getNextOccurrenceOnOrAfter(HCalendar.HEBREW.fromYMD(5776,1,16)));
+                pesach.getNextOccurrence(HCalendar.HEBREW.fromYMD(5777,7,15), true));
+        assertEquals(HCalendar.HEBREW.fromYMD(5777,1,15),
+                pesach.getNextOccurrence(HCalendar.HEBREW.fromYMD(5776,1,16), false));
 
-        for (HDate d = HCalendar.HEBREW.fromYMD(5777, 7, 1); d.getYear() < 5790; d = d.addDays(1))
-            assertEquals(d, anyDayH.getNextOccurrenceOnOrAfter(d));
+        for (HDate d = HCalendar.HEBREW.fromYMD(5777, 7, 1); d.getYear() < 5790; d = d.addDays(1)) {
+            assertEquals(d, anyDayH.getNextOccurrence(d, false));
+            assertEquals(d.addDays(1), anyDayH.getNextOccurrence(d, true));
+        }
 
     }
 
+    @Test
+    public void getPrevOccurrence()
+            throws Exception
+    {
+        assertEquals(HCalendar.GREGORIAN.fromYMD(2017,1,1),
+                jan1G.getPrevOccurrence(HCalendar.GREGORIAN.fromYMD(2017,1,1), false));
+        assertEquals(HCalendar.GREGORIAN.fromYMD(2015,1,1),
+                jan1G.getPrevOccurrence(HCalendar.GREGORIAN.fromYMD(2016,1,1), true));
+        assertEquals(HCalendar.GREGORIAN.fromYMD(2016,1,1),
+                jan1G.getPrevOccurrence(HCalendar.GREGORIAN.fromYMD(2016,1,2), false));
+        assertEquals(HCalendar.GREGORIAN.fromYMD(2017,1,1),
+                jan1G.getPrevOccurrence(HCalendar.GREGORIAN.fromYMD(2017,1,26), true));
+        assertEquals(HCalendar.GREGORIAN.fromYMD(2016,1,1),
+                jan1G.getPrevOccurrence(HCalendar.GREGORIAN.fromYMD(2016,11,2), false));
+
+        assertEquals(HCalendar.HEBREW.fromYMD(5777,1,15),
+                pesach.getPrevOccurrence(HCalendar.HEBREW.fromYMD(5777,1,15), false));
+        assertEquals(HCalendar.HEBREW.fromYMD(5775,1,15),
+                pesach.getPrevOccurrence(HCalendar.HEBREW.fromYMD(5776,1,15), true));
+        assertEquals(HCalendar.HEBREW.fromYMD(5776,1,15),
+                pesach.getPrevOccurrence(HCalendar.HEBREW.fromYMD(5777,12,15), false));
+
+        for (HDate d = HCalendar.HEBREW.fromYMD(5777, 7, 1); d.getYear() < 5790; d = d.addDays(1)) {
+            assertEquals(d, anyDayH.getNextOccurrence(d, false));
+            assertEquals(d.addDays(1), anyDayH.getNextOccurrence(d, true));
+        }
+
+    }
     @Test
     public void matches()
             throws Exception

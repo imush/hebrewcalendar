@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 public class ShiftedDateHolidayTest
 {
     private static final NthDayOfWeekInMonthHoliday thanksgiving =
-            new NthDayOfWeekInMonthHoliday(HCalendar.GREGORIAN, "Thanksgiving", 11, 5, -1);
+            new NthDayOfWeekInMonthHoliday(HCalendar.GREGORIAN, "Thanksgiving", 11, 5, 4);
     private static final MonthDayHoliday roshHashana =
             new MonthDayHoliday(HCalendar.HEBREW, "Rosh Hashana", 7, 1);
     private static final MonthDayHoliday chanukah =
@@ -32,9 +32,13 @@ public class ShiftedDateHolidayTest
         assertFalse(fridayAfterThanksgiving.matches(d1.addDays(1)));
         assertFalse(fridayAfterThanksgiving.matches(d1.subtractDays(1)));
 
-        assertEquals(d1, fridayAfterThanksgiving.getNextOccurrenceOnOrAfter(d0.addDays(1)));
-        assertEquals(d1, fridayAfterThanksgiving.getNextOccurrenceOnOrAfter(d1));
-        assertFalse(d1.equals(fridayAfterThanksgiving.getNextOccurrenceOnOrAfter(d1.addDays(1))));
+        try {
+            assertEquals(d1, fridayAfterThanksgiving.getNextOccurrence(d0.addDays(1), false));
+            assertEquals(d1, fridayAfterThanksgiving.getNextOccurrence(d1, false));
+            assertFalse(d1.equals(fridayAfterThanksgiving.getNextOccurrence(d1.addDays(1), false)));
+        } catch (NoSuchHolidayException e) {
+            fail();
+        }
     }
 
     @Test

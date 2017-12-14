@@ -31,16 +31,17 @@ public class NthDayOfWeekFromPivotTest
         HDate d0 = HCalendar.HEBREW.fromYMD(5777, 1, 1);
         HDate d1 = HCalendar.HEBREW.fromYMD(5777, 1, 12);
         HDate d2 = HCalendar.HEBREW.fromYMD(5778, 1, 8);
-        assertEquals(d1, shabbosHagodol.getNextOccurrenceOnOrAfter(d0));
-        assertEquals(d1, shabbosHagodol.getNextOccurrenceOnOrAfter(d1));
-        assertEquals(d2, shabbosHagodol.getNextOccurrenceOnOrAfter(d1.addDays(1)));
+        assertEquals(d1, shabbosHagodol.getNextOccurrence(d0, false));
+        assertEquals(d1, shabbosHagodol.getNextOccurrence(d0, true));
+        assertEquals(d1, shabbosHagodol.getNextOccurrence(d1, false));
+        assertEquals(d2, shabbosHagodol.getNextOccurrence(d1.addDays(1), false));
 
         HDate d3 = HCalendar.HEBREW.fromYMD(5777, 5, 6);
         HDate d4 = HCalendar.HEBREW.fromYMD(5777, 5, 13);
-        assertEquals(d3, shabbosChazon.getNextOccurrenceOnOrAfter(d0));
-        assertEquals(d4, shabbosNachamu.getNextOccurrenceOnOrAfter(d0));
-        assertEquals(d4, shabbosNachamu.getNextOccurrenceOnOrAfter(d3));
-        assertEquals(d4, shabbosNachamu.getNextOccurrenceOnOrAfter(d4));
+        assertEquals(d3, shabbosChazon.getNextOccurrence(d0, false));
+        assertEquals(d4, shabbosNachamu.getNextOccurrence(d0, false));
+        assertEquals(d4, shabbosNachamu.getNextOccurrence(d3, false));
+        assertEquals(d4, shabbosNachamu.getNextOccurrence(d4, false));
     }
 
     @Test
