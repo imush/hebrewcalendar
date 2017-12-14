@@ -37,6 +37,11 @@ public class NthDayOfWeekFromPivot
             throw new IllegalArgumentException("arg n must be nonzero and no larger than 5 by abs value");
     }
 
+    /**
+     *
+     * @param date0 date to start from
+     * @return true when matches
+     */
     @Override
     public boolean matches(HDate date0)
     {
