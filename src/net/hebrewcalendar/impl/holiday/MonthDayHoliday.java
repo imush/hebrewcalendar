@@ -43,15 +43,15 @@ public class MonthDayHoliday
     @Override
     public boolean matches(HDate date)
     {
-        HCalendar cal = getCalendar();
-        HDate toMatch = cal.convert(date);
-        boolean monthMatch = _month == 0 ||
+        final HCalendar cal = getCalendar();
+        final HDate toMatch = cal.convert(date);
+        final boolean monthMatch = _month == 0 ||
                 (_month > 0 && _month == toMatch.getMonth()) ||
-                (_month < 0 && toMatch.getMonth() == cal.monthsInYear(date.getYear()) + 1 + _month);
+                (_month < 0 && toMatch.getMonth() == cal.monthsInYear(toMatch.getYear()) + 1 + _month);
         return monthMatch &&
                 (_day == 0 ||
                 (_day > 0 && _day == toMatch.getDay()) ||
-                (_day < 0 && toMatch.getDay() == cal.monthLength(date.getYear(), toMatch.getMonth()) + 1 + _day));
+                (_day < 0 && toMatch.getDay() == cal.monthLength(toMatch.getYear(), toMatch.getMonth()) + 1 + _day));
     }
 
     public String toString()

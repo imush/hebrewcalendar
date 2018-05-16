@@ -13,16 +13,16 @@ public final class NegationHoliday
 
     /**
      * @param name Name of the holiday
-     * @param referenceDay the referenced {@link HHoliday}
+     * @param referenceHoliday the referenced {@link HHoliday}
      */
-    public NegationHoliday(String name, HHoliday referenceDay)
+    public NegationHoliday(String name, HHoliday referenceHoliday)
     {
-        super(referenceDay.getCalendar(), name);
-        _referenceDay = referenceDay;
+        super(referenceHoliday.getCalendar(), name);
+        _referenceDay = referenceHoliday;
      }
 
     @Override
-    public boolean matches(HDate date)
+    public boolean matches(final HDate date)
     {
         return !_referenceDay.matches(date);
     }
