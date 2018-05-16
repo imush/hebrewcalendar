@@ -1,5 +1,6 @@
 package net.hebrewcalendar.impl;
 
+import net.hebrewcalendar.HCalendar;
 import net.hebrewcalendar.HCalendarType;
 import net.hebrewcalendar.HJewishCalendar;
 
@@ -77,7 +78,7 @@ public class HebrewCalendarTest
         HDateImpl h57750701 = hc.fromYMD(5775,7,1);
         HDateImpl h57760701 = hc.fromYMD(5776,7,1);
 
-        assertEquals(354l, h57760701.absDay()-h57750701.absDay());
+        assertEquals(354L, h57760701.absDay()-h57750701.absDay());
     }
 
     @Test
@@ -131,6 +132,14 @@ public class HebrewCalendarTest
         assertEquals("0001-01-01H", hc.fromYMD(1, HebrewCalendar.NISAN,1).toString());
         assertEquals("5777-07-09H", hc.fromYMD(5777, HebrewCalendar.TISHREI,9).toString());
         assertEquals("5711-11-10H", hc.fromYMD(5711, HebrewCalendar.SHVAT,10).toString());
+    }
+
+    @Test
+    public void testSefira() {
+        assertEquals(0, HCalendar.HEBREW.getSefira(HCalendar.HEBREW.fromYMD(5777, 7,7)));
+        assertEquals(1, HCalendar.HEBREW.getSefira(HCalendar.HEBREW.fromYMD(5777, 1,16)));
+        assertEquals(33, HCalendar.HEBREW.getSefira(HCalendar.HEBREW.fromYMD(5779, 2,18)));
+        assertEquals(49, HCalendar.HEBREW.getSefira(HCalendar.HEBREW.fromYMD(5777, 3,5)));
     }
 
 }

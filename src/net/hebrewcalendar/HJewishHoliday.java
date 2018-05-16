@@ -30,8 +30,23 @@ public enum HJewishHoliday
     TAMUZ_3(new MonthDayHoliday(HCalendar.HEBREW, "3 Tamuz", 4, 3)),
     TAMUZ_12(new MonthDayHoliday(HCalendar.HEBREW, "12 Tamuz", 4, 12)),
     TAMUZ_13(new MonthDayHoliday(HCalendar.HEBREW, "13 Tamuz", 4, 13)),
-    TAMUZ_17(new MonthDayHoliday(HCalendar.HEBREW, "Fast of 17th of Tamuz", 4, 17)),
-    AV_9(new MonthDayHoliday(HCalendar.HEBREW, "Fast of 9th day of Av", 5, 9)),
+    FAST_TAMUZ_17(new UnionHoliday("Fast of 17 Tamuz", new HHoliday[]{
+            // not Shabbos
+            new ConjunctionHoliday("17 Tamuz no Shabbos", new HHoliday[]{new MonthDayHoliday(HCalendar.HEBREW, "17th day of Tamuz", 4, 17),
+                    new NegationHoliday(new NthDayOfWeek(HCalendar.HEBREW, 7))}),
+            // nidche
+            new ConjunctionHoliday("18 Tamuz Sunday", new HHoliday[]{new MonthDayHoliday(HCalendar.HEBREW, "18th day of Tamuz", 4, 18),
+                    new NthDayOfWeek(HCalendar.HEBREW, 1)})
+    })),
+
+    FAST_AV_9(new UnionHoliday("Fast of 9th Av", new HHoliday[]{
+            // not Shabbos
+            new ConjunctionHoliday("9 Av no Shabbos", new HHoliday[]{new MonthDayHoliday(HCalendar.HEBREW, "Fast of 9th day of Av", 5, 9),
+                    new NegationHoliday(new NthDayOfWeek(HCalendar.HEBREW, 7))}),
+            // nidche
+            new ConjunctionHoliday("9 Av no Shabbos", new HHoliday[]{new MonthDayHoliday(HCalendar.HEBREW, "Fast of 9th day of Av", 5, 10),
+                    new NthDayOfWeek(HCalendar.HEBREW, 1)})
+    })),
     CHAI_ELUL(new MonthDayHoliday(HCalendar.HEBREW, "Chai Elul", 6, 18)),
     ROSH_HASHANA_1(new MonthDayHoliday(HCalendar.HEBREW, "First day Rosh Hashana", 7, 1)),
     ROSH_HASHANA_2(new MonthDayHoliday(HCalendar.HEBREW, "2nd day Rosh Hashana", 7, 2)),
@@ -98,7 +113,7 @@ public enum HJewishHoliday
 
     public static final Set<HJewishHoliday> FAST_DAYS = createCollection(
             new HJewishHoliday[]{
-                    TZOM_GEDALIA, TENTH_TEVES, TAMUZ_17, AV_9
+                    TZOM_GEDALIA, TENTH_TEVES, FAST_TAMUZ_17, FAST_AV_9
             });
 
     public static final Set<HJewishHoliday> YOM_TOV_DAYS = createCollection(

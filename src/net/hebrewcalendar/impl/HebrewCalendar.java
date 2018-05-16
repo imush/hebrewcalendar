@@ -3,6 +3,7 @@ package net.hebrewcalendar.impl;
 import net.hebrewcalendar.HCalendarType;
 import net.hebrewcalendar.HDate;
 import net.hebrewcalendar.HJewishCalendar;
+import net.hebrewcalendar.HJewishHoliday;
 
 /**
  * Created by itz on 7/20/17.
@@ -221,6 +222,22 @@ public class HebrewCalendar
             default:
                 throw new IllegalStateException("Invalid year length " + yearLength + " for year=" + year);
         }
+    }
+
+    @Override
+    public int getSefira(HDate date)
+    {
+        final HDate d0 = convert(date);
+        final int m0 = d0.getMonth();
+        if (m0 > 3 || (m0 == 3 && d0.getDay() > 5) || (m0 == 1 && d0.getDay() < 16))
+            return 0;
+        final HDate pesach;
+        try {
+            pesach = HJewishHoliday.FIRST_DAY_PESACH.getPrevOccurrence(d0, true);
+        } catch(NoSuchHolidayException nshe) {
+            throw new IllegalArgumentException("Cannot find pesach preceding " + date);
+        }
+        return (int)(absDay(d0) - absDay(pesach));
     }
 
     @Override

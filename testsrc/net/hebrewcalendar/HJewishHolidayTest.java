@@ -184,6 +184,86 @@ public class HJewishHolidayTest
     }
 
     @Test
+    public void testShavuos() {
+        try {
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2018, 5, 20),
+                    HJewishHoliday.SHAVUOS.getNextOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2018, 5, 21),
+                    HJewishHoliday.SHAVUOS_2C.getNextOccurrence(H20171231, true));
+        } catch (NoSuchHolidayException nshe) {
+            fail(nshe.toString());
+        }
+        assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.SHAVUOS));
+        assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.SHAVUOS_2C));
+
+        assertTrue(HJewishHoliday.SHAVUOS.applies(true));
+        assertTrue(HJewishHoliday.SHAVUOS.applies(false));
+        assertFalse(HJewishHoliday.SHAVUOS_2C.applies(true));
+        assertTrue(HJewishHoliday.SHAVUOS_2C.applies(false));
+    }
+
+    @Test
+    public void testTamuz12() {
+        try {
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 7, 6),
+                    HJewishHoliday.TAMUZ_12.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2018, 6, 25),
+                    HJewishHoliday.TAMUZ_12.getNextOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2019, 7, 15),
+                    HJewishHoliday.TAMUZ_12.getNextOccurrence(H20181231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2019, 7, 16),
+                    HJewishHoliday.TAMUZ_13.getNextOccurrence(H20181231, true));
+        } catch (NoSuchHolidayException nshe) {
+            fail(nshe.toString());
+        }
+        assertFalse(HJewishHoliday.FAST_DAYS.contains(HJewishHoliday.TAMUZ_12));
+        assertFalse(HJewishHoliday.FAST_DAYS.contains(HJewishHoliday.TAMUZ_13));
+
+        assertTrue(HJewishHoliday.TAMUZ_12.applies(true));
+        assertTrue(HJewishHoliday.TAMUZ_12.applies(false));
+        assertTrue(HJewishHoliday.CHABAD_DAYS.contains(HJewishHoliday.TAMUZ_12));
+        assertTrue(HJewishHoliday.CHABAD_DAYS.contains(HJewishHoliday.TAMUZ_13));
+        assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.TAMUZ_12));
+        assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.TAMUZ_13));
+    }
+
+    @Test
+    public void testTamuz17() {
+        try {
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 7, 11),
+                    HJewishHoliday.FAST_TAMUZ_17.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2018, 7, 1),
+                    HJewishHoliday.FAST_TAMUZ_17.getNextOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2019, 7, 21),
+                    HJewishHoliday.FAST_TAMUZ_17.getNextOccurrence(H20181231, true));
+        } catch (NoSuchHolidayException nshe) {
+            fail(nshe.toString());
+        }
+        assertTrue(HJewishHoliday.FAST_DAYS.contains(HJewishHoliday.FAST_TAMUZ_17));
+
+        assertTrue(HJewishHoliday.FAST_TAMUZ_17.applies(true));
+        assertTrue(HJewishHoliday.FAST_TAMUZ_17.applies(false));
+    }
+
+    @Test
+    public void testAv9() {
+        try {
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 8, 1),
+                    HJewishHoliday.FAST_AV_9.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2018, 7, 22),
+                    HJewishHoliday.FAST_AV_9.getNextOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2019, 8, 11),
+                    HJewishHoliday.FAST_AV_9.getNextOccurrence(H20181231, true));
+        } catch (NoSuchHolidayException nshe) {
+            fail(nshe.toString());
+        }
+        assertTrue(HJewishHoliday.FAST_DAYS.contains(HJewishHoliday.FAST_AV_9));
+
+        assertTrue(HJewishHoliday.FAST_AV_9.applies(true));
+        assertTrue(HJewishHoliday.FAST_AV_9.applies(false));
+    }
+
+    @Test
     public void testPurim()
     {
         try {

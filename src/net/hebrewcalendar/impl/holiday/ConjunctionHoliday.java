@@ -22,6 +22,14 @@ public final class ConjunctionHoliday
     }
 
     /**
+     * @param underlying underlying {@link HHoliday}s
+     */
+    public ConjunctionHoliday(HHoliday[] underlying)
+    {
+        this("ConjunctionHoliday", underlying);
+    }
+
+    /**
      * @param date date to check
      * @return true if all underlying holidays match, false otherwise
      */

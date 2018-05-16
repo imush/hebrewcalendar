@@ -19,7 +19,15 @@ public final class NegationHoliday
     {
         super(referenceHoliday.getCalendar(), name);
         _referenceDay = referenceHoliday;
-     }
+    }
+
+    /**
+     * @param referenceHoliday the referenced {@link HHoliday}
+     */
+    public NegationHoliday(HHoliday referenceHoliday)
+    {
+        this("Not " + referenceHoliday.getName(), referenceHoliday);
+    }
 
     @Override
     public boolean matches(final HDate date)

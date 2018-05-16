@@ -11,7 +11,7 @@ public interface HCalendar
 {
     HCalendar GREGORIAN = GregorianCalendar.INSTANCE;
     HCalendar JULIAN = JulianCalendar.INSTANCE;
-    HCalendar HEBREW = HebrewCalendar.INSTANCE;
+    HJewishCalendar HEBREW = HebrewCalendar.INSTANCE;
 
     /**
      * Tests whether a given year is leap. For common calendars (Julian or Gregorian),
