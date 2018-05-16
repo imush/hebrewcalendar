@@ -95,10 +95,17 @@ public enum HJewishHoliday
                     SIMCHAS_TORAH_C
             }
     );
-    
+
     public static final Set<HJewishHoliday> FAST_DAYS = createCollection(
             new HJewishHoliday[]{
                     TZOM_GEDALIA, TENTH_TEVES, TAMUZ_17, AV_9
+            });
+
+    public static final Set<HJewishHoliday> YOM_TOV_DAYS = createCollection(
+            new HJewishHoliday[]{
+                    FIRST_DAY_PESACH, SECOND_DAY_PESACH_C, SEVENTH_DAY_PESACH, LAST_DAY_PESACH_C,
+                    SHAVUOS, SHAVUOS_2C, ROSH_HASHANA_1, ROSH_HASHANA_2, YOM_KIPPUR,
+                    FIRST_DAY_SUKKOS, SECOND_DAY_SUKKOS_C, SIMCHAS_TORAH_I, SIMCHAS_TORAH_C, SHMINI_ATZERES_C
             });
 
     public static final Set<HJewishHoliday> CHABAD_DAYS = createCollection(
@@ -151,6 +158,6 @@ public enum HJewishHoliday
      * @return whether the given holiday applies to local calendar.
      */
     public final boolean applies(boolean inIsrael) {
-        return inIsrael ? !CHUTZ_LAARETZ_SPECIFIC.contains(this) : ISRAEL_SPECIFIC_DAYS.contains(this);
+        return inIsrael ? !CHUTZ_LAARETZ_SPECIFIC.contains(this) : !ISRAEL_SPECIFIC_DAYS.contains(this);
     }
 }
