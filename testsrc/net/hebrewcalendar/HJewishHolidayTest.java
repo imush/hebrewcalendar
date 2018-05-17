@@ -264,6 +264,131 @@ public class HJewishHolidayTest
     }
 
     @Test
+    public void testRoshHashana() {
+        try {
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 9, 21),
+                    HJewishHoliday.ROSH_HASHANA_1.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 9, 22),
+                    HJewishHoliday.ROSH_HASHANA_2.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2018, 9, 10),
+                    HJewishHoliday.ROSH_HASHANA_1.getNextOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2018, 9, 11),
+                    HJewishHoliday.ROSH_HASHANA_2.getNextOccurrence(H20171231, true));
+            assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.ROSH_HASHANA_1));
+            assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.ROSH_HASHANA_2));
+            assertFalse(HJewishHoliday.CHUTZ_LAARETZ_SPECIFIC.contains(HJewishHoliday.ROSH_HASHANA_1));
+            assertFalse(HJewishHoliday.CHUTZ_LAARETZ_SPECIFIC.contains(HJewishHoliday.ROSH_HASHANA_2));
+        } catch (NoSuchHolidayException e) {
+            fail(e.toString());
+        }
+    }
+
+    @Test
+    public void testTzomGedalia() {
+        try {
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 9, 23),
+                    HJewishHoliday.TZOM_GEDALIA.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2018, 9, 12),
+                    HJewishHoliday.TZOM_GEDALIA.getNextOccurrence(H20171231, true));
+            assertTrue(HJewishHoliday.TZOM_GEDALIA.applies(true));
+            assertTrue(HJewishHoliday.TZOM_GEDALIA.applies(false));
+        } catch (NoSuchHolidayException e) {
+            fail(e.toString());
+        }
+    }
+
+    @Test
+    public void testSukkos() {
+        try {
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 10, 5),
+                    HJewishHoliday.FIRST_DAY_SUKKOS.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2018, 9, 24),
+                    HJewishHoliday.FIRST_DAY_SUKKOS.getNextOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 10, 6),
+                    HJewishHoliday.SECOND_DAY_SUKKOS_C.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2018, 9, 25),
+                    HJewishHoliday.SECOND_DAY_SUKKOS_C.getNextOccurrence(H20171231, true));
+            assertFalse(HJewishHoliday.SECOND_DAY_SUKKOS_C.applies(true));
+            assertTrue(HJewishHoliday.SECOND_DAY_SUKKOS_C.applies(false));
+            assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.FIRST_DAY_SUKKOS));
+            assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.SECOND_DAY_SUKKOS_C));
+
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 10, 6),
+                    HJewishHoliday.CHOL_HAMOED_SUKKOS_1I.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 10, 7),
+                    HJewishHoliday.CHOL_HAMOED_SUKKOS_2I.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 10, 8),
+                    HJewishHoliday.CHOL_HAMOED_SUKKOS_3I.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 10, 9),
+                    HJewishHoliday.CHOL_HAMOED_SUKKOS_4I.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 10, 10),
+                    HJewishHoliday.CHOL_HAMOED_SUKKOS_5I.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 10, 7),
+                    HJewishHoliday.CHOL_HAMOED_SUKKOS_1C.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 10, 8),
+                    HJewishHoliday.CHOL_HAMOED_SUKKOS_2C.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 10, 9),
+                    HJewishHoliday.CHOL_HAMOED_SUKKOS_3C.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 10, 10),
+                    HJewishHoliday.CHOL_HAMOED_SUKKOS_4C.getPrevOccurrence(H20171231, true));
+
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 10, 11),
+                    HJewishHoliday.HOSHANA_RABBA.getPrevOccurrence(H20171231, true));
+
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 10, 12),
+                    HJewishHoliday.SHMINI_ATZERES_C.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 10, 13),
+                    HJewishHoliday.SIMCHAS_TORAH_C.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 10, 12),
+                    HJewishHoliday.SIMCHAS_TORAH_I.getPrevOccurrence(H20171231, true));
+
+            assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.SHMINI_ATZERES_C));
+            assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.SIMCHAS_TORAH_I));
+            assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.SIMCHAS_TORAH_C));
+            assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.CHOL_HAMOED_SUKKOS_3C));
+            assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.CHOL_HAMOED_SUKKOS_3I));
+
+            assertFalse(HJewishHoliday.SIMCHAS_TORAH_C.applies(true));
+            assertTrue(HJewishHoliday.SIMCHAS_TORAH_I.applies(true));
+            assertFalse(HJewishHoliday.SIMCHAS_TORAH_I.applies(false));
+            assertTrue(HJewishHoliday.SIMCHAS_TORAH_C.applies(false));
+            assertTrue(HJewishHoliday.SHMINI_ATZERES_C.applies(false));
+
+        } catch (NoSuchHolidayException e) {
+            fail(e.toString());
+        }
+    }
+
+    @Test
+    public void testChanukkah() {
+        try {
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 12, 13),
+                    HJewishHoliday.FIRST_DAY_CHANUKAH.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 12, 14),
+                    HJewishHoliday.SECOND_DAY_CHANUKAH.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 12, 15),
+                    HJewishHoliday.THIRD_DAY_CHANUKAH.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 12, 16),
+                    HJewishHoliday.FOURTH_DAY_CHANUKAH.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 12, 17),
+                    HJewishHoliday.FIFTH_DAY_CHANUKAH.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 12, 18),
+                    HJewishHoliday.SIXTH_DAY_CHANUKAH.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 12, 19),
+                    HJewishHoliday.SEVENTH_DAY_CHANUKAH.getPrevOccurrence(H20171231, true));
+            assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 12, 20),
+                    HJewishHoliday.EIGHTH_DAY_CHANUKAH.getPrevOccurrence(H20171231, true));
+        } catch (NoSuchHolidayException e) {
+            fail(e.toString());
+        }
+        assertTrue(HJewishHoliday.FIRST_DAY_CHANUKAH.applies(true));
+        assertTrue(HJewishHoliday.EIGHTH_DAY_CHANUKAH.applies(false));
+
+        assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.FIRST_DAY_CHANUKAH));
+        assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.SEVENTH_DAY_CHANUKAH));
+    }
+
+    @Test
     public void testPurim()
     {
         try {
