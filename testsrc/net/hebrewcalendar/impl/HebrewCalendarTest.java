@@ -129,9 +129,9 @@ public class HebrewCalendarTest
     @Test
     public void stringRepresentation()
     {
-        assertEquals("0001-01-01H", hc.fromYMD(1, HebrewCalendar.NISAN,1).toString());
-        assertEquals("5777-07-09H", hc.fromYMD(5777, HebrewCalendar.TISHREI,9).toString());
-        assertEquals("5711-11-10H", hc.fromYMD(5711, HebrewCalendar.SHVAT,10).toString());
+        assertEquals("0001-01-01H", hc.fromYMD(1, HebrewCalendar.JewishMonth.NISAN.getOrdinalNumber(),1).toString());
+        assertEquals("5777-07-09H", hc.fromYMD(5777, HebrewCalendar.JewishMonth.TISHREI.getOrdinalNumber(),9).toString());
+        assertEquals("5711-11-10H", hc.fromYMD(5711, HebrewCalendar.JewishMonth.SHVAT.getOrdinalNumber(),10).toString());
     }
 
     @Test

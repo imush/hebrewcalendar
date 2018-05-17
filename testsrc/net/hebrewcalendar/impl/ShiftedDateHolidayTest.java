@@ -25,7 +25,7 @@ public class ShiftedDateHolidayTest
         HHoliday fridayAfterThanksgiving = new ShiftedDateHoliday(
                 "Friday after Thanksgiving", thanksgiving, 1);
         HDate d0 = HCalendar.GREGORIAN.fromYMD(2016, 11, 25);
-        HDate d1 = HCalendar.GREGORIAN.fromYMD(2017, 12, 1);
+        HDate d1 = HCalendar.GREGORIAN.fromYMD(2017, 11, 24);
 
         assertTrue(fridayAfterThanksgiving.matches(d0));
         assertTrue(fridayAfterThanksgiving.matches(d1));

@@ -5,6 +5,8 @@ import net.hebrewcalendar.HDate;
 import net.hebrewcalendar.HJewishCalendar;
 import net.hebrewcalendar.HJewishHoliday;
 
+import static net.hebrewcalendar.impl.HebrewMonth.NISAN;
+
 /**
  * Created by itz on 7/20/17.
  */
@@ -12,20 +14,6 @@ public class HebrewCalendar
     extends AbstractCalendar
     implements HJewishCalendar
 {
-    public static final int NISAN = 1;
-    public static final int IYAR = 2;
-    public static final int SIVAN = 3;
-    public static final int TAMUZ = 4;
-    public static final int AV = 5;
-    public static final int ELUL = 6;
-    public static final int TISHREI = 7;
-    public static final int CHESHVAN = 8;
-    public static final int KISLEV = 9;
-    public static final int TEVETH = 10;
-    public static final int SHVAT = 11;
-    public static final int ADAR = 12;
-    public static final int ADAR_2 = 13;
-
     public static final HebrewCalendar INSTANCE = new HebrewCalendar();
 
     private HebrewCalendar() {}
@@ -56,7 +44,7 @@ public class HebrewCalendar
     @Override
     public int monthLength(int year, int month)
     {
-        switch(month) {
+        switch(JewishMonth.get(month)) {
             case NISAN:
             case SIVAN:
             case AV:

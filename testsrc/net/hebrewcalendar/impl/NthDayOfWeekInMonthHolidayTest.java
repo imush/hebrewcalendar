@@ -40,7 +40,7 @@ public class NthDayOfWeekInMonthHolidayTest
     public void getN()
             throws Exception
     {
-        assertEquals(-1, thanksgiving.getN());
+        assertEquals(4, thanksgiving.getN());
         assertEquals(-1, memorialDay.getN());
         assertEquals(1, laborDay.getN());
     }
