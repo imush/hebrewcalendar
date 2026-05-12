@@ -1,0 +1,11 @@
+# Maven build output
+target/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# macOS
+.DS_Store
