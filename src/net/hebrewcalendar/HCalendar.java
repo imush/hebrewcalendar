@@ -25,7 +25,7 @@ public interface HCalendar
     /**
      * Length of the given month in the given year
      * @param year year
-     * @param month month number (see {@link HebrewCalendar} for Hebrew month numberings).
+     * @param month month number (see {@link HebrewMonth} for Hebrew month numberings).
      * @return the length of month in days
      */
     int monthLength(int year, int month);

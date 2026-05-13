@@ -22,7 +22,7 @@ public interface HHoliday
      * @param date reference date to search from
      * @param strict when true, will search strictly before date; when false, the
      *               arg date may also be returned.
-     * @return next {@link HDate} on or after date with the same calendar on which this
+     * @return previous {@link HDate} on or before date with the same calendar on which this
      * @throws NoSuchHolidayException if not found within 3 years.
      * holiday occurs.
      */

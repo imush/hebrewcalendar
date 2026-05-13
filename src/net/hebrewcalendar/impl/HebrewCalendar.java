@@ -4,8 +4,9 @@ import net.hebrewcalendar.HCalendarType;
 import net.hebrewcalendar.HDate;
 import net.hebrewcalendar.HJewishCalendar;
 import net.hebrewcalendar.HJewishHoliday;
+import net.hebrewcalendar.YearCheshvanKislevType;
 
-import static net.hebrewcalendar.impl.HebrewMonth.NISAN;
+import net.hebrewcalendar.HebrewMonth;
 
 /**
  * Created by itz on 7/20/17.
@@ -27,8 +28,8 @@ public class HebrewCalendar
         true, false, false,
         true, false };
 
-    private static final HTime FIRST_MOLAD = new HTime(2, 5, 204);
-    private static final HTime ONE_MONTH = new HTime(29, 12, 793);
+    private static final HebrewTime FIRST_MOLAD = new HebrewTime(2, 5, 204);
+    private static final HebrewTime ONE_MONTH = new HebrewTime(29, 12, 793);
 
     @Override
     public boolean isLeap(int year)
@@ -44,7 +45,7 @@ public class HebrewCalendar
     @Override
     public int monthLength(int year, int month)
     {
-        switch(JewishMonth.get(month)) {
+        switch(HebrewMonth.get(month)) {
             case NISAN:
             case SIVAN:
             case AV:
@@ -62,9 +63,9 @@ public class HebrewCalendar
             case ADAR:
                 return isLeap(year) ? 30 : 29;
             case CHESHVAN:
-                return getYearType(year) == YearType.FULL ? 30 : 29;
+                return getYearType(year) == YearCheshvanKislevType.FULL ? 30 : 29;
             case KISLEV:
-                return getYearType(year) == YearType.SHORT ? 29 : 30;
+                return getYearType(year) == YearCheshvanKislevType.SHORT ? 29 : 30;
             default:
                 throw new IllegalStateException("Bad month " + month);
         }
@@ -76,7 +77,7 @@ public class HebrewCalendar
      * @param month month
      * @return the {@link HTime} in abs days, hoursa nd parts from "beginning".
      */
-    HTime molad(int year, int month)
+    HebrewTime molad(int year, int month)
     {
         final int cycles = (year-1)/19;
         // 0th year did not exist; it would be leap
@@ -94,7 +95,7 @@ public class HebrewCalendar
 
     long absDayRoshHashana(int year)
     {
-        HTime moladTime = molad(year, 7);
+        HebrewTime moladTime = molad(year, 7);
 
         long candidate = moladTime.getDay();
 
@@ -186,7 +187,7 @@ public class HebrewCalendar
     {
         final int monthsIn19 = 12*19+7;
 
-        HTime cycle19 = ONE_MONTH.times(monthsIn19);
+        HebrewTime cycle19 = ONE_MONTH.times(monthsIn19);
 
         int cyclesToSkip = (int)(absDayFromBeginning/(cycle19.getDay() + 1));
 
@@ -195,7 +196,7 @@ public class HebrewCalendar
     }
 
     @Override
-    public YearType getYearType(int year)
+    public YearCheshvanKislevType getYearType(int year)
     {
         final long rosh0 = absDay(new HDateImpl(this, year, 7, 1));
         final long rosh1 = absDay(new HDateImpl(this, year+1, 7, 1));
@@ -204,9 +205,9 @@ public class HebrewCalendar
         int excessLength = isLeap(year) ? yearLength - 383 : yearLength - 353;
 
         switch(excessLength) {
-            case 0: return YearType.SHORT;
-            case 1: return YearType.NORMAL;
-            case 2: return YearType.FULL;
+            case 0: return YearCheshvanKislevType.SHORT;
+            case 1: return YearCheshvanKislevType.NORMAL;
+            case 2: return YearCheshvanKislevType.FULL;
             default:
                 throw new IllegalStateException("Invalid year length " + yearLength + " for year=" + year);
         }

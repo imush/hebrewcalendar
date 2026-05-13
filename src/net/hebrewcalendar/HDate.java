@@ -1,7 +1,5 @@
 package net.hebrewcalendar;
 
-import net.hebrewcalendar.impl.HebrewDate;
-
 /**
  * Created by itz on 7/20/17.
  */
@@ -14,7 +12,7 @@ public interface HDate
     int getYear();
 
     /**
-     * @return the month. For Hebrew month numbering, see {@link HebrewDate}.
+     * @return the month. For Hebrew month numbering, see {@link net.hebrewcalendar.HebrewMonth}.
      */
     int getMonth();
 

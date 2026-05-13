@@ -96,7 +96,7 @@ public enum HJewishHoliday
     public static final Set<HJewishHoliday> ISRAEL_SPECIFIC_DAYS = createCollection(
             new HJewishHoliday[]{
                     CHOL_HAMOED_PESACH_1I, CHOL_HAMOED_PESACH_2I, CHOL_HAMOED_PESACH_3I, CHOL_HAMOED_PESACH_4I,
-                    CHOL_HAMOED_PESACH_5I, CHOL_HAMOED_SUKKOS_1I, CHOL_HAMOED_PESACH_2I, CHOL_HAMOED_SUKKOS_3C,
+                    CHOL_HAMOED_PESACH_5I, CHOL_HAMOED_SUKKOS_1I, CHOL_HAMOED_SUKKOS_2I, CHOL_HAMOED_SUKKOS_3I,
                     CHOL_HAMOED_SUKKOS_4I, CHOL_HAMOED_SUKKOS_5I, SIMCHAS_TORAH_I
             }
     );
@@ -107,7 +107,7 @@ public enum HJewishHoliday
                     CHOL_HAMOED_PESACH_1C, CHOL_HAMOED_PESACH_2C, CHOL_HAMOED_PESACH_3C, CHOL_HAMOED_PESACH_4C,
                     SHAVUOS_2C, SECOND_DAY_SUKKOS_C,
                     CHOL_HAMOED_SUKKOS_1C, CHOL_HAMOED_SUKKOS_2C, CHOL_HAMOED_SUKKOS_3C, CHOL_HAMOED_SUKKOS_4C,
-                    SIMCHAS_TORAH_C
+                    SHMINI_ATZERES_C, SIMCHAS_TORAH_C
             }
     );
 
@@ -168,7 +168,7 @@ public enum HJewishHoliday
     }
 
     /**
-     * Determine if the special day applies in given localtion
+     * Determine if the special day applies in given location
      * @param inIsrael true for Eretz Israel, false outside
      * @return whether the given holiday applies to local calendar.
      */

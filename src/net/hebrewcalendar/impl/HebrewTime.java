@@ -3,20 +3,20 @@ package net.hebrewcalendar.impl;
 /**
  * Created by itz on 7/20/17.
  */
-final class HTime
+final class HebrewTime
 {
     private long _day;
     private int _hour;
     private int _part;
 
-    HTime(long day, int hour, int part)
+    HebrewTime(long day, int hour, int part)
     {
         _day = day;
         _hour = hour;
         _part = part;
     }
 
-    private HTime normalize(final long day, final int hour, final int part)
+    private HebrewTime normalize(final long day, final int hour, final int part)
     {
         long d = day;
         int h = hour;
@@ -36,21 +36,21 @@ final class HTime
             d = d - Math.abs(h)/24 -1;
             h = 24 - Math.abs(h) %24;
         }
-        return new HTime(d, h, p);
+        return new HebrewTime(d, h, p);
     }
 
-    HTime add(HTime toAdd)
+    HebrewTime add(HebrewTime toAdd)
     {
         return normalize(_day + toAdd._day, _hour + toAdd._hour, _part + toAdd._part);
     }
 
-    HTime subtract(HTime toSubtract)
+    HebrewTime subtract(HebrewTime toSubtract)
     {
 
         return normalize(_day - toSubtract._day, _hour - toSubtract._hour, _part - toSubtract._part);
     }
 
-    HTime times(int n)
+    HebrewTime times(int n)
     {
         return normalize(_day*n, _hour*n, _part*n);
     }
@@ -70,16 +70,16 @@ final class HTime
     @Override
     public boolean equals(Object o)
     {
-        if (!(o instanceof HTime))
+        if (!(o instanceof HebrewTime))
             return false;
-        HTime htime = (HTime)o;
+        HebrewTime htime = (HebrewTime)o;
         return htime._day == _day && htime._hour == _hour && htime._part == _part;
     }
 
     @Override
     public String toString()
     {
-        return "HTime[d=" + _day+
+        return "HebrewTime[d=" + _day+
                 ",h=" + _hour +
                 ",p=" + _part + "]";
     }

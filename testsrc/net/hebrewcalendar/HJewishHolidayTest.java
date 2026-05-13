@@ -352,6 +352,7 @@ public class HJewishHolidayTest
             assertTrue(HJewishHoliday.SIMCHAS_TORAH_I.applies(true));
             assertFalse(HJewishHoliday.SIMCHAS_TORAH_I.applies(false));
             assertTrue(HJewishHoliday.SIMCHAS_TORAH_C.applies(false));
+            assertFalse(HJewishHoliday.SHMINI_ATZERES_C.applies(true));
             assertTrue(HJewishHoliday.SHMINI_ATZERES_C.applies(false));
 
         } catch (NoSuchHolidayException e) {
