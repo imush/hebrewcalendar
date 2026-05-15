@@ -1,8 +1,6 @@
 package net.hebrewcalendar;
 
-/**
- * Created by itz on 7/20/17.
- */
+/** Identifies the calendar system of an {@link HDate}. */
 public enum HCalendarType
 {
     GREGORIAN, JULIAN, HEBREW

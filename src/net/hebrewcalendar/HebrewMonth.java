@@ -1,5 +1,9 @@
 package net.hebrewcalendar;
 
+/**
+ * The months of the Hebrew calendar, numbered in their biblical order (Nisan = 1 … Adar II = 13).
+ * Note that the calendar year begins in Tishrei (7), so months 7–13 precede months 1–6 chronologically.
+ */
 public enum HebrewMonth {
     NISAN(1), IYAR(2), SIVAN(3), TAMUZ(4), AV(5), ELUL(6), TISHREI(7), CHESHVAN(8),
     KISLEV(9), TEVETH(10), SHVAT(11), ADAR(12), ADAR_2(13);

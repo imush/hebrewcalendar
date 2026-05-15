@@ -1,7 +1,8 @@
 package net.hebrewcalendar;
 
 /**
- * Created by itz on 7/20/17.
+ * Extension of {@link HCalendar} with Hebrew-calendar-specific operations
+ * such as sefira counting and year-type classification.
  */
 public interface HJewishCalendar
     extends HCalendar

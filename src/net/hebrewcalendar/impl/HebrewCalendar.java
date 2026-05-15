@@ -9,7 +9,8 @@ import net.hebrewcalendar.YearCheshvanKislevType;
 import net.hebrewcalendar.HebrewMonth;
 
 /**
- * Created by itz on 7/20/17.
+ * Implementation of the Hebrew (Jewish) calendar.
+ * Singleton access via {@link #INSTANCE}; use through the {@link net.hebrewcalendar.HCalendar#HEBREW} constant.
  */
 public class HebrewCalendar
     extends AbstractCalendar
@@ -39,7 +40,7 @@ public class HebrewCalendar
 
     /**
      * @param year year
-     * @param month month number (see {@link HebrewCalendar} for Hebrew month numberings).
+     * @param month month number (see {@link net.hebrewcalendar.HebrewMonth} for Hebrew month numberings).
      * @return length of Jewish month, 29 or 30 days.
      */
     @Override
@@ -72,10 +73,10 @@ public class HebrewCalendar
     }
 
     /**
-     * Returns absolute {@link HTime} for given molad
+     * Returns the molad (conjunction) time for the given year and month.
      * @param year year
      * @param month month
-     * @return the {@link HTime} in abs days, hoursa nd parts from "beginning".
+     * @return the {@link HebrewTime} in absolute days, hours and parts from the epoch.
      */
     HebrewTime molad(int year, int month)
     {

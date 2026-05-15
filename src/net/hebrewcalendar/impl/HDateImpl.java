@@ -5,7 +5,8 @@ import net.hebrewcalendar.HCalendarType;
 import net.hebrewcalendar.HDate;
 
 /**
- * Created by itz on 7/19/17.
+ * Concrete implementation of {@link net.hebrewcalendar.HDate}.
+ * Instances are created by {@link AbstractCalendar#fromYMD} and conversion methods; not intended for direct construction.
  */
 public class HDateImpl
     implements HDate
@@ -123,7 +124,7 @@ public class HDateImpl
     }
 
     /**
-     * Return chronological order of month in year. This helps deal with Hebrew year which starts wuth
+     * Return chronological order of month in year. This helps deal with Hebrew year which starts with
      * month 7 and runs through 12 or 13, and then ends with 1-6. Aside from biblical considerations, it
      * is also convenient because the leap month is added as the 13th month before Nisan (1st month).
      * @param m month

@@ -5,7 +5,8 @@ import net.hebrewcalendar.impl.JulianCalendar;
 import net.hebrewcalendar.impl.GregorianCalendar;
 
 /**
- * Created by itz on 7/20/17.
+ * A calendar system capable of creating and manipulating {@link HDate} objects.
+ * Three instances are provided as constants: {@link #GREGORIAN}, {@link #JULIAN}, and {@link #HEBREW}.
  */
 public interface HCalendar
 {

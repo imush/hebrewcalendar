@@ -1,7 +1,8 @@
 package net.hebrewcalendar;
 
 /**
- * Created by itz on 7/20/17.
+ * An immutable date in a specific calendar system.
+ * Obtain instances via {@link HCalendar#fromYMD} or conversion methods.
  */
 public interface HDate
     extends Comparable<HDate>
@@ -53,13 +54,13 @@ public interface HDate
 
     /**
      * Compare dates and return true if this {@link HDate} is strictly before the arg one
-     * @return true when thios date is strictly before otherDate
+     * @return true when this date is strictly before otherDate
      */
     boolean before(HDate otherDate);
 
     /**
      * Compare dates and return true if this {@link HDate} is strictly after the arg one
-     * @return true when thios date is strictly after otherDate
+     * @return true when this date is strictly after otherDate
      */
     boolean after(HDate otherDate);
 
