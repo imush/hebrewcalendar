@@ -44,8 +44,8 @@ public class HJewishHolidayTest
         } catch (NoSuchHolidayException nshe) {
             fail(nshe.toString());
         }
-        assertTrue(HJewishHoliday.CHABAD_DAYS.contains(HJewishHoliday.NISAN_11));
-        assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.NISAN_11));
+        assertTrue(HJewishHoliday.NISAN_11.isChabad());
+        assertFalse(HJewishHoliday.NISAN_11.isYomTov());
     }
 
     @Test
@@ -59,8 +59,8 @@ public class HJewishHolidayTest
         } catch (NoSuchHolidayException nshe) {
             fail(nshe.toString());
         }
-        assertFalse(HJewishHoliday.CHABAD_DAYS.contains(HJewishHoliday.EREV_PESACH));
-        assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.EREV_PESACH));
+        assertFalse(HJewishHoliday.EREV_PESACH.isChabad());
+        assertFalse(HJewishHoliday.EREV_PESACH.isYomTov());
     }
 
     @Test
@@ -76,7 +76,7 @@ public class HJewishHolidayTest
         }
         assertTrue(HJewishHoliday.FIRST_DAY_PESACH.applies(true));
         assertTrue(HJewishHoliday.FIRST_DAY_PESACH.applies(false));
-        assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.FIRST_DAY_PESACH));
+        assertTrue(HJewishHoliday.FIRST_DAY_PESACH.isYomTov());
     }
 
     @Test
@@ -94,11 +94,11 @@ public class HJewishHolidayTest
         }
         assertFalse(HJewishHoliday.SECOND_DAY_PESACH_C.applies(true));
         assertTrue(HJewishHoliday.SECOND_DAY_PESACH_C.applies(false));
-        assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.SECOND_DAY_PESACH_C));
+        assertTrue(HJewishHoliday.SECOND_DAY_PESACH_C.isYomTov());
 
         assertTrue(HJewishHoliday.CHOL_HAMOED_PESACH_1I.applies(true));
         assertFalse(HJewishHoliday.CHOL_HAMOED_PESACH_1I.applies(false));
-        assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.CHOL_HAMOED_PESACH_1I));
+        assertFalse(HJewishHoliday.CHOL_HAMOED_PESACH_1I.isYomTov());
     }
 
     @Test
@@ -128,7 +128,7 @@ public class HJewishHolidayTest
         }
         assertFalse(HJewishHoliday.SECOND_DAY_PESACH_C.applies(true));
         assertTrue(HJewishHoliday.SECOND_DAY_PESACH_C.applies(false));
-        assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.SECOND_DAY_PESACH_C));
+        assertTrue(HJewishHoliday.SECOND_DAY_PESACH_C.isYomTov());
 
         assertTrue(HJewishHoliday.CHOL_HAMOED_PESACH_1I.applies(true));
         assertTrue(HJewishHoliday.CHOL_HAMOED_PESACH_2I.applies(true));
@@ -140,11 +140,11 @@ public class HJewishHolidayTest
         assertFalse(HJewishHoliday.CHOL_HAMOED_PESACH_3I.applies(false));
         assertFalse(HJewishHoliday.CHOL_HAMOED_PESACH_4I.applies(false));
         assertFalse(HJewishHoliday.CHOL_HAMOED_PESACH_5I.applies(false));
-        assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.CHOL_HAMOED_PESACH_1I));
-        assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.CHOL_HAMOED_PESACH_2I));
-        assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.CHOL_HAMOED_PESACH_3I));
-        assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.CHOL_HAMOED_PESACH_4I));
-        assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.CHOL_HAMOED_PESACH_5I));
+        assertFalse(HJewishHoliday.CHOL_HAMOED_PESACH_1I.isYomTov());
+        assertFalse(HJewishHoliday.CHOL_HAMOED_PESACH_2I.isYomTov());
+        assertFalse(HJewishHoliday.CHOL_HAMOED_PESACH_3I.isYomTov());
+        assertFalse(HJewishHoliday.CHOL_HAMOED_PESACH_4I.isYomTov());
+        assertFalse(HJewishHoliday.CHOL_HAMOED_PESACH_5I.isYomTov());
 
         assertFalse(HJewishHoliday.CHOL_HAMOED_PESACH_1C.applies(true));
         assertFalse(HJewishHoliday.CHOL_HAMOED_PESACH_2C.applies(true));
@@ -154,10 +154,10 @@ public class HJewishHolidayTest
         assertTrue(HJewishHoliday.CHOL_HAMOED_PESACH_2C.applies(false));
         assertTrue(HJewishHoliday.CHOL_HAMOED_PESACH_3C.applies(false));
         assertTrue(HJewishHoliday.CHOL_HAMOED_PESACH_4C.applies(false));
-        assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.CHOL_HAMOED_PESACH_1C));
-        assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.CHOL_HAMOED_PESACH_2C));
-        assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.CHOL_HAMOED_PESACH_3C));
-        assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.CHOL_HAMOED_PESACH_4C));
+        assertFalse(HJewishHoliday.CHOL_HAMOED_PESACH_1C.isYomTov());
+        assertFalse(HJewishHoliday.CHOL_HAMOED_PESACH_2C.isYomTov());
+        assertFalse(HJewishHoliday.CHOL_HAMOED_PESACH_3C.isYomTov());
+        assertFalse(HJewishHoliday.CHOL_HAMOED_PESACH_4C.isYomTov());
     }
 
     @Test
@@ -174,8 +174,8 @@ public class HJewishHolidayTest
         } catch (NoSuchHolidayException nshe) {
             fail(nshe.toString());
         }
-        assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.SEVENTH_DAY_PESACH));
-        assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.LAST_DAY_PESACH_C));
+        assertTrue(HJewishHoliday.SEVENTH_DAY_PESACH.isYomTov());
+        assertTrue(HJewishHoliday.LAST_DAY_PESACH_C.isYomTov());
 
         assertTrue(HJewishHoliday.SEVENTH_DAY_PESACH.applies(true));
         assertTrue(HJewishHoliday.SEVENTH_DAY_PESACH.applies(false));
@@ -193,8 +193,8 @@ public class HJewishHolidayTest
         } catch (NoSuchHolidayException nshe) {
             fail(nshe.toString());
         }
-        assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.SHAVUOS));
-        assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.SHAVUOS_2C));
+        assertTrue(HJewishHoliday.SHAVUOS.isYomTov());
+        assertTrue(HJewishHoliday.SHAVUOS_2C.isYomTov());
 
         assertTrue(HJewishHoliday.SHAVUOS.applies(true));
         assertTrue(HJewishHoliday.SHAVUOS.applies(false));
@@ -216,15 +216,15 @@ public class HJewishHolidayTest
         } catch (NoSuchHolidayException nshe) {
             fail(nshe.toString());
         }
-        assertFalse(HJewishHoliday.FAST_DAYS.contains(HJewishHoliday.TAMUZ_12));
-        assertFalse(HJewishHoliday.FAST_DAYS.contains(HJewishHoliday.TAMUZ_13));
+        assertFalse(HJewishHoliday.TAMUZ_12.isFast());
+        assertFalse(HJewishHoliday.TAMUZ_13.isFast());
 
         assertTrue(HJewishHoliday.TAMUZ_12.applies(true));
         assertTrue(HJewishHoliday.TAMUZ_12.applies(false));
-        assertTrue(HJewishHoliday.CHABAD_DAYS.contains(HJewishHoliday.TAMUZ_12));
-        assertTrue(HJewishHoliday.CHABAD_DAYS.contains(HJewishHoliday.TAMUZ_13));
-        assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.TAMUZ_12));
-        assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.TAMUZ_13));
+        assertTrue(HJewishHoliday.TAMUZ_12.isChabad());
+        assertTrue(HJewishHoliday.TAMUZ_13.isChabad());
+        assertFalse(HJewishHoliday.TAMUZ_12.isYomTov());
+        assertFalse(HJewishHoliday.TAMUZ_13.isYomTov());
     }
 
     @Test
@@ -239,7 +239,7 @@ public class HJewishHolidayTest
         } catch (NoSuchHolidayException nshe) {
             fail(nshe.toString());
         }
-        assertTrue(HJewishHoliday.FAST_DAYS.contains(HJewishHoliday.FAST_TAMUZ_17));
+        assertTrue(HJewishHoliday.FAST_TAMUZ_17.isFast());
 
         assertTrue(HJewishHoliday.FAST_TAMUZ_17.applies(true));
         assertTrue(HJewishHoliday.FAST_TAMUZ_17.applies(false));
@@ -257,7 +257,7 @@ public class HJewishHolidayTest
         } catch (NoSuchHolidayException nshe) {
             fail(nshe.toString());
         }
-        assertTrue(HJewishHoliday.FAST_DAYS.contains(HJewishHoliday.FAST_AV_9));
+        assertTrue(HJewishHoliday.FAST_AV_9.isFast());
 
         assertTrue(HJewishHoliday.FAST_AV_9.applies(true));
         assertTrue(HJewishHoliday.FAST_AV_9.applies(false));
@@ -274,10 +274,10 @@ public class HJewishHolidayTest
                     HJewishHoliday.ROSH_HASHANA_1.getNextOccurrence(H20171231, true));
             assertEquals(HCalendar.GREGORIAN.fromYMD(2018, 9, 11),
                     HJewishHoliday.ROSH_HASHANA_2.getNextOccurrence(H20171231, true));
-            assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.ROSH_HASHANA_1));
-            assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.ROSH_HASHANA_2));
-            assertFalse(HJewishHoliday.CHUTZ_LAARETZ_SPECIFIC.contains(HJewishHoliday.ROSH_HASHANA_1));
-            assertFalse(HJewishHoliday.CHUTZ_LAARETZ_SPECIFIC.contains(HJewishHoliday.ROSH_HASHANA_2));
+            assertTrue(HJewishHoliday.ROSH_HASHANA_1.isYomTov());
+            assertTrue(HJewishHoliday.ROSH_HASHANA_2.isYomTov());
+            assertTrue(HJewishHoliday.ROSH_HASHANA_1.applies(true));
+            assertTrue(HJewishHoliday.ROSH_HASHANA_2.applies(true));
         } catch (NoSuchHolidayException e) {
             fail(e.toString());
         }
@@ -310,8 +310,8 @@ public class HJewishHolidayTest
                     HJewishHoliday.SECOND_DAY_SUKKOS_C.getNextOccurrence(H20171231, true));
             assertFalse(HJewishHoliday.SECOND_DAY_SUKKOS_C.applies(true));
             assertTrue(HJewishHoliday.SECOND_DAY_SUKKOS_C.applies(false));
-            assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.FIRST_DAY_SUKKOS));
-            assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.SECOND_DAY_SUKKOS_C));
+            assertTrue(HJewishHoliday.FIRST_DAY_SUKKOS.isYomTov());
+            assertTrue(HJewishHoliday.SECOND_DAY_SUKKOS_C.isYomTov());
 
             assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 10, 6),
                     HJewishHoliday.CHOL_HAMOED_SUKKOS_1I.getPrevOccurrence(H20171231, true));
@@ -342,11 +342,11 @@ public class HJewishHolidayTest
             assertEquals(HCalendar.GREGORIAN.fromYMD(2017, 10, 12),
                     HJewishHoliday.SIMCHAS_TORAH_I.getPrevOccurrence(H20171231, true));
 
-            assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.SHMINI_ATZERES_C));
-            assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.SIMCHAS_TORAH_I));
-            assertTrue(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.SIMCHAS_TORAH_C));
-            assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.CHOL_HAMOED_SUKKOS_3C));
-            assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.CHOL_HAMOED_SUKKOS_3I));
+            assertTrue(HJewishHoliday.SHMINI_ATZERES_C.isYomTov());
+            assertTrue(HJewishHoliday.SIMCHAS_TORAH_I.isYomTov());
+            assertTrue(HJewishHoliday.SIMCHAS_TORAH_C.isYomTov());
+            assertFalse(HJewishHoliday.CHOL_HAMOED_SUKKOS_3C.isYomTov());
+            assertFalse(HJewishHoliday.CHOL_HAMOED_SUKKOS_3I.isYomTov());
 
             assertFalse(HJewishHoliday.SIMCHAS_TORAH_C.applies(true));
             assertTrue(HJewishHoliday.SIMCHAS_TORAH_I.applies(true));
@@ -385,8 +385,8 @@ public class HJewishHolidayTest
         assertTrue(HJewishHoliday.FIRST_DAY_CHANUKAH.applies(true));
         assertTrue(HJewishHoliday.EIGHTH_DAY_CHANUKAH.applies(false));
 
-        assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.FIRST_DAY_CHANUKAH));
-        assertFalse(HJewishHoliday.YOM_TOV_DAYS.contains(HJewishHoliday.SEVENTH_DAY_CHANUKAH));
+        assertFalse(HJewishHoliday.FIRST_DAY_CHANUKAH.isYomTov());
+        assertFalse(HJewishHoliday.SEVENTH_DAY_CHANUKAH.isYomTov());
     }
 
     @Test

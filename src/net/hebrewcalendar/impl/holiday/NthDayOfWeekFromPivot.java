@@ -5,8 +5,7 @@ import net.hebrewcalendar.HCalendar;
 import net.hebrewcalendar.HHoliday;
 
 /**
- * Represents a holiday that occurs yearly on the same date.
- * It is initialized with month and day.
+ * Represents a special day that occurs on Nth day from another special day (holiday).
  */
 public class NthDayOfWeekFromPivot
     extends AbstractHoliday

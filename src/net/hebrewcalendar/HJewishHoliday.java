@@ -24,6 +24,7 @@ public enum HJewishHoliday
     CHOL_HAMOED_PESACH_3C(new MonthDayHoliday(HCalendar.HEBREW, "Chol Hamoed Pesach", 1, 19)),
     CHOL_HAMOED_PESACH_4C(new MonthDayHoliday(HCalendar.HEBREW, "Chol Hamoed Pesach", 1, 20)),
     SHABBOS_HAGODOL(new NthDayOfWeekFromPivot(HCalendar.HEBREW, "Shabbos Hagodol", FIRST_DAY_PESACH, 7, -1, false)),
+    PESACH_SHENI(new MonthDayHoliday(HCalendar.HEBREW, "Pesach Sheni", 2, 14)),
     LAG_BAOMER(new MonthDayHoliday(HCalendar.HEBREW, "Lag Baomer", 2, 18)),
     SHAVUOS(new MonthDayHoliday(HCalendar.HEBREW, "Shavuos", 3, 6)),
     SHAVUOS_2C(new MonthDayHoliday(HCalendar.HEBREW, "2nd day of Shavuos", 3, 7)),
@@ -52,7 +53,7 @@ public enum HJewishHoliday
     ROSH_HASHANA_2(new MonthDayHoliday(HCalendar.HEBREW, "2nd day Rosh Hashana", 7, 2)),
     ROSH_CHODESH(new ConjunctionHoliday("Rosh Chodesh", new HHoliday[]{new UnionHoliday("Rosh Chodesh or Rosh Hashana", new HHoliday[]{new MonthDayHoliday(HCalendar.HEBREW, "Rosh Chodesh", 0, 1), new MonthDayHoliday(HCalendar.HEBREW, "Rosh Chodesh", 0, 30)}), new NegationHoliday("exclude Rosh Hashana", ROSH_HASHANA_1)})),
     TZOM_GEDALIA(new MonthDayHoliday(HCalendar.HEBREW, "Tzom Gedalia", 7, 3)),
-    YOM_KIPPUR(new MonthDayHoliday(HCalendar.HEBREW, "", 7, 10)),
+    YOM_KIPPUR(new MonthDayHoliday(HCalendar.HEBREW, "Yom Kippur", 7, 10)),
     FIRST_DAY_SUKKOS(new MonthDayHoliday(HCalendar.HEBREW, "1st day Sukkos", 7, 15)),
     SECOND_DAY_SUKKOS_C(new MonthDayHoliday(HCalendar.HEBREW, "2nd day Sukkos", 7, 16)),
     SHMINI_ATZERES_C(new MonthDayHoliday(HCalendar.HEBREW, "Shmini Atzeres", 7, 22)),
@@ -68,7 +69,7 @@ public enum HJewishHoliday
     CHOL_HAMOED_SUKKOS_3C(new MonthDayHoliday(HCalendar.HEBREW, "Chol Hamoed Sukkos", 7, 19)),
     CHOL_HAMOED_SUKKOS_4C(new MonthDayHoliday(HCalendar.HEBREW, "Chol Hamoed Sukkos", 7, 20)),
     SIMCHAS_TORAH_I(new MonthDayHoliday(HCalendar.HEBREW, "Simchas Torah", 7, 22)),
-    NINETEENTH_KISLEV(new MonthDayHoliday(HCalendar.HEBREW, "First day Chanukah", 9, 19)),
+    NINETEENTH_KISLEV(new MonthDayHoliday(HCalendar.HEBREW, "19 Kislev", 9, 19)),
     FIRST_DAY_CHANUKAH(new MonthDayHoliday(HCalendar.HEBREW, "1st day Chanukah", 9, 25)),
     SECOND_DAY_CHANUKAH(new ShiftedDateHoliday("2nd day Chanukah", FIRST_DAY_CHANUKAH, 1)),
     THIRD_DAY_CHANUKAH(new ShiftedDateHoliday("3rd day Chanukah", FIRST_DAY_CHANUKAH, 2)),
@@ -84,7 +85,31 @@ public enum HJewishHoliday
     SHUSHAN_PURIM(new MonthDayHoliday(HCalendar.HEBREW, "Shushan Purim", -1, 15)),
     PURIM_KATAN(new ConjunctionHoliday("Purim Katan", new HHoliday[] {
             new MonthDayHoliday(HCalendar.HEBREW, "12 Adar I", 12, 14),
-            new NegationHoliday("exclude Purim", PURIM)}));
+            new NegationHoliday("exclude Purim", PURIM)})),
+
+    ERUV_TAVSHILIN_I(new EruvTavshilin("Eruv Tavshilin", new HHoliday[]{
+            // 7th day Pesach: Pesach starts Shabbat → 7th day falls on Fri.
+            // Shavuot: Pesach starts Thu → Shavuot is Fri.
+            // RH1 on Thu → RH2 on Fri (two consecutive YomTov days trigger ET on Wed).
+            // Omitted — can never fall on Fri (calendar rules prevent it), and in Israel the
+            // following day is Chol Hamoed, not YomTov: 1st day Pesach, 1st day Sukkot, Simchat Torah.
+            // Omitted — Yom Kippur can never fall on Fri (lo adu rosh).
+            SEVENTH_DAY_PESACH, SHAVUOS,
+            ROSH_HASHANA_1, ROSH_HASHANA_2
+    })),
+
+    ERUV_TAVSHILIN_C(new EruvTavshilin("Eruv Tavshilin", new HHoliday[]{
+            // 1st day Pesach on Thu → 2nd day (Fri) is also YomTov; 7th and last day can fall on Fri directly.
+            // Shavuot can fall on Fri; 2nd day Shavuot can fall on Fri.
+            // RH1 on Thu → RH2 on Fri.
+            // 1st day Sukkot on Thu → 2nd day (Fri) is also YomTov.
+            // Shmini Atzeret on Thu → Simchat Torah on Fri; Simchat Torah itself can fall on Fri.
+            // Omitted — Yom Kippur can never fall on Fri (lo adu rosh).
+            FIRST_DAY_PESACH, SECOND_DAY_PESACH_C, SEVENTH_DAY_PESACH, LAST_DAY_PESACH_C,
+            SHAVUOS, SHAVUOS_2C,
+            ROSH_HASHANA_1, ROSH_HASHANA_2,
+            FIRST_DAY_SUKKOS, SECOND_DAY_SUKKOS_C, SHMINI_ATZERES_C, SIMCHAS_TORAH_C
+    }));
 
    
     private static Set<HJewishHoliday> createCollection(HJewishHoliday[] hh) {
@@ -93,40 +118,51 @@ public enum HJewishHoliday
         return Collections.unmodifiableSet(buildSet);
     }
 
-    public static final Set<HJewishHoliday> ISRAEL_SPECIFIC_DAYS = createCollection(
+    private static final Set<HJewishHoliday> ISRAEL_SPECIFIC_DAYS = createCollection(
             new HJewishHoliday[]{
                     CHOL_HAMOED_PESACH_1I, CHOL_HAMOED_PESACH_2I, CHOL_HAMOED_PESACH_3I, CHOL_HAMOED_PESACH_4I,
                     CHOL_HAMOED_PESACH_5I, CHOL_HAMOED_SUKKOS_1I, CHOL_HAMOED_SUKKOS_2I, CHOL_HAMOED_SUKKOS_3I,
-                    CHOL_HAMOED_SUKKOS_4I, CHOL_HAMOED_SUKKOS_5I, SIMCHAS_TORAH_I
+                    CHOL_HAMOED_SUKKOS_4I, CHOL_HAMOED_SUKKOS_5I, SIMCHAS_TORAH_I,
+                    ERUV_TAVSHILIN_I
             }
     );
 
-    public static final Set<HJewishHoliday> CHUTZ_LAARETZ_SPECIFIC = createCollection(
+    private static final Set<HJewishHoliday> CHUTZ_LAARETZ_SPECIFIC = createCollection(
             new HJewishHoliday[]{
                     SECOND_DAY_PESACH_C, LAST_DAY_PESACH_C,
                     CHOL_HAMOED_PESACH_1C, CHOL_HAMOED_PESACH_2C, CHOL_HAMOED_PESACH_3C, CHOL_HAMOED_PESACH_4C,
                     SHAVUOS_2C, SECOND_DAY_SUKKOS_C,
                     CHOL_HAMOED_SUKKOS_1C, CHOL_HAMOED_SUKKOS_2C, CHOL_HAMOED_SUKKOS_3C, CHOL_HAMOED_SUKKOS_4C,
-                    SHMINI_ATZERES_C, SIMCHAS_TORAH_C
+                    SHMINI_ATZERES_C, SIMCHAS_TORAH_C,
+                    ERUV_TAVSHILIN_C
             }
     );
 
-    public static final Set<HJewishHoliday> FAST_DAYS = createCollection(
+    private static final Set<HJewishHoliday> ERUV_TAVSHILIN_DAYS = createCollection(
+            new HJewishHoliday[]{ERUV_TAVSHILIN_I, ERUV_TAVSHILIN_C}
+    );
+
+    private static final Set<HJewishHoliday> FAST_DAYS = createCollection(
             new HJewishHoliday[]{
                     TZOM_GEDALIA, TENTH_TEVES, FAST_TAMUZ_17, FAST_AV_9
             });
 
-    public static final Set<HJewishHoliday> YOM_TOV_DAYS = createCollection(
+    private static final Set<HJewishHoliday> YOM_TOV_DAYS = createCollection(
             new HJewishHoliday[]{
                     FIRST_DAY_PESACH, SECOND_DAY_PESACH_C, SEVENTH_DAY_PESACH, LAST_DAY_PESACH_C,
                     SHAVUOS, SHAVUOS_2C, ROSH_HASHANA_1, ROSH_HASHANA_2, YOM_KIPPUR,
                     FIRST_DAY_SUKKOS, SECOND_DAY_SUKKOS_C, SIMCHAS_TORAH_I, SIMCHAS_TORAH_C, SHMINI_ATZERES_C
             });
 
-    public static final Set<HJewishHoliday> CHABAD_DAYS = createCollection(
+    private static final Set<HJewishHoliday> CHABAD_DAYS = createCollection(
             new HJewishHoliday[]{
                     NINETEENTH_KISLEV, YUD_SHVAT, NISAN_11, TAMUZ_3, TAMUZ_12, TAMUZ_13, CHAI_ELUL
             });
+
+    public boolean isYomTov()       { return YOM_TOV_DAYS.contains(this); }
+    public boolean isFast()         { return FAST_DAYS.contains(this); }
+    public boolean isEruvTavshilin(){ return ERUV_TAVSHILIN_DAYS.contains(this); }
+    public boolean isChabad()       { return CHABAD_DAYS.contains(this); }
     
     private final HHoliday _delegate;
 
