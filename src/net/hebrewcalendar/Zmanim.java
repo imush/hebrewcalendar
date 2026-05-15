@@ -114,11 +114,19 @@ public class Zmanim {
     /** End of Shabbat / Havdalah: sun 8.5° below horizon after sunset. */
     public ZonedDateTime getEndOfShabbat() { return set(HAVDALAH_ANGLE); }
 
-    /** Halachic midnight: solar nadir, 12 hours after solar noon. */
+    /**
+     * Halachic midnight: solar nadir (the sun's lowest point), 12 hours after solar noon.
+     * The solar transit is always computable regardless of polar conditions.
+     */
     public ZonedDateTime getMidnight() {
         ZonedDateTime noon = base().execute().getNoon();
         if (noon != null) return noon.plusHours(12);
-        return date.plusDays(1).atStartOfDay(ZoneId.of(timezone));
+        // Fallback: look one day ahead in case the transit falls just outside the window
+        ZonedDateTime nextNoon = SunTimes.compute()
+                .on(date.plusDays(1)).at(latitude, longitude)
+                .height(elevationMeters).timezone(timezone).oneDay()
+                .execute().getNoon();
+        return nextNoon != null ? nextNoon.minusHours(12) : null;
     }
 
     /** True when these coordinates fall within the city of Jerusalem. */
@@ -239,13 +247,13 @@ public class Zmanim {
 
     /**
      * Chatzot (halachic noon): midpoint between hanetz amiti and shkiah amitis.
-     * Latest time for Shacharit; earliest time for Mincha Gedolah (plus half a sha'ah).
-     * Returns null under polar conditions.
+     * In polar conditions where sunrise/sunset are unavailable, falls back to the
+     * solar transit (the sun's highest point of the day).
      */
     public ZonedDateTime getChatzot() {
         ZonedDateTime r = getHanetzAmiti();
         ZonedDateTime s = getShkiahAmitis();
-        if (r == null || s == null) return null;
+        if (r == null || s == null) return base().execute().getNoon();
         return r.plusSeconds(Duration.between(r, s).getSeconds() / 2);
     }
 
