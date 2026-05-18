@@ -12,6 +12,11 @@ public class Zman {
     private final ZonedDateTime time;
     private final EnumSet<Zmanim.Flag> flags;
 
+    /**
+     * @param time  the computed time, or {@code null} when the event does not occur
+     *              (e.g. no sunrise at polar latitudes)
+     * @param flags zero or more flags describing how the time was derived
+     */
     public Zman(ZonedDateTime time, Zmanim.Flag... flags) {
         this.time = time;
         this.flags = flags.length > 0
@@ -19,6 +24,7 @@ public class Zman {
             : EnumSet.noneOf(Zmanim.Flag.class);
     }
 
+    /** @return the computed time, or {@code null} if the event does not occur on this date */
     public ZonedDateTime getTime() { return time; }
 
     public boolean hasFlag(Zmanim.Flag flag) { return flags.contains(flag); }

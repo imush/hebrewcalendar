@@ -4,22 +4,28 @@ import org.shredzone.commons.suncalc.SunTimes;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 /**
  * Computes halachic times (zmanim) for a given date and geographic location.
  *
- * <p>All halachic-hour-based times follow the Alter Rebbe / Vilna Gaon (Gra) opinion:
- * a sha'ah zmanit is 1/12 of the period from visual sunrise to visual sunset.
+ * <p>All halachic-hour-based times follow the Alter Rebbe (Chabad) opinion:
+ * a sha'ah zmanit is 1/12 of the period from hanetz amiti to shkiah amitis
+ * (true sunrise / true sunset at solar-angle −1.583°, not the visible horizon).
  *
  * <p>Solar angles used:
  * <ul>
  *   <li>Sunrise / Shkiah: visual horizon (accounts for refraction and solar disc radius)</li>
- *   <li>Dawn (Alot Hashachar): sun 16.1° below horizon before sunrise</li>
+ *   <li>Dawn (Alot Hashachar): sun 16.9° below horizon before sunrise</li>
  *   <li>Tzait Hakochavim (3 small stars): sun 6° below horizon after sunset</li>
  *   <li>Tzait (Alter Rebbe / end of Shabbat): sun 8.5° below horizon after sunset</li>
  * </ul>
+ *
+ * <p>All public methods return a {@link Zman}. Methods that cannot fall back to a reliable
+ * alternative (e.g. simple solar angles) may return a {@code Zman} whose
+ * {@link Zman#getTime()} is {@code null} under polar conditions.
+ * Methods with explicit fallback logic (candle lighting, end-of-Shabbat) always return
+ * a non-null time and set the appropriate {@link Flag}.
  */
 public class Zmanim {
 
@@ -29,293 +35,279 @@ public class Zmanim {
     public enum Flag {
         /** Jerusalem custom: candle lighting is 40 minutes before sunset instead of 18. */
         JERUSALEM_CANDLE_LIGHTING,
-        /** Polar day: no sunset found; halachic midnight used for candle lighting. */
+        /** Polar day: no sunset found; halachic midnight used as fallback. */
         NO_SUNSET,
-        /** Polar summer: nightfall (or end-of-Shabbat) not found; halachic midnight used. */
-        NO_NIGHTFALL
+        /** Polar summer: nightfall (or end-of-Shabbat) not found; halachic midnight used as fallback. */
+        NO_NIGHTFALL,
+        /** Today is a rest day and tomorrow is Yom Tov; candles are lit after nightfall. */
+        CANDLES_AFTER_NIGHTFALL,
+        /** Today is Yom Tov and tomorrow is Shabbat; candles are lit before sunset from existing flame. */
+        CANDLES_BEFORE_SHABBAT
     }
 
-    private static final double DAWN_ANGLE        = -16.9;  // Chabad: 16.9° = 72 min before hanetz amiti
-    private static final double MISHEYAKIR_ANGLE  = -10.2;  // Chabad: can recognise acquaintance at 4 cubits
-    private static final double TRUE_HORIZON_ANGLE = -1.583; // Hanetz amiti / shkiah amitis: mountains of EY elevation
-    private static final double NIGHTFALL_ANGLE   = -6.0;   // 3 small stars visible
-    private static final double HAVDALAH_ANGLE    = -8.5;   // Alter Rebbe / end of Shabbat
+    private static final double DAWN_ANGLE         = -16.9;  // Chabad: 72 min before hanetz amiti
+    private static final double MISHEYAKIR_ANGLE   = -10.2;  // Chabad: recognise acquaintance at 4 cubits
+    private static final double TRUE_HORIZON_ANGLE = -1.583; // Hanetz amiti / shkiah amitis
+    private static final double NIGHTFALL_ANGLE    = -6.0;   // 3 small stars visible
+    private static final double HAVDALAH_ANGLE     = -8.5;   // Alter Rebbe / end of Shabbat
 
-    private final LocalDate date;
-    private final double latitude;
-    private final double longitude;
-    private final double elevationMeters;
-    private final String timezone;
+    private final LocalDate  date;
+    private final HLocation  location;
 
-    public Zmanim(LocalDate date, double latitude, double longitude, double elevationMeters, String timezone) {
-        this.date = date;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.elevationMeters = elevationMeters;
-        this.timezone = timezone;
+    /**
+     * @param date     Gregorian date for which to compute zmanim
+     * @param location geographic location with its halachic properties (Israel / Jerusalem flags)
+     */
+    public Zmanim(LocalDate date, HLocation location) {
+        this.date     = date;
+        this.location = location;
     }
+
+    // ── Low-level solar helpers (private, may return null) ────────────────────
 
     private SunTimes.Parameters base() {
         return SunTimes.compute()
-                .on(date)
-                .at(latitude, longitude)
-                .height(elevationMeters)
-                .timezone(timezone)
-                .oneDay();
+                .on(date).at(location.getLatitude(), location.getLongitude())
+                .height(location.getElevationMeters()).timezone(location.getTimezone()).oneDay();
     }
 
-    private ZonedDateTime set(SunTimes.Twilight twilight) {
-        return base().twilight(twilight).execute().getSet();
+    private ZonedDateTime set(SunTimes.Twilight twilight) { return base().twilight(twilight).execute().getSet(); }
+    private ZonedDateTime set(double angle)               { return base().twilight(angle).execute().getSet(); }
+    private ZonedDateTime rise(SunTimes.Twilight twilight){ return base().twilight(twilight).execute().getRise(); }
+    private ZonedDateTime rise(double angle)              { return base().twilight(angle).execute().getRise(); }
+
+    private ZonedDateTime sunsetOrNull()       { return set(SunTimes.Twilight.VISUAL); }
+    private ZonedDateTime hanetzAmitiOrNull()  { return rise(TRUE_HORIZON_ANGLE); }
+    private ZonedDateTime shkiahAmitisOrNull() { return set(TRUE_HORIZON_ANGLE); }
+    private ZonedDateTime nightfallOrNull()    { return set(NIGHTFALL_ANGLE); }
+    private ZonedDateTime endOfShabbatOrNull() { return set(HAVDALAH_ANGLE); }
+
+    private ZonedDateTime midnight() {
+        return base().execute().getNoon().plusHours(12);
     }
 
-    private ZonedDateTime set(double angle) {
-        return base().twilight(angle).execute().getSet();
-    }
+    private int candleMinutesBeforeSunset() { return location.isInJerusalem() ? 40 : 18; }
 
-    private ZonedDateTime rise(SunTimes.Twilight twilight) {
-        return base().twilight(twilight).execute().getRise();
-    }
-
-    private ZonedDateTime rise(double angle) {
-        return base().twilight(angle).execute().getRise();
-    }
-
-    /** Alot Hashachar: sun 16.9° below horizon — equivalent to 72 minutes before true sunrise (Chabad). */
-    public ZonedDateTime getDawn() { return rise(DAWN_ANGLE); }
-
-    /** Netz Hachama: visible sunrise. */
-    public ZonedDateTime getSunrise() { return rise(SunTimes.Twilight.VISUAL); }
-
-    /** Shkiah: visible sunset. */
-    public ZonedDateTime getSunset() { return set(SunTimes.Twilight.VISUAL); }
+    // ── Sha'ah zmanit ─────────────────────────────────────────────────────────
 
     /**
-     * Hanetz Amiti: true sunrise — sun at 1.583° below the horizon, corresponding to
-     * visibility at the elevation of the mountains of Eretz Yisrael.
-     * Used as the start of the halachic day for all sha'ah-zmanit calculations (Chabad).
-     */
-    public ZonedDateTime getHanetzAmiti() { return rise(TRUE_HORIZON_ANGLE); }
-
-    /**
-     * Shkiah Amitis: true sunset — sun at 1.583° below the horizon.
-     * Used as the end of the halachic day for all sha'ah-zmanit calculations (Chabad).
-     */
-    public ZonedDateTime getShkiahAmitis() { return set(TRUE_HORIZON_ANGLE); }
-
-    /** Candle lighting: 18 minutes before shkiah. */
-    public ZonedDateTime getCandleLighting() {
-        ZonedDateTime s = getSunset();
-        return s == null ? null : s.minusMinutes(18);
-    }
-
-    /** Tzait Hakochavim: sun 6° below horizon after sunset. */
-    public ZonedDateTime getNightfall() { return set(NIGHTFALL_ANGLE); }
-
-    /** End of Shabbat / Havdalah: sun 8.5° below horizon after sunset. */
-    public ZonedDateTime getEndOfShabbat() { return set(HAVDALAH_ANGLE); }
-
-    /**
-     * Halachic midnight: solar nadir (the sun's lowest point), 12 hours after solar noon.
-     * The solar transit is always computable regardless of polar conditions.
-     */
-    public ZonedDateTime getMidnight() {
-        ZonedDateTime noon = base().execute().getNoon();
-        if (noon != null) return noon.plusHours(12);
-        // Fallback: look one day ahead in case the transit falls just outside the window
-        ZonedDateTime nextNoon = SunTimes.compute()
-                .on(date.plusDays(1)).at(latitude, longitude)
-                .height(elevationMeters).timezone(timezone).oneDay()
-                .execute().getNoon();
-        return nextNoon != null ? nextNoon.minusHours(12) : null;
-    }
-
-    /** True when these coordinates fall within the city of Jerusalem. */
-    private boolean isJerusalem() {
-        return latitude >= 31.71 && latitude <= 31.85
-            && longitude >= 35.13 && longitude <= 35.28;
-    }
-
-    private int candleMinutes() {
-        return isJerusalem() ? 40 : 18;
-    }
-
-    /**
-     * Returns candle-lighting time as a {@link Zman}, including any applicable {@link Flag}s.
-     *
-     * <p>Rules applied:
-     * <ul>
-     *   <li>When today is a rest day and tomorrow is Yom Tov, candles must wait until
-     *       nightfall (Tzait Hakochavim). If nightfall is unavailable, halachic midnight
-     *       is used and {@link Flag#NO_NIGHTFALL} is set.</li>
-     *   <li>Otherwise: {@link Flag#JERUSALEM_CANDLE_LIGHTING} triggers 40-minute rule;
-     *       standard is 18 minutes before sunset. If sunset is unavailable,
-     *       halachic midnight minus the candle-lighting offset is used and
-     *       {@link Flag#NO_SUNSET} is set.</li>
-     * </ul>
-     */
-    public Zman getCandleLightingZman(boolean todayIsRestDay, boolean tomorrowIsYomTov) {
-        if (todayIsRestDay && tomorrowIsYomTov) {
-            ZonedDateTime t = getNightfall();
-            return t != null
-                ? new Zman(t)
-                : new Zman(getMidnight(), Flag.NO_NIGHTFALL);
-        }
-        int minutes = candleMinutes();
-        ZonedDateTime s = getSunset();
-        if (s != null) {
-            return isJerusalem()
-                ? new Zman(s.minusMinutes(minutes), Flag.JERUSALEM_CANDLE_LIGHTING)
-                : new Zman(s.minusMinutes(minutes));
-        }
-        // Polar day: no sunset — fall back to halachic midnight
-        return isJerusalem()
-            ? new Zman(getMidnight().minusMinutes(minutes), Flag.NO_SUNSET, Flag.JERUSALEM_CANDLE_LIGHTING)
-            : new Zman(getMidnight().minusMinutes(minutes), Flag.NO_SUNSET);
-    }
-
-    /**
-     * Returns end-of-Shabbat time as a {@link Zman}.
-     * Falls back to halachic midnight with {@link Flag#NO_NIGHTFALL} when unavailable.
-     */
-    public Zman getEndOfShabbatZman() {
-        ZonedDateTime t = getEndOfShabbat();
-        return t != null ? new Zman(t) : new Zman(getMidnight(), Flag.NO_NIGHTFALL);
-    }
-
-    // ── Sha'ah zmanit ────────────────────────────────────────────────────────
-
-    /**
-     * Returns the length of one sha'ah zmanit (halachic hour) in seconds.
-     * Per Chabad: 1/12 of the period from hanetz amiti to shkiah amitis (both at 1.583°).
-     * Returns 0 when either endpoint is unavailable (polar conditions).
+     * Length of one sha'ah zmanit (halachic hour) in seconds.
+     * Per Chabad: 1/12 of the period from hanetz amiti to shkiah amitis.
+     * Returns 0 under polar conditions.
      */
     public long shaahZmanitSeconds() {
-        ZonedDateTime r = getHanetzAmiti();
-        ZonedDateTime s = getShkiahAmitis();
+        ZonedDateTime r = hanetzAmitiOrNull();
+        ZonedDateTime s = shkiahAmitisOrNull();
         if (r == null || s == null) return 0;
         return Duration.between(r, s).getSeconds() / 12;
     }
 
     // ── Morning zmanim ────────────────────────────────────────────────────────
 
+    /** Alot Hashachar: sun 16.9° below horizon (72 min before hanetz amiti per Chabad). */
+    public Zman getDawn() { return new Zman(rise(DAWN_ANGLE)); }
+
+    /** Netz Hachama: visible sunrise. */
+    public Zman getSunrise() { return new Zman(rise(SunTimes.Twilight.VISUAL)); }
+
     /**
-     * Misheyakir: earliest time to don tefillin and recite the Shema.
-     * The moment one can recognise a casual acquaintance from a distance of four cubits
-     * (and can distinguish the blue tchelet from white tzitzit threads).
-     * Calculated when the sun is 10.2° below the horizon — approximately 45 minutes
-     * before sunrise in Jerusalem at the equinox (per Chabad.org).
-     * Returns null when the sun does not reach this angle (polar conditions).
+     * Hanetz Amiti: true sunrise — sun 1.583° below horizon.
+     * Start of the halachic day for sha'ah-zmanit calculations (Chabad).
      */
-    public ZonedDateTime getMisheyakir() {
-        return rise(MISHEYAKIR_ANGLE);
+    public Zman getHanetzAmiti() { return new Zman(hanetzAmitiOrNull()); }
+
+    /**
+     * Misheyakir: earliest time to don tallis and tefillin.
+     * Sun 10.2° below horizon (~45 min before sunrise in Jerusalem at equinox, per Chabad).
+     */
+    public Zman getMisheyakir() { return new Zman(rise(MISHEYAKIR_ANGLE)); }
+
+    /**
+     * Sof Zman Krias Shema: 3 sha'ot zmaniot after hanetz amiti (per Chabad).
+     * Returns a {@link Zman} with null time under polar conditions.
+     */
+    public Zman getLatestShema() {
+        ZonedDateTime r = hanetzAmitiOrNull();
+        long sha = shaahZmanitSeconds();
+        return new Zman((r == null || sha == 0) ? null : r.plusSeconds(sha * 3));
     }
 
     /**
-     * Sof Zman Krias Shema: latest time to recite the morning Shema.
-     * Per Chabad: 3 sha'ot zmaniot after hanetz amiti.
-     * Returns null under polar conditions.
+     * Sof Zman Tefilla: latest time for morning Shacharit.
+     * 4 sha'ot zmaniot after hanetz amiti (per Chabad).
+     * Returns a {@link Zman} with null time under polar conditions.
      */
-    public ZonedDateTime getLatestShema() {
-        ZonedDateTime r = getHanetzAmiti();
+    public Zman getLatestShacharis() {
+        ZonedDateTime r = hanetzAmitiOrNull();
         long sha = shaahZmanitSeconds();
-        return (r == null || sha == 0) ? null : r.plusSeconds(sha * 3);
-    }
-
-    /**
-     * Sof Zman Tefilla: latest time for the morning Shacharit prayer.
-     * 4 sha'ot zmaniot after hanetz amiti (per Magen Avraham / Chabad).
-     * Returns null under polar conditions.
-     */
-    public ZonedDateTime getLatestShacharis() {
-        ZonedDateTime r = getHanetzAmiti();
-        long sha = shaahZmanitSeconds();
-        return (r == null || sha == 0) ? null : r.plusSeconds(sha * 4);
+        return new Zman((r == null || sha == 0) ? null : r.plusSeconds(sha * 4));
     }
 
     /**
      * Sof Zman Biur Chametz: latest time to burn chametz on Erev Pesach.
      * 5 sha'ot zmaniot after hanetz amiti.
-     * Returns null under polar conditions.
+     * Returns a {@link Zman} with null time under polar conditions.
      */
-    public ZonedDateTime getBurningChometz() {
-        ZonedDateTime r = getHanetzAmiti();
+    public Zman getBurningChometz() {
+        ZonedDateTime r = hanetzAmitiOrNull();
         long sha = shaahZmanitSeconds();
-        return (r == null || sha == 0) ? null : r.plusSeconds(sha * 5);
+        return new Zman((r == null || sha == 0) ? null : r.plusSeconds(sha * 5));
     }
 
     // ── Midday and afternoon zmanim ───────────────────────────────────────────
 
     /**
      * Chatzot (halachic noon): midpoint between hanetz amiti and shkiah amitis.
-     * In polar conditions where sunrise/sunset are unavailable, falls back to the
-     * solar transit (the sun's highest point of the day).
+     * Falls back to solar transit under polar conditions; always returns a non-null time.
      */
-    public ZonedDateTime getChatzot() {
-        ZonedDateTime r = getHanetzAmiti();
-        ZonedDateTime s = getShkiahAmitis();
-        if (r == null || s == null) return base().execute().getNoon();
-        return r.plusSeconds(Duration.between(r, s).getSeconds() / 2);
+    public Zman getChatzot() {
+        ZonedDateTime r = hanetzAmitiOrNull();
+        ZonedDateTime s = shkiahAmitisOrNull();
+        if (r == null || s == null) return new Zman(base().execute().getNoon());
+        return new Zman(r.plusSeconds(Duration.between(r, s).getSeconds() / 2));
     }
 
     /**
-     * Mincha Gedolah: earliest permissible time for the afternoon Mincha prayer.
-     * 6.5 sha'ot zmaniot after hanetz amiti (= Chatzot + half a sha'ah zmanit).
-     * Per Shulchan Aruch, Orach Chayim 233:1.
-     * Returns null under polar conditions.
+     * Shkiah Amitis: true sunset — sun 1.583° below horizon.
+     * End of the halachic day for sha'ah-zmanit calculations (Chabad).
      */
-    public ZonedDateTime getMinchaGedolah() {
-        ZonedDateTime r = getHanetzAmiti();
+    public Zman getShkiahAmitis() { return new Zman(shkiahAmitisOrNull()); }
+
+    /**
+     * Mincha Gedolah: earliest time for Mincha.
+     * 6.5 sha'ot zmaniot after hanetz amiti.
+     * Returns a {@link Zman} with null time under polar conditions.
+     */
+    public Zman getMinchaGedolah() {
+        ZonedDateTime r = hanetzAmitiOrNull();
         long sha = shaahZmanitSeconds();
-        return (r == null || sha == 0) ? null : r.plusSeconds((long)(sha * 6.5));
+        return new Zman((r == null || sha == 0) ? null : r.plusSeconds((long)(sha * 6.5)));
     }
 
     /**
-     * Mincha Ketana: the preferred/optimal time for Mincha.
-     * 9.5 sha'ot zmaniot after hanetz amiti (= 2.5 sha'ot before shkiah amitis).
-     * Per Shulchan Aruch, Orach Chayim 233:1.
-     * Returns null under polar conditions.
+     * Mincha Ketana: optimal time for Mincha.
+     * 9.5 sha'ot zmaniot after hanetz amiti.
+     * Returns a {@link Zman} with null time under polar conditions.
      */
-    public ZonedDateTime getMinchaKetana() {
-        ZonedDateTime r = getHanetzAmiti();
+    public Zman getMinchaKetana() {
+        ZonedDateTime r = hanetzAmitiOrNull();
         long sha = shaahZmanitSeconds();
-        return (r == null || sha == 0) ? null : r.plusSeconds((long)(sha * 9.5));
+        return new Zman((r == null || sha == 0) ? null : r.plusSeconds((long)(sha * 9.5)));
     }
 
     /**
-     * Plag HaMincha: 1.25 sha'ot zmaniot before shkiah amitis (10.75 sha'ot after hanetz amiti).
-     * Used for early Kabbalat Shabbat — accepting Shabbat before sunset on Friday.
-     * Per Shulchan Aruch, Orach Chayim 267:2.
-     * Returns null under polar conditions.
+     * Plag HaMincha: 10.75 sha'ot zmaniot after hanetz amiti (1.25 sha'ot before shkiah amitis).
+     * Returns a {@link Zman} with null time under polar conditions.
      */
-    public ZonedDateTime getPlagHaMincha() {
-        ZonedDateTime r = getHanetzAmiti();
+    public Zman getPlagHaMincha() {
+        ZonedDateTime r = hanetzAmitiOrNull();
         long sha = shaahZmanitSeconds();
-        return (r == null || sha == 0) ? null : r.plusSeconds((long)(sha * 10.75));
+        return new Zman((r == null || sha == 0) ? null : r.plusSeconds((long)(sha * 10.75)));
     }
 
     // ── Evening zmanim ────────────────────────────────────────────────────────
 
+    /** Shkiah: visible sunset. */
+    public Zman getSunset() { return new Zman(sunsetOrNull()); }
+
+    /**
+     * Tzait Hakochavim (Alter Rebbe / Vilna Gaon): sun 8.5° below horizon.
+     * Used as the end of Shabbat and Yom Tov. For the fallback-aware version that
+     * substitutes halachic midnight under polar conditions, use {@link #getEndOfShabbatZman()}.
+     */
+    public Zman getNightfallAlterRebbe() { return new Zman(endOfShabbatOrNull()); }
+
     /**
      * Tzait Hakochavim per Rabbeinu Tam: 72 minutes after sunset.
-     * Rabbeinu Tam holds that halachic nightfall (tzeit) is 72 minutes after
-     * sunset — the time required for the sun to descend a full 15° below the
-     * horizon in the Talmudic latitudes.  Widely used as the end of fast days.
-     * Returns null when sunset is unavailable.
+     * Widely used as the end of fast days.
+     * Returns a {@link Zman} with null time when sunset is unavailable.
      */
-    public ZonedDateTime getNightfallRabeinuTam() {
-        ZonedDateTime s = getSunset();
-        return s == null ? null : s.plusMinutes(72);
+    public Zman getNightfallRabeinuTam() {
+        ZonedDateTime s = sunsetOrNull();
+        return new Zman(s == null ? null : s.plusMinutes(72));
     }
 
-    // ── Legacy convenience methods ────────────────────────────────────────────
+    /**
+     * Halachic midnight: 12 hours after solar noon.
+     * Solar noon (transit) is always computable, so this never returns a null time.
+     */
+    public Zman getMidnight() { return new Zman(midnight()); }
 
-    /** @deprecated Use {@link #getCandleLightingZman} for flag-aware results. */
-    public ZonedDateTime getCandleLightingTime(boolean todayIsRestDay, boolean tomorrowIsYomTov) {
-        return getCandleLightingZman(todayIsRestDay, tomorrowIsYomTov).getTime();
+    // ── Shabbat / Yom Tov times ───────────────────────────────────────────────
+
+    /**
+     * End of Shabbat / Havdalah: sun 8.5° below horizon (Alter Rebbe).
+     * Falls back to halachic midnight with {@link Flag#NO_NIGHTFALL} when unavailable.
+     * Always returns a non-null time.
+     */
+    public Zman getEndOfShabbatZman() {
+        ZonedDateTime t = endOfShabbatOrNull();
+        return t != null ? new Zman(t) : new Zman(midnight(), Flag.NO_NIGHTFALL);
     }
 
-    /** @deprecated Use {@link #getEndOfShabbatZman} for flag-aware results. */
-    public ZonedDateTime getEndOfShabbatOrMidnight() {
-        return getEndOfShabbatZman().getTime();
+    private Zman getCandleLightingZmanInternal(boolean todayIsRestDay, boolean tomorrowIsYomTov) {
+        if (todayIsRestDay && tomorrowIsYomTov) {
+            ZonedDateTime t = nightfallOrNull();
+            return t != null
+                ? new Zman(t, Flag.CANDLES_AFTER_NIGHTFALL)
+                : new Zman(midnight(), Flag.CANDLES_AFTER_NIGHTFALL, Flag.NO_NIGHTFALL);
+        }
+        int minutes = candleMinutesBeforeSunset();
+        ZonedDateTime s = sunsetOrNull();
+        if (s != null) {
+            if (location.isInJerusalem())
+                return todayIsRestDay
+                    ? new Zman(s.minusMinutes(minutes), Flag.CANDLES_BEFORE_SHABBAT, Flag.JERUSALEM_CANDLE_LIGHTING)
+                    : new Zman(s.minusMinutes(minutes), Flag.JERUSALEM_CANDLE_LIGHTING);
+            else
+                return todayIsRestDay
+                    ? new Zman(s.minusMinutes(minutes), Flag.CANDLES_BEFORE_SHABBAT)
+                    : new Zman(s.minusMinutes(minutes));
+        }
+        // Polar day: no sunset — fall back to halachic midnight
+        if (location.isInJerusalem())
+            return todayIsRestDay
+                ? new Zman(midnight().minusMinutes(minutes), Flag.CANDLES_BEFORE_SHABBAT, Flag.NO_SUNSET, Flag.JERUSALEM_CANDLE_LIGHTING)
+                : new Zman(midnight().minusMinutes(minutes), Flag.NO_SUNSET, Flag.JERUSALEM_CANDLE_LIGHTING);
+        else
+            return todayIsRestDay
+                ? new Zman(midnight().minusMinutes(minutes), Flag.CANDLES_BEFORE_SHABBAT, Flag.NO_SUNSET)
+                : new Zman(midnight().minusMinutes(minutes), Flag.NO_SUNSET);
+    }
+
+    /**
+     * Candle-lighting time for this date, with applicable {@link Flag}s.
+     *
+     * <ul>
+     *   <li>Today is rest day + tomorrow is Yom Tov: nightfall (Tzait at 6°);
+     *       {@link Flag#CANDLES_AFTER_NIGHTFALL} set. Falls back to halachic midnight
+     *       with {@link Flag#NO_NIGHTFALL}.</li>
+     *   <li>Today is Yom Tov + tomorrow is Shabbat: before-sunset lighting from existing flame;
+     *       {@link Flag#CANDLES_BEFORE_SHABBAT} set.</li>
+     *   <li>Jerusalem: 40 minutes before sunset; {@link Flag#JERUSALEM_CANDLE_LIGHTING} set.</li>
+     *   <li>Polar day (no sunset): halachic midnight used; {@link Flag#NO_SUNSET} set.</li>
+     * </ul>
+     *
+     * <p>Rest-day and Yom Tov status are determined using the {@code inIsrael} flag
+     * supplied to the {@link HLocation} at construction time.
+     *
+     * @return a {@link Zman} with appropriate flags, or {@code null} if tomorrow is not a rest day
+     */
+    public Zman getCandleLightingZman() {
+        HDate todayGreg    = HCalendar.GREGORIAN.fromYMD(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
+        HDate tomorrowGreg = todayGreg.addDays(1);
+        if (!isRestDay(tomorrowGreg, location.isInIsrael())) return null;
+        boolean todayIsRest      = isRestDay(todayGreg, location.isInIsrael());
+        boolean tomorrowIsYomTov = tomorrowGreg.getDayOfWeek() != 7; // Saturday = 7 in HDate
+        return getCandleLightingZmanInternal(todayIsRest, tomorrowIsYomTov);
+    }
+
+    /** Saturday (7 in HDate) or any Yom Tov applicable at the given location. */
+    private static boolean isRestDay(HDate date, boolean inIsrael) {
+        if (date.getDayOfWeek() == 7) return true;
+        for (HJewishHoliday h : HJewishHoliday.values()) {
+            if (h.isYomTov() && h.applies(inIsrael) && h.matches(date)) return true;
+        }
+        return false;
     }
 }
