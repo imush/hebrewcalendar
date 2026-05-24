@@ -102,7 +102,8 @@ public interface JewishCalendar
      *
      * @param date     any IDate that falls on a Saturday
      * @param inIsrael true for Eretz Israel schedule, false for Diaspora
-     * @return array of 1 or 2 Parsha values, or null if Yom Tov / Chol Hamoed Shabbat
+     * @return list of 1 {@link Parsha} (regular week) or 2 (double portion);
+     *         empty list on a Shabbat that falls on Yom Tov or Chol Hamoed
      */
     List<Parsha> getParsha(IDate date, boolean inIsrael);
 }
