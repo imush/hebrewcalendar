@@ -88,6 +88,7 @@ public enum JewishSpecialDay
     PURIM_KATAN(new ConjunctionSpecialDay("Purim Katan", new SpecialDay[] {
             new MonthDaySpecialDay(ICalendar.JEWISH, "12 Adar I", 12, 14),
             new NegationSpecialDay("exclude Purim", PURIM)})),
+    TAANIT_ESTHER(new TaanitEstherSpecialDay("Fast of Esther")),
 
     ERUV_TAVSHILIN_I(new EruvTavshilin("Eruv Tavshilin", new SpecialDay[]{
             // 7th day Pesach: Pesach starts Shabbat → 7th day falls on Fri.
@@ -152,7 +153,7 @@ public enum JewishSpecialDay
 
     private static final Set<JewishSpecialDay> FAST_DAYS = createCollection(
             new JewishSpecialDay[]{
-                    TZOM_GEDALIA, TENTH_TEVES, FAST_TAMUZ_17, FAST_AV_9
+                    TAANIT_ESTHER, TZOM_GEDALIA, TENTH_TEVES, FAST_TAMUZ_17, FAST_AV_9
             });
 
     private static final Set<JewishSpecialDay> YOM_TOV_DAYS = createCollection(
