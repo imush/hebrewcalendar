@@ -218,6 +218,13 @@ public class Zmanim {
     public Zman getNightfallAlterRebbe() { return new Zman(endOfShabbatOrNull()); }
 
     /**
+     * Tzait Hakochavim with 3 medium stars: sun 6° below horizon after sunset.
+     * Typically used as the end of fasts other than Yom Kippur.
+     * Returns a {@link Zman} with null time under polar conditions.
+     */
+    public Zman getNightfallMediumStars() { return new Zman(nightfallOrNull()); }
+
+    /**
      * Tzait Hakochavim per Rabbeinu Tam: 72 minutes after sunset.
      * Widely used as the end of fast days.
      * Returns a {@link Zman} with null time when sunset is unavailable.
