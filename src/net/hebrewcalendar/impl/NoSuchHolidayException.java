@@ -1,16 +1,16 @@
 package net.hebrewcalendar.impl;
 
-import net.hebrewcalendar.HDate;
-import net.hebrewcalendar.HHoliday;
+import net.hebrewcalendar.IDate;
+import net.hebrewcalendar.SpecialDay;
 
 public class NoSuchHolidayException
         extends Exception
 {
     private String _msg;
-    private HHoliday _h;
-    private HDate _refDate;
+    private SpecialDay _h;
+    private IDate _refDate;
 
-    public NoSuchHolidayException(HHoliday h, HDate refDate, String msg) {
+    public NoSuchHolidayException(SpecialDay h, IDate refDate, String msg) {
         _h = h;
         _msg = msg;
         _refDate = refDate;

@@ -1,20 +1,20 @@
 package net.hebrewcalendar.impl.holiday;
 
-import net.hebrewcalendar.HCalendar;
-import net.hebrewcalendar.HDate;
+import net.hebrewcalendar.ICalendar;
+import net.hebrewcalendar.IDate;
 
 public class NthDayOfWeek
-        extends AbstractHoliday
+        extends AbstractRecurringSpecialDay
 {
     private final int _dayOfWeek;
 
-    public NthDayOfWeek(HCalendar cal, int n) {
+    public NthDayOfWeek(ICalendar cal, int n) {
         super(cal, "dow=" + n);
         _dayOfWeek = n;
     }
 
     @Override
-    public boolean matches(HDate date)
+    public boolean matches(IDate date)
     {
         return date.getDayOfWeek() == _dayOfWeek;
     }

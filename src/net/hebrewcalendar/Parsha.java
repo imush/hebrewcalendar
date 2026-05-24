@@ -2,7 +2,7 @@ package net.hebrewcalendar;
 
 /**
  * The 54 weekly Torah portions (parshiyot), each carrying an English and Hebrew name.
- * Double portions share a single reading on some Shabbatot; see {@link HParshiot}.
+ * Double portions share a single reading on some Shabbatot; see {@link Parshiot}.
  */
 public enum Parsha {
     BEREISHIT    ("Bereishit",    "בראשית"),

@@ -1,42 +1,50 @@
 package net.hebrewcalendar.impl;
 
-import net.hebrewcalendar.HCalendar;
-import net.hebrewcalendar.HDate;
+import net.hebrewcalendar.ICalendar;
+import net.hebrewcalendar.IDate;
 
 public abstract class AbstractCalendar
-    implements HCalendar
+    implements ICalendar
 {
     /**
-     * Create an {@link HDate} for this calendar.
+     * Create an {@link IDate} for this calendar.
      * @param year the year
      * @param month the month
      * @param day the day
-     * @return an {@link HDate} object
+     * @return an {@link IDate} object
      */
-    public final HDateImpl fromYMD(int year, int month, int day)
+    public final IDateImpl fromYMD(int year, int month, int day)
     {
         int m = month > 0 ? month : monthsInYear(year) + 1 + month;
         int d = day > 0 ? day : monthLength(year, m) + 1 + day;
-        return new HDateImpl(this, year, m, d);
+        return new IDateImpl(this, year, m, d);
     }
 
+
+    /**
+     * @param year
+     * @param month Note that negative month is allowed to count from end of year; m=-1
+     *              denotes last month of year
+     * @param day
+     * @return whether the date would be valid
+     */
     @Override
     public boolean isValidDate(int year, int month, int day)
     {
-        if (year <= 0 || month == 0 || day == 0 || Math.abs(month) > monthsInYear(year))
+        if (year == 0 || month == 0 || day <= 0 || Math.abs(month) > monthsInYear(year))
             return false;
         int m = month > 0 ? month : monthsInYear(year) + 1 + month;
         return Math.abs(day) <= monthLength(year, m);
     }
 
     /**
-     * Add a given number of days to an {@link HDate}
+     * Add a given number of days to an {@link IDate}
      * @param date date object
      * @param numDays number of days to add
-     * @return a new {@link HDate} object
+     * @return a new {@link IDate} object
      */
     @Override
-    public final HDateImpl addDays(final HDate date, final int numDays)
+    public final IDateImpl addDays(final IDate date, final int numDays)
     {
         if (numDays < 0)
             return subtractDays(date, -numDays);
@@ -44,7 +52,7 @@ public abstract class AbstractCalendar
         int m = date.getMonth();
         int d = date.getDay();
         int inc = numDays;
-        HCalendar cal = date.getCalendar();
+        ICalendar cal = date.getCalendar();
         while (inc > cal.monthLength(y, m) - d) {
             inc -= (cal.monthLength(y, m) - d + 1);
             d = 1;
@@ -58,13 +66,13 @@ public abstract class AbstractCalendar
     }
 
     /**
-     * Subtract a given number of days from an {@link HDate}
+     * Subtract a given number of days from an {@link IDate}
      * @param date date object
      * @param numDays number of days to subtract
-     * @return a new {@link HDate} object
+     * @return a new {@link IDate} object
      */
     @Override
-    public HDateImpl subtractDays(final HDate date, final int numDays)
+    public IDateImpl subtractDays(final IDate date, final int numDays)
     {
         if (numDays < 0)
             return addDays(date, -numDays);
@@ -73,7 +81,7 @@ public abstract class AbstractCalendar
         int d = date.getDay();
         int inc = numDays;
 
-        HCalendar cal = date.getCalendar();
+        ICalendar cal = date.getCalendar();
         while (inc >= d) {
             inc -= d;
             int[] prevYearMonth = prevYearMonth(y, m);
@@ -86,7 +94,7 @@ public abstract class AbstractCalendar
 
     }
 
-    abstract long absDay(HDate date);
+    abstract long absDay(IDate date);
 
     /**
      * Calculate the next year and month
@@ -106,14 +114,14 @@ public abstract class AbstractCalendar
 
     abstract long getStart();
 
-    abstract HDateImpl fromAbs(long absDay);
+    abstract IDateImpl fromAbs(long absDay);
 
     @Override
-    public final HDate convert(HDate otherDate)
+    public final IDate convert(IDate otherDate)
     {
         if (getType().equals(otherDate.getCalendarType()))
             return otherDate;
-        long absDay = ((HDateImpl)otherDate).absDay();
+        long absDay = ((IDateImpl)otherDate).absDay();
         return fromAbs(absDay);
     }
 }

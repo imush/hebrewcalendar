@@ -1,6 +1,6 @@
 package net.hebrewcalendar.impl;
 
-import net.hebrewcalendar.HCalendarType;
+import net.hebrewcalendar.CalendarType;
 
 /**
  * Created by itz on 7/20/17.
@@ -19,9 +19,9 @@ public final class JulianCalendar
     }
 
     @Override
-    public HCalendarType getType()
+    public CalendarType getType()
     {
-        return HCalendarType.JULIAN;
+        return CalendarType.JULIAN;
     }
 
     long getStart()

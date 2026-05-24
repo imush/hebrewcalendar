@@ -52,13 +52,13 @@ public class Zmanim {
     private static final double HAVDALAH_ANGLE     = -8.5;   // Alter Rebbe / end of Shabbat
 
     private final LocalDate  date;
-    private final HLocation  location;
+    private final Location  location;
 
     /**
      * @param date     Gregorian date for which to compute zmanim
      * @param location geographic location with its halachic properties (Israel / Jerusalem flags)
      */
-    public Zmanim(LocalDate date, HLocation location) {
+    public Zmanim(LocalDate date, Location location) {
         this.date     = date;
         this.location = location;
     }
@@ -289,23 +289,23 @@ public class Zmanim {
      * </ul>
      *
      * <p>Rest-day and Yom Tov status are determined using the {@code inIsrael} flag
-     * supplied to the {@link HLocation} at construction time.
+     * supplied to the {@link Location} at construction time.
      *
      * @return a {@link Zman} with appropriate flags, or {@code null} if tomorrow is not a rest day
      */
     public Zman getCandleLightingZman() {
-        HDate todayGreg    = HCalendar.GREGORIAN.fromYMD(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
-        HDate tomorrowGreg = todayGreg.addDays(1);
+        IDate todayGreg    = ICalendar.GREGORIAN.fromYMD(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
+        IDate tomorrowGreg = todayGreg.addDays(1);
         if (!isRestDay(tomorrowGreg, location.isInIsrael())) return null;
         boolean todayIsRest      = isRestDay(todayGreg, location.isInIsrael());
-        boolean tomorrowIsYomTov = tomorrowGreg.getDayOfWeek() != 7; // Saturday = 7 in HDate
+        boolean tomorrowIsYomTov = tomorrowGreg.getDayOfWeek() != 7; // Saturday = 7 in IDate
         return getCandleLightingZmanInternal(todayIsRest, tomorrowIsYomTov);
     }
 
-    /** Saturday (7 in HDate) or any Yom Tov applicable at the given location. */
-    private static boolean isRestDay(HDate date, boolean inIsrael) {
+    /** Saturday (7 in IDate) or any Yom Tov applicable at the given location. */
+    private static boolean isRestDay(IDate date, boolean inIsrael) {
         if (date.getDayOfWeek() == 7) return true;
-        for (HJewishHoliday h : HJewishHoliday.values()) {
+        for (JewishSpecialDay h : JewishSpecialDay.values()) {
             if (h.isYomTov() && h.applies(inIsrael) && h.matches(date)) return true;
         }
         return false;

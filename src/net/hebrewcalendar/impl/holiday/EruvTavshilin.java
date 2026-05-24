@@ -1,31 +1,31 @@
 package net.hebrewcalendar.impl.holiday;
 
-import net.hebrewcalendar.HDate;
-import net.hebrewcalendar.HHoliday;
+import net.hebrewcalendar.IDate;
+import net.hebrewcalendar.SpecialDay;
 
 /**
  * Eruv Tavshilin: required on the day before a Yom Tov that falls on Friday,
  * or two days before a Yom Tov that spans Thursday–Friday (i.e. Thursday is
  * Yom Tov and Friday is also Yom Tov).
  *
- * <p>Day-of-week convention (same as {@link net.hebrewcalendar.HDate#getDayOfWeek()}):
+ * <p>Day-of-week convention (same as {@link net.hebrewcalendar.IDate#getDayOfWeek()}):
  * 1=Sun, 2=Mon, 3=Tue, 4=Wed, 5=Thu, 6=Fri, 7=Sat.</p>
  */
-public final class EruvTavshilin extends AbstractHoliday {
+public final class EruvTavshilin extends AbstractRecurringSpecialDay {
 
-    private final HHoliday[] _yomTovDays;
+    private final SpecialDay[] _yomTovDays;
 
     /**
      * @param name       display name
      * @param yomTovDays the Yom Tov days relevant for this location (Israel or diaspora)
      */
-    public EruvTavshilin(String name, HHoliday[] yomTovDays) {
+    public EruvTavshilin(String name, SpecialDay[] yomTovDays) {
         super(yomTovDays[0].getCalendar(), name);
         _yomTovDays = yomTovDays;
     }
 
-    private boolean isYomTov(HDate date) {
-        for (HHoliday h : _yomTovDays) {
+    private boolean isYomTov(IDate date) {
+        for (SpecialDay h : _yomTovDays) {
             if (h.matches(date)) return true;
         }
         return false;
@@ -40,9 +40,9 @@ public final class EruvTavshilin extends AbstractHoliday {
      * </ul>
      */
     @Override
-    public boolean matches(HDate date) {
+    public boolean matches(IDate date) {
         if (date.getDayOfWeek() == 7 || isYomTov(date)) return false; // already in rest day
-        HDate tomorrow = date.addDays(1);
+        IDate tomorrow = date.addDays(1);
         if (!isYomTov(tomorrow)) return false;
         int dow = tomorrow.getDayOfWeek();
         if (dow == 6) return true;                                 // YT on Friday

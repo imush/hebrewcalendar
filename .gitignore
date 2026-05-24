@@ -9,3 +9,7 @@ target/
 
 # macOS
 .DS_Store
+
+# Claude Code
+.claude/
+-Users-*/

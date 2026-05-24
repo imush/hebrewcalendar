@@ -1,16 +1,16 @@
 package net.hebrewcalendar.impl.holiday;
 
-import net.hebrewcalendar.HDate;
-import net.hebrewcalendar.HCalendar;
-import net.hebrewcalendar.HHoliday;
+import net.hebrewcalendar.IDate;
+import net.hebrewcalendar.ICalendar;
+import net.hebrewcalendar.SpecialDay;
 
 /**
  * Represents a special day that occurs on Nth day from another special day (holiday).
  */
 public class NthDayOfWeekFromPivot
-    extends AbstractHoliday
+    extends AbstractRecurringSpecialDay
 {
-    private final HHoliday _pivot;
+    private final SpecialDay _pivot;
     private final int _n;
     private final int _dayOfWeek;
     private final boolean _inclusive;
@@ -22,10 +22,10 @@ public class NthDayOfWeekFromPivot
      * @param dayOfWeek day of week (1=Sunday,... 7= Saturday). This can be negative to indicate the count
      *              of days from <i>end of month</i>.
      * @param n number of occurrence. This can be negative to indicate the <i>count from end of month</i>,
-     *          e.g. Thanksgiving in US is last Thursday in November, so would use constructor args (11, 5, -1)
+     *          e.g. Shabbat Hagadol is the last Shabbat before Pesach would use (1,15,-1, not inclusive)
      * @param inclusive whether pivot date counts if it matches the day of week
      */
-    public NthDayOfWeekFromPivot(HCalendar calendar, String name, HHoliday pivotDate, int dayOfWeek, int n, boolean inclusive)
+    public NthDayOfWeekFromPivot(ICalendar calendar, String name, SpecialDay pivotDate, int dayOfWeek, int n, boolean inclusive)
     {
         super(calendar, name);
         _pivot = pivotDate;
@@ -42,16 +42,16 @@ public class NthDayOfWeekFromPivot
      * @return true when matches
      */
     @Override
-    public boolean matches(HDate date0)
+    public boolean matches(IDate date0)
     {
         if (date0.getDayOfWeek() != _dayOfWeek)
             return false;
 
         int sign = _n > 0 ? 1 : -1;
-        HDate startSearch = _inclusive ? date0.addDays(-(_n-sign)*7) : date0.addDays(-(_n-sign)*7-sign);
-        HDate endSearch = _inclusive ? date0.addDays(-_n*7) : date0.addDays(-_n*7-sign);
+        IDate startSearch = _inclusive ? date0.addDays(-(_n-sign)*7) : date0.addDays(-(_n-sign)*7-sign);
+        IDate endSearch = _inclusive ? date0.addDays(-_n*7) : date0.addDays(-_n*7-sign);
 
-        for (HDate d = startSearch; !d.equals(endSearch); d = d.addDays(-sign)) {
+        for (IDate d = startSearch; !d.equals(endSearch); d = d.addDays(-sign)) {
             if (_pivot.matches(d))
                 return true;
         }
