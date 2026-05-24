@@ -13,11 +13,11 @@ public abstract class AbstractCalendar
      * @param day the day
      * @return an {@link IDate} object
      */
-    public final IDateImpl fromYMD(int year, int month, int day)
+    public final DateImpl fromYMD(int year, int month, int day)
     {
         int m = month > 0 ? month : monthsInYear(year) + 1 + month;
         int d = day > 0 ? day : monthLength(year, m) + 1 + day;
-        return new IDateImpl(this, year, m, d);
+        return new DateImpl(this, year, m, d);
     }
 
 
@@ -44,7 +44,7 @@ public abstract class AbstractCalendar
      * @return a new {@link IDate} object
      */
     @Override
-    public final IDateImpl addDays(final IDate date, final int numDays)
+    public final DateImpl addDays(final IDate date, final int numDays)
     {
         if (numDays < 0)
             return subtractDays(date, -numDays);
@@ -72,7 +72,7 @@ public abstract class AbstractCalendar
      * @return a new {@link IDate} object
      */
     @Override
-    public IDateImpl subtractDays(final IDate date, final int numDays)
+    public DateImpl subtractDays(final IDate date, final int numDays)
     {
         if (numDays < 0)
             return addDays(date, -numDays);
@@ -114,14 +114,14 @@ public abstract class AbstractCalendar
 
     abstract long getStart();
 
-    abstract IDateImpl fromAbs(long absDay);
+    abstract DateImpl fromAbs(long absDay);
 
     @Override
     public final IDate convert(IDate otherDate)
     {
         if (getType().equals(otherDate.getCalendarType()))
             return otherDate;
-        long absDay = ((IDateImpl)otherDate).absDay();
+        long absDay = ((DateImpl)otherDate).absDay();
         return fromAbs(absDay);
     }
 }

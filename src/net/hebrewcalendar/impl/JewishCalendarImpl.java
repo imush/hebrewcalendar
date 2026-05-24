@@ -187,7 +187,7 @@ public class JewishCalendarImpl
         return 0;
     }
 
-    IDateImpl fromAbs(long absDayFromBeginning)
+    DateImpl fromAbs(long absDayFromBeginning)
     {
         final int monthsIn19 = 12*19+7;
 
@@ -195,14 +195,14 @@ public class JewishCalendarImpl
 
         int cyclesToSkip = (int)(absDayFromBeginning/(cycle19.getDay() + 1));
 
-        IDateImpl startDay = new IDateImpl(this, cyclesToSkip*19 + 1, 7, 1);
+        DateImpl startDay = new DateImpl(this, cyclesToSkip*19 + 1, 7, 1);
         return startDay.addDays((int)(absDayFromBeginning - absDay(startDay)));
     }
 
     YearCheshvanKislevType getYearType(int year)
     {
-        final long rosh0 = absDay(new IDateImpl(this, year, 7, 1));
-        final long rosh1 = absDay(new IDateImpl(this, year+1, 7, 1));
+        final long rosh0 = absDay(new DateImpl(this, year, 7, 1));
+        final long rosh1 = absDay(new DateImpl(this, year+1, 7, 1));
         final int yearLength  = (int)(rosh1-rosh0);
 
         int excessLength = isLeap(year) ? yearLength - 383 : yearLength - 353;
@@ -233,7 +233,7 @@ public class JewishCalendarImpl
     }
 
     @Override
-    public IDateImpl firstDayOfYear(int year)
+    public DateImpl firstDayOfYear(int year)
     {
         return fromYMD(year, 7 ,1);
     }

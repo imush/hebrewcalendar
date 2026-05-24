@@ -72,8 +72,8 @@ public class JewishCalendarImplTest
 
         assertEquals(molad5776, molad5775.add(ONE_MONTH.times(12)));
 
-        IDateImpl h57750701 = hc.fromYMD(5775, 7, 1);
-        IDateImpl h57760701 = hc.fromYMD(5776, 7, 1);
+        DateImpl h57750701 = hc.fromYMD(5775, 7, 1);
+        DateImpl h57760701 = hc.fromYMD(5776, 7, 1);
 
         assertEquals(354L, h57760701.absDay() - h57750701.absDay());
     }
@@ -91,20 +91,20 @@ public class JewishCalendarImplTest
     @Test
     public void testAddSubtractDays()
     {
-        IDateImpl d1 = new IDateImpl(hc, 5777, 9, 1);
-        assertEquals(new IDateImpl(hc, 5777, 8, 29), d1.subtractDays(1));
+        DateImpl d1 = new DateImpl(hc, 5777, 9, 1);
+        assertEquals(new DateImpl(hc, 5777, 8, 29), d1.subtractDays(1));
     }
 
     @Test
     public void testDayOfWeek()
     {
-        IDateImpl d20161003 = new IDateImpl(hc, 5777, 7, 1);
+        DateImpl d20161003 = new DateImpl(hc, 5777, 7, 1);
         assertEquals(2, d20161003.getDayOfWeek());
 
-        IDateImpl d0 = new IDateImpl(hc, 5777, 8, 1);
+        DateImpl d0 = new DateImpl(hc, 5777, 8, 1);
         assertEquals(4, d0.getDayOfWeek());
 
-        IDateImpl d1 = new IDateImpl(hc, 5777, 9, 1);
+        DateImpl d1 = new DateImpl(hc, 5777, 9, 1);
         assertEquals(5, d1.getDayOfWeek());
     }
 

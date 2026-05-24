@@ -79,20 +79,20 @@ public abstract class CommonCalendar
     }
 
     @Override
-    IDateImpl fromAbs(long absDay)
+    DateImpl fromAbs(long absDay)
     {
         long absDayFromStart = absDay-getStart();
         final boolean isJulian = monthLength(1900, 2)==29;
         final int daysin400 = 365*400 + (isJulian ? 100 : 97);
 
         final int cycles = (int)((absDayFromStart-1)/daysin400);
-        IDate d0 = new IDateImpl(this, 1 + 400*cycles, 1, 1);
+        IDate d0 = new DateImpl(this, 1 + 400*cycles, 1, 1);
 
-        return (IDateImpl)d0.addDays((int)(absDayFromStart - cycles*daysin400-1));
+        return (DateImpl)d0.addDays((int)(absDayFromStart - cycles*daysin400-1));
     }
 
     @Override
-    public IDateImpl firstDayOfYear(int year)
+    public DateImpl firstDayOfYear(int year)
     {
         return fromYMD(year, 1, 1);
     }

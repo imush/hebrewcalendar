@@ -14,75 +14,75 @@ public class JulianCalendarTest
     public void addDays()
     {
         IDate d0 = cal.fromYMD(2000,1,1);
-        assertEquals(new IDateImpl(cal, 2000, 12, 31), d0.addDays(365));
-        assertEquals(new IDateImpl(cal, 2001, 1, 1), d0.addDays(366));
+        assertEquals(new DateImpl(cal, 2000, 12, 31), d0.addDays(365));
+        assertEquals(new DateImpl(cal, 2001, 1, 1), d0.addDays(366));
     }
 
     @Test
     public void subtractDays()
     {
-        IDateImpl d0 = new IDateImpl(cal, 2000,1,2);
-        IDateImpl d1 = new IDateImpl(cal, 2001,1,1);
+        DateImpl d0 = new DateImpl(cal, 2000,1,2);
+        DateImpl d1 = new DateImpl(cal, 2001,1,1);
         assertEquals(d0, d1.subtractDays(365));
     }
 
     @Test
     public void getAbsDay()
     {
-        IDateImpl d0 = new IDateImpl(cal, 1,1,1);
+        DateImpl d0 = new DateImpl(cal, 1,1,1);
         assertEquals(cal.getStart()+1, d0.absDay());
 
-        IDateImpl d20170101 = new IDateImpl(cal, 2017,1,1);
+        DateImpl d20170101 = new DateImpl(cal, 2017,1,1);
         assertEquals(cal.getStart()+2016*365+504+1, d20170101.absDay());
 
-        IDateImpl d20170701 = new IDateImpl(cal, 2017,7,1);
+        DateImpl d20170701 = new DateImpl(cal, 2017,7,1);
         assertEquals(cal.getStart()+2016*365+504+31+28+31+30+31+30+1, d20170701.absDay());
 
-        IDateImpl greg = new IDateImpl(GregorianCalendar.INSTANCE, 2017,1,1);
+        DateImpl greg = new DateImpl(GregorianCalendar.INSTANCE, 2017,1,1);
         assertEquals(13, d20170101.absDay()-greg.absDay());
     }
 
     @Test
     public void gregorianVsJulian()
     {
-        IDateImpl j0 = new IDateImpl(JulianCalendar.INSTANCE, 1,1,3);
-        IDateImpl g0 = new IDateImpl(GregorianCalendar.INSTANCE, 1,1,1);
+        DateImpl j0 = new DateImpl(JulianCalendar.INSTANCE, 1,1,3);
+        DateImpl g0 = new DateImpl(GregorianCalendar.INSTANCE, 1,1,1);
         assertEquals(j0.absDay(), g0.absDay());
 
-        IDateImpl j1 = new IDateImpl(JulianCalendar.INSTANCE, 2,1,3);
-        IDateImpl g1 = new IDateImpl(GregorianCalendar.INSTANCE, 2,1,1);
+        DateImpl j1 = new DateImpl(JulianCalendar.INSTANCE, 2,1,3);
+        DateImpl g1 = new DateImpl(GregorianCalendar.INSTANCE, 2,1,1);
         assertEquals(j1.absDay(), g1.absDay());
 
-        IDateImpl j101 = new IDateImpl(JulianCalendar.INSTANCE, 101,1,2);
-        IDateImpl g101 = new IDateImpl(GregorianCalendar.INSTANCE, 101,1,1);
+        DateImpl j101 = new DateImpl(JulianCalendar.INSTANCE, 101,1,2);
+        DateImpl g101 = new DateImpl(GregorianCalendar.INSTANCE, 101,1,1);
         assertEquals(j101.absDay(), g101.absDay());
 
-        IDateImpl j101a = new IDateImpl(JulianCalendar.INSTANCE, 100,2,29);
-        IDateImpl g101a = new IDateImpl(GregorianCalendar.INSTANCE, 100,2,27);
+        DateImpl j101a = new DateImpl(JulianCalendar.INSTANCE, 100,2,29);
+        DateImpl g101a = new DateImpl(GregorianCalendar.INSTANCE, 100,2,27);
         assertEquals(j101a.absDay(), g101a.absDay());
 
-        IDateImpl j101b = new IDateImpl(JulianCalendar.INSTANCE, 100,3,1);
-        IDateImpl g101b = new IDateImpl(GregorianCalendar.INSTANCE, 100,2,28);
+        DateImpl j101b = new DateImpl(JulianCalendar.INSTANCE, 100,3,1);
+        DateImpl g101b = new DateImpl(GregorianCalendar.INSTANCE, 100,2,28);
         assertEquals(j101b.absDay(), g101b.absDay());
 
-        IDateImpl j101c = new IDateImpl(JulianCalendar.INSTANCE, 100,3,2);
-        IDateImpl g101c = new IDateImpl(GregorianCalendar.INSTANCE, 100,3,1);
+        DateImpl j101c = new DateImpl(JulianCalendar.INSTANCE, 100,3,2);
+        DateImpl g101c = new DateImpl(GregorianCalendar.INSTANCE, 100,3,1);
         assertEquals(j101c.absDay(), g101c.absDay());
 
-        IDateImpl j1900a = new IDateImpl(JulianCalendar.INSTANCE, 1900,2,17);
-        IDateImpl g1900a = new IDateImpl(GregorianCalendar.INSTANCE, 1900,3,1);
+        DateImpl j1900a = new DateImpl(JulianCalendar.INSTANCE, 1900,2,17);
+        DateImpl g1900a = new DateImpl(GregorianCalendar.INSTANCE, 1900,3,1);
         assertEquals(j1900a.absDay(), g1900a.absDay());
 
-        IDateImpl j1900b = new IDateImpl(JulianCalendar.INSTANCE, 1900,2,29);
-        IDateImpl g1900b = new IDateImpl(GregorianCalendar.INSTANCE, 1900,3,13);
+        DateImpl j1900b = new DateImpl(JulianCalendar.INSTANCE, 1900,2,29);
+        DateImpl g1900b = new DateImpl(GregorianCalendar.INSTANCE, 1900,3,13);
         assertEquals(j1900b.absDay(), g1900b.absDay());
 
-        IDateImpl j1900c = new IDateImpl(JulianCalendar.INSTANCE, 1900,3,1);
-        IDateImpl g1900c = new IDateImpl(GregorianCalendar.INSTANCE, 1900,3,14);
+        DateImpl j1900c = new DateImpl(JulianCalendar.INSTANCE, 1900,3,1);
+        DateImpl g1900c = new DateImpl(GregorianCalendar.INSTANCE, 1900,3,14);
         assertEquals(j1900c.absDay(), g1900c.absDay());
 
-        IDateImpl j20170709 = new IDateImpl(JulianCalendar.INSTANCE, 2017,7, 9);
-        IDateImpl g20170722 = new IDateImpl(GregorianCalendar.INSTANCE, 2017,7,22);
+        DateImpl j20170709 = new DateImpl(JulianCalendar.INSTANCE, 2017,7, 9);
+        DateImpl g20170722 = new DateImpl(GregorianCalendar.INSTANCE, 2017,7,22);
         assertEquals(j20170709.absDay(), g20170722.absDay());
 
 
@@ -90,7 +90,7 @@ public class JulianCalendarTest
     @Test
     public void getCalendarType()
     {
-        IDateImpl d0 = new IDateImpl(cal, 2017,7,31);
+        DateImpl d0 = new DateImpl(cal, 2017,7,31);
 
         assertEquals(CalendarType.JULIAN, d0.getCalendarType());
     }
@@ -98,23 +98,23 @@ public class JulianCalendarTest
     @Test
     public void isValid()
     {
-        assertTrue(new IDateImpl(cal,1997,12, 31).isValid());
+        assertTrue(new DateImpl(cal,1997,12, 31).isValid());
         try {
-            new IDateImpl(cal,1997,12, 32);
+            new DateImpl(cal,1997,12, 32);
             fail("Illegal date created, no exception thrown");
         } catch(IllegalStateException ise) {}
 
         try {
-            new IDateImpl(cal,1997,0, 3);
+            new DateImpl(cal,1997,0, 3);
             fail("Illegal date created, no exception thrown");
         } catch(IllegalStateException ise) {}
 
-        assertTrue(new IDateImpl(cal,1996,2, 29).isValid());
-        assertTrue(new IDateImpl(cal,2000,2, 29).isValid());
-        assertTrue(new IDateImpl(cal,1900,2, 29).isValid());
+        assertTrue(new DateImpl(cal,1996,2, 29).isValid());
+        assertTrue(new DateImpl(cal,2000,2, 29).isValid());
+        assertTrue(new DateImpl(cal,1900,2, 29).isValid());
 
         try {
-            new IDateImpl(cal,2000,2, 30);
+            new DateImpl(cal,2000,2, 30);
             fail("Illegal date 2000-02-30 created, no exception thrown");
         } catch(IllegalStateException ise) {}
     }
@@ -122,13 +122,13 @@ public class JulianCalendarTest
     @Test
     public void getDayOfWeek()
     {
-        IDateImpl d0 = new IDateImpl(cal, 1,1,3);
+        DateImpl d0 = new DateImpl(cal, 1,1,3);
         assertEquals(2, d0.getDayOfWeek());
 
-        IDateImpl d1 = new IDateImpl(cal, 2,1,3);
+        DateImpl d1 = new DateImpl(cal, 2,1,3);
         assertEquals(3, d1.getDayOfWeek());
 
-        IDateImpl d2 = new IDateImpl(cal, 2017,7,9);
+        DateImpl d2 = new DateImpl(cal, 2017,7,9);
         assertEquals(7, d2.getDayOfWeek());
 
     }

@@ -8,7 +8,7 @@ import net.hebrewcalendar.IDate;
  * Concrete implementation of {@link net.hebrewcalendar.IDate}.
  * Instances are created by {@link AbstractCalendar#fromYMD} and conversion methods; not intended for direct construction.
  */
-public class IDateImpl
+public class DateImpl
     implements IDate
 
 {
@@ -18,7 +18,7 @@ public class IDateImpl
     private AbstractCalendar _calendar;
 
 
-    IDateImpl(AbstractCalendar calendar, int year, int month, int day)
+    DateImpl(AbstractCalendar calendar, int year, int month, int day)
     {
         _calendar = calendar;
         _year = year;
@@ -61,13 +61,13 @@ public class IDateImpl
     }
 
     @Override
-    public final IDateImpl addDays(int numDays)
+    public final DateImpl addDays(int numDays)
     {
         return _calendar.addDays(this, numDays);
     }
 
     @Override
-    public final IDateImpl subtractDays(int numDays)
+    public final DateImpl subtractDays(int numDays)
     {
         return _calendar.subtractDays(this, numDays);
     }
@@ -111,10 +111,10 @@ public class IDateImpl
     public int compareTo(IDate o)
     {
         if (!o.getCalendarType().equals(getCalendarType())) {
-            return Long.compare(absDay(), ((IDateImpl)o).absDay());
+            return Long.compare(absDay(), ((DateImpl)o).absDay());
         }
 
-        IDateImpl other = (IDateImpl)o;
+        DateImpl other = (DateImpl)o;
         if (other._year != _year)
             return other._year-_year;
 
