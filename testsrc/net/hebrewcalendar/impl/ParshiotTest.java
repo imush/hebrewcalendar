@@ -3,11 +3,13 @@ package net.hebrewcalendar.impl;
 import net.hebrewcalendar.ICalendar;
 import net.hebrewcalendar.IDate;
 import net.hebrewcalendar.JewishCalendar;
+import net.hebrewcalendar.JewishSpecialDay;
 import net.hebrewcalendar.Parsha;
 import org.junit.Test;
 
-import java.time.LocalDate;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.List;
 
@@ -30,6 +32,13 @@ public class ParshiotTest {
     }
 
     // ── helpers ───────────────────────────────────────────────────────────────
+
+    private static LocalDate firstShabbatOfYear(int hebrewYear) {
+        IDate rosh = JEWISH.fromYMD(hebrewYear, 7, 1);
+        IDate g = GREG.convert(rosh);
+        return LocalDate.of(g.getYear(), g.getMonth(), g.getDay())
+                        .with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
+    }
 
     private static LocalDate shabbatBeforeShavuot(int hebrewYear) {
         IDate shavuot = JEWISH.fromYMD(hebrewYear, 3, 6);
@@ -170,6 +179,74 @@ public class ParshiotTest {
         List<Parsha> israel = Parshiot.getParsha(date, true);
         assertFalse("Israel: expected a parsha on May 30 2026", israel.isEmpty());
         assertEquals("Israel: May 30 2026 should be Behaalotecha", Parsha.BEHAALOTECHA, israel.get(0));
+    }
+
+    @Test
+    public void testParshaArrayLength() {
+        for (ParshiotYearType t : ParshiotYearType.values())
+            assertEquals(t.schedule(false).size(), t.schedule(true).size());
+    }
+
+    /**
+     * Every ParshiotYearType schedule (both Israel and Diaspora) must contain
+     * all 53 parshiyot. Some may appear twice (e.g. Vayeilech at start and end
+     * of a year), but none may be absent.
+     */
+    @Test
+    public void allParshotAppearInEveryYearType() {
+        // VAYEILECH is legitimately absent from year types whose schedule starts with HAAZINU —
+        // it was read the prior year combined with NITZAVIM. All other 52 parshiyot must appear.
+        EnumSet<Parsha> mandatory = EnumSet.allOf(Parsha.class);
+        mandatory.remove(Parsha.VAYEILECH);
+
+        for (ParshiotYearType type : ParshiotYearType.values()) {
+            for (boolean inIsrael : new boolean[]{false, true}) {
+                String ctx = type + " " + (inIsrael ? "Israel" : "Diaspora");
+                EnumSet<Parsha> covered = EnumSet.noneOf(Parsha.class);
+                for (List<Parsha> slot : type.schedule(inIsrael)) {
+                    covered.addAll(slot);
+                }
+                EnumSet<Parsha> missing = EnumSet.copyOf(mandatory);
+                missing.removeAll(covered);
+                assertTrue(ctx + ": missing parshiyot " + missing, missing.isEmpty());
+            }
+        }
+    }
+
+    /**
+     * Every Shabbat on which getParsha returns an empty list must be a Yom Tov
+     * or Chol Hamoed Shabbat — never an ordinary Shabbat with a missing reading.
+     */
+    @Test
+    public void emptyShabbatotAreYomTovOrCholHamoed() {
+        for (int y = 5750; y <= 5820; y++) {
+            LocalDate firstShabbat = firstShabbatOfYear(y);
+            int rosh = JEWISH.fromYMD(y, 7, 1).getDayOfWeek();
+            int pesach = JEWISH.fromYMD(y, 1, 15).getDayOfWeek();
+            YearCheshvanKislevType yearType = JewishCalendarImpl.INSTANCE.getYearType(y);
+            for (boolean inIsrael : new boolean[]{false, true}) {
+                // iterate exactly the schedule's own length — avoids false empty returns past schedule.size()
+                int scheduleSize = ParshiotYearType.forYear(rosh, yearType, pesach).schedule(inIsrael).size();
+                for (int week = 0; week < scheduleSize; week++) {
+                    LocalDate shabbat = firstShabbat.plusWeeks(week);
+                    IDate gregDate = GREG.fromYMD(shabbat.getYear(), shabbat.getMonthValue(), shabbat.getDayOfMonth());
+                    if (!Parshiot.getParsha(gregDate, inIsrael).isEmpty()) continue;
+
+                    IDate hDate = JEWISH.convert(gregDate);
+                    boolean isHoliday = false;
+                    for (JewishSpecialDay sd : JewishSpecialDay.values()) {
+                        if (sd.applies(inIsrael) && sd.matches(hDate)
+                                && (sd.isYomTov() || sd.getName().contains("Chol Hamoed"))) {
+                            isHoliday = true;
+                            break;
+                        }
+                    }
+                    assertTrue("Year " + y + " at " + shabbat
+                            + " (" + (inIsrael ? "Israel" : "Diaspora") + "): empty slot is not a holiday",
+                            isHoliday);
+                }
+            }
+        }
     }
 
     // ── exception predicates ──────────────────────────────────────────────────

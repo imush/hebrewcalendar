@@ -170,6 +170,7 @@ public enum ParshiotYearType {
         );
     }
 
+
     // ── G : Sat/Short/Sun  (51 Shabbatot) ────────────────────────────────────
     private static List<List<Parsha>> scheduleS71() {
         return Arrays.asList(
@@ -278,6 +279,8 @@ public enum ParshiotYearType {
     }
 
     // ── J : Tue/Normal/Sat  Diaspora (55 Shabbatot) ──────────────────────────
+    // Shavuot falls on Sunday (Pesach=Sat + 50d ≡ Sun mod 7), so no Shabbat
+    // Yom Tov in Sivan — same post-Pesach structure as scheduleF27_D.
     private static List<List<Parsha>> scheduleN37_D() {
         return Arrays.asList(
             s(VAYEILECH), s(HAAZINU), e(),
@@ -288,10 +291,10 @@ public enum ParshiotYearType {
             s(VAYAKHEL), s(PEKUDEI), s(VAYIKRA), s(TZAV),
             s(SHEMINI), s(TAZRIA), s(METZORA), e(), e(),
             s(ACHAREI_MOT), s(KEDOSHIM), s(EMOR), s(BEHAR), s(BECHUKOTAI),
-            s(BAMIDBAR), e(),
-            s(NASO), s(BEHAALOTECHA), s(SHELACH), s(KORACH), d(CHUKAT,BALAK),
-            s(PINCHAS), d(MATOT,MASEI), s(DEVARIM), s(VAETCHANAN), s(EIKEV),
-            s(REEH), s(SHOFTIM), s(KI_TEITZEI), s(KI_TAVO), s(NITZAVIM)
+            s(BAMIDBAR), s(NASO), s(BEHAALOTECHA), s(SHELACH), s(KORACH),
+            s(CHUKAT), s(BALAK), s(PINCHAS), d(MATOT,MASEI),
+            s(DEVARIM), s(VAETCHANAN), s(EIKEV), s(REEH),
+            s(SHOFTIM), s(KI_TEITZEI), s(KI_TAVO), s(NITZAVIM)
         );
     }
 
