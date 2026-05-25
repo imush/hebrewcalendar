@@ -33,7 +33,7 @@ public enum Parsha {
     SHEMINI      ("Shemini",      "שמיני"),
     TAZRIA       ("Tazria",       "תזריע"),
     METZORA      ("Metzora",      "מצורע"),
-    ACHAREI_MOT  ("Acharei Mot",  "אחרי מות"),
+    ACHAREI_MOT  ("Acharei",      "אחרי"),
     KEDOSHIM     ("Kedoshim",     "קדושים"),
     EMOR         ("Emor",         "אמור"),
     BEHAR        ("Behar",        "בהר"),
