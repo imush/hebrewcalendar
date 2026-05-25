@@ -146,8 +146,8 @@ public enum ParshiotYearType {
             s(YITRO), s(MISHPATIM), s(TERUMAH), s(TETZAVEH), s(KI_TISA),
             d(VAYAKHEL,PEKUDEI), s(VAYIKRA), s(TZAV), e(), e(),
             s(SHEMINI), d(TAZRIA,METZORA), d(ACHAREI_MOT,KEDOSHIM), s(EMOR),
-            d(BEHAR,BECHUKOTAI), s(BAMIDBAR), e(),
-            s(NASO), s(BEHAALOTECHA), s(SHELACH), s(KORACH), d(CHUKAT,BALAK),
+            d(BEHAR,BECHUKOTAI), s(BAMIDBAR),
+            s(NASO), s(BEHAALOTECHA), s(SHELACH), s(KORACH), s(CHUKAT), s(BALAK),
             s(PINCHAS), d(MATOT,MASEI), s(DEVARIM), s(VAETCHANAN), s(EIKEV),
             s(REEH), s(SHOFTIM), s(KI_TEITZEI), s(KI_TAVO), s(NITZAVIM)
         );
