@@ -169,7 +169,20 @@ public enum JewishSpecialDay
                     NINETEENTH_KISLEV, YUD_SHVAT, NISAN_11, TAMUZ_3, TAMUZ_12, TAMUZ_13, CHAI_ELUL
             });
 
+    private static final Set<JewishSpecialDay> CHOL_HAMOED_DAYS = createCollection(
+            new JewishSpecialDay[]{
+                    CHOL_HAMOED_PESACH_1I, CHOL_HAMOED_PESACH_2I, CHOL_HAMOED_PESACH_3I,
+                    CHOL_HAMOED_PESACH_4I, CHOL_HAMOED_PESACH_5I,
+                    CHOL_HAMOED_PESACH_1C, CHOL_HAMOED_PESACH_2C, CHOL_HAMOED_PESACH_3C,
+                    CHOL_HAMOED_PESACH_4C,
+                    CHOL_HAMOED_SUKKOT_1I, CHOL_HAMOED_SUKKOT_2I, CHOL_HAMOED_SUKKOT_3I,
+                    CHOL_HAMOED_SUKKOT_4I, CHOL_HAMOED_SUKKOT_5I, HOSHANA_RABBA,
+                    CHOL_HAMOED_SUKKOT_1C, CHOL_HAMOED_SUKKOT_2C, CHOL_HAMOED_SUKKOT_3C,
+                    CHOL_HAMOED_SUKKOT_4C
+            });
+
     public boolean isYomTov()       { return YOM_TOV_DAYS.contains(this); }
+    public boolean isCholHamoed()   { return CHOL_HAMOED_DAYS.contains(this); }
     public boolean isFast()         { return FAST_DAYS.contains(this); }
     public boolean isEruvTavshilin(){ return ERUV_TAVSHILIN_DAYS.contains(this); }
     public boolean isChabad()       { return CHABAD_DAYS.contains(this); }

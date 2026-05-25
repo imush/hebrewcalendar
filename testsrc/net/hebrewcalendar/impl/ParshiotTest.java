@@ -304,7 +304,7 @@ public class ParshiotTest {
                     boolean isHoliday = false;
                     for (JewishSpecialDay sd : JewishSpecialDay.values()) {
                         if (sd.applies(inIsrael) && sd.matches(hDate)
-                                && (sd.isYomTov() || sd.getName().contains("Chol Hamoed"))) {
+                                && (sd.isYomTov() || sd.isCholHamoed())) {
                             isHoliday = true;
                             break;
                         }
