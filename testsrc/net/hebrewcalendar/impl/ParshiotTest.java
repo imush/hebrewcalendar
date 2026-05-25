@@ -192,6 +192,74 @@ public class ParshiotTest {
      * all 53 parshiyot. Some may appear twice (e.g. Vayeilech at start and end
      * of a year), but none may be absent.
      */
+    /**
+     * In non-leap years, Vayakhel-Pekudei is split if and only if
+     * Rosh Chodesh Tevet falls on Tuesday-Wednesday (i.e. Kislev has 30 days
+     * and Kislev 30 is a Tuesday), which uniquely identifies year type F51.
+     * From 5 klalim of R. Chaim Mordechai Brecher, printed in the back of Mikraot Gedolot.
+     */
+    @Test
+    public void vayakhelPekudeiSplitIffRoshChodeshTevetTuesdayWednesday() {
+        for (int y = 5750; y <= 5820; y++) {
+            if (JEWISH.isLeap(y)) continue;
+            YearCheshvanKislevType yearType = JewishCalendarImpl.INSTANCE.getYearType(y);
+            // 2-day RC Tevet (Kislev 30 + Tevet 1) exists only when Kislev has 30 days
+            boolean rcTuesdayWednesday = false;
+            if (yearType != YearCheshvanKislevType.SHORT) {
+                IDate kislev30 = JEWISH.fromYMD(y, 9, 30);
+                rcTuesdayWednesday = (kislev30.getDayOfWeek() == 3); // Tue=3, Wed=4 follows
+            }
+            int rosh   = JEWISH.fromYMD(y, 7,  1).getDayOfWeek();
+            int pesach = JEWISH.fromYMD(y, 1, 15).getDayOfWeek();
+            for (boolean inIsrael : new boolean[]{false, true}) {
+                String ctx = "Year " + y + " " + (inIsrael ? "Israel" : "Diaspora");
+                List<List<Parsha>> schedule =
+                    ParshiotYearType.forYear(rosh, yearType, pesach).schedule(inIsrael);
+                boolean combined = schedule.stream()
+                    .anyMatch(slot -> slot.contains(Parsha.VAYAKHEL) && slot.contains(Parsha.PEKUDEI));
+                if (rcTuesdayWednesday) {
+                    assertFalse(ctx + ": Vayakhel+Pekudei must be split when RC Tevet is Tue+Wed",
+                        combined);
+                } else {
+                    assertTrue(ctx + ": Vayakhel+Pekudei must be combined when RC Tevet is not Tue+Wed",
+                        combined);
+                }
+            }
+        }
+    }
+
+    /**
+     * In every leap year, the four traditionally-combined pairs are always
+     * read separately — never doubled.
+     * From 5 klalim of R. Chaim Mordechai Brecher, printed in the back of Mikraot Gedolot.
+     */
+    @Test
+    public void traditionalPairsAlwaysSplitInLeapYears() {
+        EnumSet<ParshiotYearType> leapTypes = EnumSet.of(
+            ParshiotYearType.F27, ParshiotYearType.S25, ParshiotYearType.N37,
+            ParshiotYearType.F53, ParshiotYearType.S51,
+            ParshiotYearType.F75, ParshiotYearType.S73);
+
+        for (ParshiotYearType type : leapTypes) {
+            for (boolean inIsrael : new boolean[]{false, true}) {
+                String ctx = type + " " + (inIsrael ? "Israel" : "Diaspora");
+                List<List<Parsha>> schedule = type.schedule(inIsrael);
+                assertNotCombined(ctx, schedule, Parsha.VAYAKHEL,    Parsha.PEKUDEI);
+                assertNotCombined(ctx, schedule, Parsha.TAZRIA,      Parsha.METZORA);
+                assertNotCombined(ctx, schedule, Parsha.ACHAREI_MOT, Parsha.KEDOSHIM);
+                assertNotCombined(ctx, schedule, Parsha.BEHAR,       Parsha.BECHUKOTAI);
+            }
+        }
+    }
+
+    private static void assertNotCombined(String ctx, List<List<Parsha>> schedule,
+                                           Parsha a, Parsha b) {
+        for (List<Parsha> slot : schedule) {
+            assertFalse(ctx + ": " + a + "+" + b + " must be split in leap year",
+                slot.contains(a) && slot.contains(b));
+        }
+    }
+
     @Test
     public void allParshotAppearInEveryYearType() {
         // VAYEILECH is legitimately absent from year types whose schedule starts with HAAZINU —
@@ -244,6 +312,120 @@ public class ParshiotTest {
                     assertTrue("Year " + y + " at " + shabbat
                             + " (" + (inIsrael ? "Israel" : "Diaspora") + "): empty slot is not a holiday",
                             isHoliday);
+                }
+            }
+        }
+    }
+
+    /**
+     * In Diaspora, Matot-Masei is split if and only if it is a leap year satisfying
+     * one of:
+     *   (a) SHORT year (Kislev=29) → Rosh Chodesh Tevet is 1 day on Monday, or
+     *   (b) non-SHORT year (Kislev=30) → Rosh Chodesh Tevet is 2 days (Kislev 30 + Tevet 1)
+     *       falling on Tuesday-Wednesday.
+     *
+     * In Israel the rule is different for leap years with Saturday Pesach
+     * (types F27, N37), so this test covers Diaspora only.
+     * From 5 klalim of R. Chaim Mordechai Brecher, printed in the back of Mikraot Gedolot.
+     */
+    @Test
+    public void matotMaseiSplitIffLeapWithSpecialRoshChodeshTevet() {
+        for (int y = 5750; y <= 5820; y++) {
+            boolean leap = JEWISH.isLeap(y);
+            YearCheshvanKislevType yearType = JewishCalendarImpl.INSTANCE.getYearType(y);
+
+            // (a) SHORT leap: Tevet 1 is Monday (dayOfWeek=2)
+            boolean condA = leap && yearType == YearCheshvanKislevType.SHORT
+                            && JEWISH.fromYMD(y, 10, 1).getDayOfWeek() == 2;
+            // (b) non-SHORT leap: Kislev 30 is Tuesday (dayOfWeek=3), making RC Tevet Tue+Wed
+            boolean condB = leap && yearType != YearCheshvanKislevType.SHORT
+                            && JEWISH.fromYMD(y, 9, 30).getDayOfWeek() == 3;
+
+            boolean splitExpected = condA || condB;
+
+            int rosh   = JEWISH.fromYMD(y, 7,  1).getDayOfWeek();
+            int pesach = JEWISH.fromYMD(y, 1, 15).getDayOfWeek();
+            List<List<Parsha>> schedule =
+                ParshiotYearType.forYear(rosh, yearType, pesach).schedule(false);
+            boolean combined = schedule.stream()
+                .anyMatch(slot -> slot.contains(Parsha.MATOT) && slot.contains(Parsha.MASEI));
+
+            String ctx = "Year " + y + " Diaspora";
+            if (splitExpected) {
+                assertFalse(ctx + ": Matot+Masei must be split (condA=" + condA + " condB=" + condB + ")",
+                    combined);
+            } else {
+                assertTrue(ctx + ": Matot+Masei must be combined", combined);
+            }
+        }
+    }
+
+    /**
+     * Chukat and Balak are combined (read together) only in Diaspora, and only when
+     * Rosh Chodesh Tammuz falls on Tuesday-Wednesday — i.e. Tammuz 1 is Tuesday
+     * (getDayOfWeek()==3), which happens exactly when Pesach falls on Thursday.
+     *
+     * In Israel they are always read separately.
+     * From 5 klalim of R. Chaim Mordechai Brecher, printed in the back of Mikraot Gedolot.
+     */
+    @Test
+    public void chukatBalakCombinedOnlyInDiasporaWhenRoshChodeshTammuzIsTuesdayWednesday() {
+        for (int y = 5750; y <= 5820; y++) {
+            // Sivan always has 30 days, so RC Tammuz = Sivan 30 + Tammuz 1.
+            // "Tuesday and Wednesday" refers to Tammuz 1 (Tue) and Tammuz 2 (Wed),
+            // which occurs exactly when Pesach = Thursday.
+            boolean rcTammuzTueWed = JEWISH.fromYMD(y, 4, 1).getDayOfWeek() == 3;
+
+            int rosh   = JEWISH.fromYMD(y, 7,  1).getDayOfWeek();
+            int pesach = JEWISH.fromYMD(y, 1, 15).getDayOfWeek();
+            YearCheshvanKislevType yearType = JewishCalendarImpl.INSTANCE.getYearType(y);
+
+            for (boolean inIsrael : new boolean[]{false, true}) {
+                List<List<Parsha>> schedule =
+                    ParshiotYearType.forYear(rosh, yearType, pesach).schedule(inIsrael);
+                boolean combined = schedule.stream()
+                    .anyMatch(slot -> slot.contains(Parsha.CHUKAT) && slot.contains(Parsha.BALAK));
+
+                String ctx = "Year " + y + " " + (inIsrael ? "Israel" : "Diaspora");
+                boolean expectCombined = !inIsrael && rcTammuzTueWed;
+
+                if (expectCombined) {
+                    assertTrue(ctx + ": Chukat+Balak must be combined when RC Tammuz is Tue+Wed", combined);
+                } else {
+                    assertFalse(ctx + ": Chukat+Balak must be split", combined);
+                }
+            }
+        }
+    }
+
+    /**
+     * Nitzavim is read alone (not combined with Vayeilech) if and only if the
+     * following year's Rosh Hashana falls on Monday or Tuesday.
+     * The rule holds for all year types, in both Israel and Diaspora.
+     * From 5 klalim of R. Chaim Mordechai Brecher, printed in the back of Mikraot Gedolot.
+     */
+    @Test
+    public void nitzavimIsStandaloneIffNextRoshHashanaIsMondayOrTuesday() {
+        for (int y = 5750; y <= 5820; y++) {
+            int nextRosh = JEWISH.fromYMD(y + 1, 7, 1).getDayOfWeek(); // 2=Mon, 3=Tue
+            boolean expectStandalone = (nextRosh == 2 || nextRosh == 3);
+
+            int rosh   = JEWISH.fromYMD(y, 7,  1).getDayOfWeek();
+            int pesach = JEWISH.fromYMD(y, 1, 15).getDayOfWeek();
+            YearCheshvanKislevType yearType = JewishCalendarImpl.INSTANCE.getYearType(y);
+
+            for (boolean inIsrael : new boolean[]{false, true}) {
+                List<List<Parsha>> schedule =
+                    ParshiotYearType.forYear(rosh, yearType, pesach).schedule(inIsrael);
+                boolean combined = schedule.stream()
+                    .anyMatch(slot -> slot.contains(Parsha.NITZAVIM) && slot.contains(Parsha.VAYEILECH));
+
+                String ctx = "Year " + y + " " + (inIsrael ? "Israel" : "Diaspora")
+                    + " (next RH day=" + nextRosh + ")";
+                if (expectStandalone) {
+                    assertFalse(ctx + ": Nitzavim must be standalone", combined);
+                } else {
+                    assertTrue(ctx + ": Nitzavim must be combined with Vayeilech", combined);
                 }
             }
         }
