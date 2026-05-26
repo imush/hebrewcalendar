@@ -338,20 +338,20 @@ public class JewishSpecialDayTest
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 10, 12),
                     JewishSpecialDay.SHMINI_ATZERES_C.getPrevOccurrence(H20171231, true));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 10, 13),
-                    JewishSpecialDay.SIMCHAS_TORAH_C.getPrevOccurrence(H20171231, true));
+                    JewishSpecialDay.SIMCHAT_TORAH_C.getPrevOccurrence(H20171231, true));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 10, 12),
-                    JewishSpecialDay.SIMCHAS_TORAH_I.getPrevOccurrence(H20171231, true));
+                    JewishSpecialDay.SIMCHAT_TORAH_I.getPrevOccurrence(H20171231, true));
 
             assertTrue(JewishSpecialDay.SHMINI_ATZERES_C.isYomTov());
-            assertTrue(JewishSpecialDay.SIMCHAS_TORAH_I.isYomTov());
-            assertTrue(JewishSpecialDay.SIMCHAS_TORAH_C.isYomTov());
+            assertTrue(JewishSpecialDay.SIMCHAT_TORAH_I.isYomTov());
+            assertTrue(JewishSpecialDay.SIMCHAT_TORAH_C.isYomTov());
             assertFalse(JewishSpecialDay.CHOL_HAMOED_SUKKOT_3C.isYomTov());
             assertFalse(JewishSpecialDay.CHOL_HAMOED_SUKKOT_3I.isYomTov());
 
-            assertFalse(JewishSpecialDay.SIMCHAS_TORAH_C.applies(true));
-            assertTrue(JewishSpecialDay.SIMCHAS_TORAH_I.applies(true));
-            assertFalse(JewishSpecialDay.SIMCHAS_TORAH_I.applies(false));
-            assertTrue(JewishSpecialDay.SIMCHAS_TORAH_C.applies(false));
+            assertFalse(JewishSpecialDay.SIMCHAT_TORAH_C.applies(true));
+            assertTrue(JewishSpecialDay.SIMCHAT_TORAH_I.applies(true));
+            assertFalse(JewishSpecialDay.SIMCHAT_TORAH_I.applies(false));
+            assertTrue(JewishSpecialDay.SIMCHAT_TORAH_C.applies(false));
             assertFalse(JewishSpecialDay.SHMINI_ATZERES_C.applies(true));
             assertTrue(JewishSpecialDay.SHMINI_ATZERES_C.applies(false));
 

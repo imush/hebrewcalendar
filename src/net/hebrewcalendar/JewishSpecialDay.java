@@ -24,6 +24,15 @@ public enum JewishSpecialDay
     CHOL_HAMOED_PESACH_3C(new MonthDaySpecialDay(ICalendar.JEWISH, "Chol Hamoed Pesach", 1, 19)),
     CHOL_HAMOED_PESACH_4C(new MonthDaySpecialDay(ICalendar.JEWISH, "Chol Hamoed Pesach", 1, 20)),
     SHABBAT_HAGADOL(new NthDayOfWeekFromPivot(ICalendar.JEWISH, "Shabbat Hagadol", FIRST_DAY_PESACH, 7, -1, false)),
+    // Arba Parshiyot — pivot uses month=-1 (last month of year: Adar in regular year, Adar II in leap)
+    SHABBAT_SHEKALIM(new NthDayOfWeekFromPivot(ICalendar.JEWISH, "Shabbat Shekalim",
+            new MonthDaySpecialDay(ICalendar.JEWISH, "1 Adar", -1, 1), 7, -1, true)),
+    SHABBAT_ZACHOR(new NthDayOfWeekFromPivot(ICalendar.JEWISH, "Shabbat Zachor",
+            new MonthDaySpecialDay(ICalendar.JEWISH, "13 Adar", -1, 13), 7, -1, true)),
+    SHABBAT_PARA(new NthDayOfWeekFromPivot(ICalendar.JEWISH, "Shabbat Para",
+            new MonthDaySpecialDay(ICalendar.JEWISH, "1 Nisan", 1, 1), 7, -2, true)),
+    SHABBAT_HACHODESH(new NthDayOfWeekFromPivot(ICalendar.JEWISH, "Shabbat Hachodesh",
+            new MonthDaySpecialDay(ICalendar.JEWISH, "1 Nisan", 1, 1), 7, -1, true)),
     PESACH_SHENI(new MonthDaySpecialDay(ICalendar.JEWISH, "Pesach Sheni", 2, 14)),
     LAG_BAOMER(new MonthDaySpecialDay(ICalendar.JEWISH, "Lag Baomer", 2, 18)),
     SHAVUOT(new MonthDaySpecialDay(ICalendar.JEWISH, "Shavuot", 3, 6)),
@@ -48,6 +57,8 @@ public enum JewishSpecialDay
             new ConjunctionSpecialDay("9 Av no Shabbos", new SpecialDay[]{new MonthDaySpecialDay(ICalendar.JEWISH, "Fast of 9th day of Av", 5, 10),
                     new NthDayOfWeek(ICalendar.JEWISH, 1)})
     })),
+    SHABBAT_CHAZON(new NthDayOfWeekFromPivot(ICalendar.JEWISH, "Shabbat Chazon",
+            new MonthDaySpecialDay(ICalendar.JEWISH, "9 Av", 5, 9), 7, -1, true)),
     CHAI_ELUL(new MonthDaySpecialDay(ICalendar.JEWISH, "Chai Elul", 6, 18)),
     ROSH_HASHANA_1(new MonthDaySpecialDay(ICalendar.JEWISH, "First day Rosh Hashana", 7, 1)),
     ROSH_HASHANA_2(new MonthDaySpecialDay(ICalendar.JEWISH, "2nd day Rosh Hashana", 7, 2)),
@@ -58,7 +69,7 @@ public enum JewishSpecialDay
     FIRST_DAY_SUKKOT(new MonthDaySpecialDay(ICalendar.JEWISH, "1st day Sukkot", 7, 15)),
     SECOND_DAY_SUKKOT_C(new MonthDaySpecialDay(ICalendar.JEWISH, "2nd day Sukkot", 7, 16)),
     SHMINI_ATZERES_C(new MonthDaySpecialDay(ICalendar.JEWISH, "Shemini Atzeret", 7, 22)),
-    SIMCHAS_TORAH_C(new MonthDaySpecialDay(ICalendar.JEWISH, "Simchat Torah", 7, 23)),
+    SIMCHAT_TORAH_C(new MonthDaySpecialDay(ICalendar.JEWISH, "Simchat Torah", 7, 23)),
     CHOL_HAMOED_SUKKOT_1I(new MonthDaySpecialDay(ICalendar.JEWISH, "Chol Hamoed Sukkot", 7, 16)),
     CHOL_HAMOED_SUKKOT_2I(new MonthDaySpecialDay(ICalendar.JEWISH, "Chol Hamoed Sukkot", 7, 17)),
     CHOL_HAMOED_SUKKOT_3I(new MonthDaySpecialDay(ICalendar.JEWISH, "Chol Hamoed Sukkot", 7, 18)),
@@ -69,7 +80,7 @@ public enum JewishSpecialDay
     CHOL_HAMOED_SUKKOT_2C(new MonthDaySpecialDay(ICalendar.JEWISH, "Chol Hamoed Sukkot", 7, 18)),
     CHOL_HAMOED_SUKKOT_3C(new MonthDaySpecialDay(ICalendar.JEWISH, "Chol Hamoed Sukkot", 7, 19)),
     CHOL_HAMOED_SUKKOT_4C(new MonthDaySpecialDay(ICalendar.JEWISH, "Chol Hamoed Sukkot", 7, 20)),
-    SIMCHAS_TORAH_I(new MonthDaySpecialDay(ICalendar.JEWISH, "Simchas Torah", 7, 22)),
+    SIMCHAT_TORAH_I(new MonthDaySpecialDay(ICalendar.JEWISH, "Simchat Torah", 7, 22)),
     TAL_UMATAR_I(new TalUMatar(true, "Tal Umatar")),
     TAL_UMATAR_D(new TalUMatar(false, "Tal Umatar")),
     NINETEENTH_KISLEV(new MonthDaySpecialDay(ICalendar.JEWISH, "19 Kislev", 9, 19)),
@@ -114,7 +125,7 @@ public enum JewishSpecialDay
             FIRST_DAY_PESACH, SECOND_DAY_PESACH_C, SEVENTH_DAY_PESACH, LAST_DAY_PESACH_C,
             SHAVUOT, SHAVUOT_2C,
             ROSH_HASHANA_1, ROSH_HASHANA_2,
-            FIRST_DAY_SUKKOT, SECOND_DAY_SUKKOT_C, SHMINI_ATZERES_C, SIMCHAS_TORAH_C
+            FIRST_DAY_SUKKOT, SECOND_DAY_SUKKOT_C, SHMINI_ATZERES_C, SIMCHAT_TORAH_C
     }));
 
    
@@ -128,7 +139,7 @@ public enum JewishSpecialDay
             new JewishSpecialDay[]{
                     CHOL_HAMOED_PESACH_1I, CHOL_HAMOED_PESACH_2I, CHOL_HAMOED_PESACH_3I, CHOL_HAMOED_PESACH_4I,
                     CHOL_HAMOED_PESACH_5I, CHOL_HAMOED_SUKKOT_1I, CHOL_HAMOED_SUKKOT_2I, CHOL_HAMOED_SUKKOT_3I,
-                    CHOL_HAMOED_SUKKOT_4I, CHOL_HAMOED_SUKKOT_5I, SIMCHAS_TORAH_I,
+                    CHOL_HAMOED_SUKKOT_4I, CHOL_HAMOED_SUKKOT_5I, SIMCHAT_TORAH_I,
                     ERUV_TAVSHILIN_I, TAL_UMATAR_I
             }
     );
@@ -139,7 +150,7 @@ public enum JewishSpecialDay
                     CHOL_HAMOED_PESACH_1C, CHOL_HAMOED_PESACH_2C, CHOL_HAMOED_PESACH_3C, CHOL_HAMOED_PESACH_4C,
                     SHAVUOT_2C, SECOND_DAY_SUKKOT_C,
                     CHOL_HAMOED_SUKKOT_1C, CHOL_HAMOED_SUKKOT_2C, CHOL_HAMOED_SUKKOT_3C, CHOL_HAMOED_SUKKOT_4C,
-                    SHMINI_ATZERES_C, SIMCHAS_TORAH_C,
+                    SHMINI_ATZERES_C, SIMCHAT_TORAH_C,
                     ERUV_TAVSHILIN_C, TAL_UMATAR_D
             }
     );
@@ -152,6 +163,24 @@ public enum JewishSpecialDay
             new JewishSpecialDay[]{TAL_UMATAR_I, TAL_UMATAR_D}
     );
 
+    private static final Set<JewishSpecialDay> ARBA_PARSHIYOT_DAYS = createCollection(
+            new JewishSpecialDay[]{SHABBAT_SHEKALIM, SHABBAT_ZACHOR, SHABBAT_PARA, SHABBAT_HACHODESH}
+    );
+
+    private static final Set<JewishSpecialDay> CHANUKAH_DAYS = createCollection(
+            new JewishSpecialDay[]{
+                    FIRST_DAY_CHANUKAH, SECOND_DAY_CHANUKAH, THIRD_DAY_CHANUKAH, FOURTH_DAY_CHANUKAH,
+                    FIFTH_DAY_CHANUKAH, SIXTH_DAY_CHANUKAH, SEVENTH_DAY_CHANUKAH, EIGHTH_DAY_CHANUKAH
+            }
+    );
+
+    private static final Set<String> CHANUKAH_NAMES;
+    static {
+        Set<String> s = new HashSet<>();
+        for (JewishSpecialDay d : CHANUKAH_DAYS) s.add(d.getName());
+        CHANUKAH_NAMES = Collections.unmodifiableSet(s);
+    }
+
     private static final Set<JewishSpecialDay> FAST_DAYS = createCollection(
             new JewishSpecialDay[]{
                     TAANIT_ESTHER, TZOM_GEDALIA, TENTH_TEVES, FAST_TAMUZ_17, FAST_AV_9
@@ -161,7 +190,7 @@ public enum JewishSpecialDay
             new JewishSpecialDay[]{
                     FIRST_DAY_PESACH, SECOND_DAY_PESACH_C, SEVENTH_DAY_PESACH, LAST_DAY_PESACH_C,
                     SHAVUOT, SHAVUOT_2C, ROSH_HASHANA_1, ROSH_HASHANA_2, YOM_KIPPUR,
-                    FIRST_DAY_SUKKOT, SECOND_DAY_SUKKOT_C, SIMCHAS_TORAH_I, SIMCHAS_TORAH_C, SHMINI_ATZERES_C
+                    FIRST_DAY_SUKKOT, SECOND_DAY_SUKKOT_C, SIMCHAT_TORAH_I, SIMCHAT_TORAH_C, SHMINI_ATZERES_C
             });
 
     private static final Set<JewishSpecialDay> CHABAD_DAYS = createCollection(
@@ -181,12 +210,16 @@ public enum JewishSpecialDay
                     CHOL_HAMOED_SUKKOT_4C
             });
 
-    public boolean isYomTov()       { return YOM_TOV_DAYS.contains(this); }
-    public boolean isCholHamoed()   { return CHOL_HAMOED_DAYS.contains(this); }
-    public boolean isFast()         { return FAST_DAYS.contains(this); }
-    public boolean isEruvTavshilin(){ return ERUV_TAVSHILIN_DAYS.contains(this); }
-    public boolean isChabad()       { return CHABAD_DAYS.contains(this); }
-    public boolean isTalUMatar()    { return TAL_UMATAR_DAYS.contains(this); }
+    public boolean isYomTov()         { return YOM_TOV_DAYS.contains(this); }
+    public boolean isCholHamoed()     { return CHOL_HAMOED_DAYS.contains(this); }
+    public boolean isFast()           { return FAST_DAYS.contains(this); }
+    public boolean isEruvTavshilin()  { return ERUV_TAVSHILIN_DAYS.contains(this); }
+    public boolean isChabad()         { return CHABAD_DAYS.contains(this); }
+    public boolean isTalUMatar()      { return TAL_UMATAR_DAYS.contains(this); }
+    public boolean isArbaParshiyot()  { return ARBA_PARSHIYOT_DAYS.contains(this); }
+    public boolean isChanukah()       { return CHANUKAH_DAYS.contains(this); }
+
+    public static boolean isChanukahName(String name) { return CHANUKAH_NAMES.contains(name); }
     
     private final SpecialDay _delegate;
 

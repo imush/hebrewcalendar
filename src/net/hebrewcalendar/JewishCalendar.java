@@ -1,5 +1,6 @@
 package net.hebrewcalendar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -106,4 +107,36 @@ public interface JewishCalendar
      *         empty list on a Shabbat that falls on Yom Tov or Chol Hamoed
      */
     List<Parsha> getParsha(IDate date, boolean inIsrael);
+
+    /**
+     * Returns the special maftir Torah readings for the given Shabbat date.
+     *
+     * <p>Returns an empty list if the date is not Shabbat. Otherwise, returns the
+     * names of any applicable special readings: Rosh Chodesh, Chanukah, Yom Tov,
+     * Chol Hamoed, or one of the four Arba Parshiyot (Shekalim, Zachor, Para, Hachodesh).
+     *
+     * @param date     date to check (any calendar)
+     * @param inIsrael true for Eretz Israel schedule, false for Diaspora
+     * @return list of special maftir names; empty if not Shabbat or no special reading
+     */
+    default List<String> specialMaftir(IDate date, boolean inIsrael) {
+        if (date.getDayOfWeek() != 7) return List.of();
+        List<String> result = new ArrayList<>();
+        boolean chanukahAdded = false;
+        for (JewishSpecialDay sd : JewishSpecialDay.values()) {
+            if (!sd.applies(inIsrael) || !sd.matches(date)) continue;
+            if (sd == JewishSpecialDay.ROSH_CHODESH) {
+                result.add(sd.getName());
+            } else if (sd.isChanukah()) {
+                if (!chanukahAdded) { result.add("Chanukah"); chanukahAdded = true; }
+            } else if (sd.isYomTov()) {
+                result.add(sd.getName());
+            } else if (sd.isCholHamoed()) {
+                result.add(sd.getName());
+            } else if (sd.isArbaParshiyot()) {
+                result.add(sd.getName());
+            }
+        }
+        return result;
+    }
 }
