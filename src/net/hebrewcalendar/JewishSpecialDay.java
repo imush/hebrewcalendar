@@ -82,7 +82,7 @@ public enum JewishSpecialDay
     CHOL_HAMOED_SUKKOT_4C(new MonthDaySpecialDay(ICalendar.JEWISH, "Chol Hamoed Sukkot", 7, 20)),
     SIMCHAT_TORAH_I(new MonthDaySpecialDay(ICalendar.JEWISH, "Simchat Torah", 7, 22)),
     TAL_UMATAR_I(new TalUMatar(true, "Tal Umatar")),
-    TAL_UMATAR_D(new TalUMatar(false, "Tal Umatar")),
+    TAL_UMATAR_C(new TalUMatar(false, "Tal Umatar")),
     NINETEENTH_KISLEV(new MonthDaySpecialDay(ICalendar.JEWISH, "19 Kislev", 9, 19)),
     FIRST_DAY_CHANUKAH(new MonthDaySpecialDay(ICalendar.JEWISH, "1st day Chanukah", 9, 25)),
     SECOND_DAY_CHANUKAH(new ShiftedDateSpecialDay("2nd day Chanukah", FIRST_DAY_CHANUKAH, 1)),
@@ -151,7 +151,7 @@ public enum JewishSpecialDay
                     SHAVUOT_2C, SECOND_DAY_SUKKOT_C,
                     CHOL_HAMOED_SUKKOT_1C, CHOL_HAMOED_SUKKOT_2C, CHOL_HAMOED_SUKKOT_3C, CHOL_HAMOED_SUKKOT_4C,
                     SHMINI_ATZERES_C, SIMCHAT_TORAH_C,
-                    ERUV_TAVSHILIN_C, TAL_UMATAR_D
+                    ERUV_TAVSHILIN_C, TAL_UMATAR_C
             }
     );
 
@@ -160,7 +160,7 @@ public enum JewishSpecialDay
     );
 
     private static final Set<JewishSpecialDay> TAL_UMATAR_DAYS = createCollection(
-            new JewishSpecialDay[]{TAL_UMATAR_I, TAL_UMATAR_D}
+            new JewishSpecialDay[]{TAL_UMATAR_I, TAL_UMATAR_C}
     );
 
     private static final Set<JewishSpecialDay> ARBA_PARSHIYOT_DAYS = createCollection(
