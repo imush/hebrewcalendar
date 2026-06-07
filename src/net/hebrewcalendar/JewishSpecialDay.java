@@ -63,7 +63,7 @@ public enum JewishSpecialDay
     ROSH_HASHANA_1(new MonthDaySpecialDay(ICalendar.JEWISH, "First day Rosh Hashana", 7, 1)),
     ROSH_HASHANA_2(new MonthDaySpecialDay(ICalendar.JEWISH, "2nd day Rosh Hashana", 7, 2)),
     ROSH_CHODESH(new ConjunctionSpecialDay("Rosh Chodesh", new SpecialDay[]{new UnionSpecialDay("Rosh Chodesh or Rosh Hashana", new SpecialDay[]{new MonthDaySpecialDay(ICalendar.JEWISH, "Rosh Chodesh", 0, 1), new MonthDaySpecialDay(ICalendar.JEWISH, "Rosh Chodesh", 0, 30)}), new NegationSpecialDay("exclude Rosh Hashana", ROSH_HASHANA_1)})),
-    TZOM_GEDALIA(new MonthDaySpecialDay(ICalendar.JEWISH, "Tzom Gedalia", 7, 3)),
+    TZOM_GEDALIA(new TzomGedaliaSpecialDay("Tzom Gedalia")),
     EREV_YOM_KIPPUR(new MonthDaySpecialDay(ICalendar.JEWISH, "Erev Yom Kippur", 7, 9)),
     YOM_KIPPUR(new MonthDaySpecialDay(ICalendar.JEWISH, "Yom Kippur", 7, 10)),
     FIRST_DAY_SUKKOT(new MonthDaySpecialDay(ICalendar.JEWISH, "1st day Sukkot", 7, 15)),
