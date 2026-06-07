@@ -1,9 +1,9 @@
 package net.hebrewcalendar;
 
-import org.shredzone.commons.suncalc.SunTimes;
-
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 /**
@@ -65,25 +65,28 @@ public class Zmanim {
 
     // ── Low-level solar helpers (private, may return null) ────────────────────
 
-    private SunTimes.Parameters base() {
-        return SunTimes.compute()
-                .on(date).at(location.getLatitude(), location.getLongitude())
-                .height(location.getElevationMeters()).timezone(location.getTimezone()).oneDay();
+    private static final double VISUAL_ANGLE = -0.8333;
+
+    private ZoneOffset tzOffset() {
+        return date.atStartOfDay(ZoneId.of(location.getTimezone())).getOffset();
     }
 
-    private ZonedDateTime set(SunTimes.Twilight twilight) { return base().twilight(twilight).execute().getSet(); }
-    private ZonedDateTime set(double angle)               { return base().twilight(angle).execute().getSet(); }
-    private ZonedDateTime rise(SunTimes.Twilight twilight){ return base().twilight(twilight).execute().getRise(); }
-    private ZonedDateTime rise(double angle)              { return base().twilight(angle).execute().getRise(); }
+    private ZonedDateTime rise(double angle) {
+        return NOAA.sunEvent(date, location.getLatitude(), location.getLongitude(), tzOffset(), angle, true, 0.0);
+    }
 
-    private ZonedDateTime sunsetOrNull()       { return set(SunTimes.Twilight.VISUAL); }
+    private ZonedDateTime set(double angle) {
+        return NOAA.sunEvent(date, location.getLatitude(), location.getLongitude(), tzOffset(), angle, false, 0.0);
+    }
+
+    private ZonedDateTime sunsetOrNull()       { return set(VISUAL_ANGLE); }
     private ZonedDateTime hanetzAmitiOrNull()  { return rise(TRUE_HORIZON_ANGLE); }
     private ZonedDateTime shkiahAmitisOrNull() { return set(TRUE_HORIZON_ANGLE); }
     private ZonedDateTime nightfallOrNull()    { return set(NIGHTFALL_ANGLE); }
     private ZonedDateTime endOfShabbatOrNull() { return set(HAVDALAH_ANGLE); }
 
     private ZonedDateTime midnight() {
-        return base().execute().getNoon().plusHours(12);
+        return NOAA.solarNoon(date, location.getLongitude(), tzOffset()).plusHours(12);
     }
 
     private int candleMinutesBeforeSunset() { return location.isInJerusalem() ? 40 : 18; }
@@ -108,7 +111,7 @@ public class Zmanim {
     public Zman getDawn() { return new Zman(rise(DAWN_ANGLE)); }
 
     /** Netz Hachama: visible sunrise. */
-    public Zman getSunrise() { return new Zman(rise(SunTimes.Twilight.VISUAL)); }
+    public Zman getSunrise() { return new Zman(rise(VISUAL_ANGLE)); }
 
     /**
      * Hanetz Amiti: true sunrise — sun 1.583° below horizon.
@@ -163,7 +166,7 @@ public class Zmanim {
     public Zman getChatzot() {
         ZonedDateTime r = hanetzAmitiOrNull();
         ZonedDateTime s = shkiahAmitisOrNull();
-        if (r == null || s == null) return new Zman(base().execute().getNoon());
+        if (r == null || s == null) return new Zman(NOAA.solarNoon(date, location.getLongitude(), tzOffset()));
         return new Zman(r.plusSeconds(Duration.between(r, s).getSeconds() / 2));
     }
 

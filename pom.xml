@@ -6,7 +6,7 @@
 
     <groupId>net.hebrewcalendar</groupId>
     <artifactId>hebrewcalendar</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <packaging>jar</packaging>
 
     <build>
@@ -46,11 +46,6 @@
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>org.shredzone.commons</groupId>
-            <artifactId>commons-suncalc</artifactId>
-            <version>3.0</version>
-        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
