@@ -9,14 +9,14 @@ import net.hebrewcalendar.JewishCalendar;
  */
 public final class TzomGedaliaSpecialDay extends AbstractRecurringSpecialDay<JewishCalendar> {
 
-    public TzomGedaliaSpecialDay(String name) {
+    public TzomGedaliaSpecialDay(final String name) {
         super(ICalendar.JEWISH, name);
     }
 
     @Override
-    public boolean matches(IDate<JewishCalendar> date) {
+    public boolean matches(final IDate<JewishCalendar> date) {
         if (date.getMonth() != 7) return false;
-        int day = date.getDay();
+        final int day = date.getDay();
         if (day == 3) return date.getDayOfWeek() != 7;           // 3 Tishrei, unless Shabbat
         if (day == 4) return date.addDays(-1).getDayOfWeek() == 7; // deferred from Shabbat
         return false;

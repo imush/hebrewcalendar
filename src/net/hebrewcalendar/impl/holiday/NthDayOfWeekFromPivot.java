@@ -25,7 +25,7 @@ public class NthDayOfWeekFromPivot<C extends ICalendar<C>>
      *          e.g. Shabbat Hagadol is the last Shabbat before Pesach would use (1,15,-1, not inclusive)
      * @param inclusive whether pivot date counts if it matches the day of week
      */
-    public NthDayOfWeekFromPivot(C calendar, String name, SpecialDay<C> pivotDate, int dayOfWeek, int n, boolean inclusive)
+    public NthDayOfWeekFromPivot(final C calendar, final String name, final SpecialDay<C> pivotDate, final int dayOfWeek, final int n, final boolean inclusive)
     {
         super(calendar, name);
         _pivot = pivotDate;
@@ -42,14 +42,14 @@ public class NthDayOfWeekFromPivot<C extends ICalendar<C>>
      * @return true when matches
      */
     @Override
-    public boolean matches(IDate<C> date0)
+    public boolean matches(final IDate<C> date0)
     {
         if (date0.getDayOfWeek() != _dayOfWeek)
             return false;
 
-        int sign = _n > 0 ? 1 : -1;
-        IDate<C> startSearch = _inclusive ? date0.addDays(-(_n-sign)*7) : date0.addDays(-(_n-sign)*7-sign);
-        IDate<C> endSearch = _inclusive ? date0.addDays(-_n*7) : date0.addDays(-_n*7-sign);
+        final int sign = _n > 0 ? 1 : -1;
+        final IDate<C> startSearch = _inclusive ? date0.addDays(-(_n-sign)*7) : date0.addDays(-(_n-sign)*7-sign);
+        final IDate<C> endSearch = _inclusive ? date0.addDays(-_n*7) : date0.addDays(-_n*7-sign);
 
         for (IDate<C> d = startSearch; !d.equals(endSearch); d = d.addDays(-sign)) {
             if (_pivot.matches(d))

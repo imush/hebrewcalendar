@@ -33,7 +33,7 @@ public final class TekufaCalc {
     private final JewishTime.Duration nisanOffset;
     private final JewishTime.Duration seasonLength;
 
-    private TekufaCalc(JewishTime.Duration nisanOffset, JewishTime.Duration seasonLength) {
+    private TekufaCalc(final JewishTime.Duration nisanOffset, final JewishTime.Duration seasonLength) {
         this.nisanOffset  = nisanOffset;
         this.seasonLength = seasonLength;
     }
@@ -45,10 +45,10 @@ public final class TekufaCalc {
      * @param hebrewYear  Hebrew year (1 = Shnat Tohu)
      * @param seasonIndex 0=Nisan, 1=Tammuz, 2=Tishrei, 3=Tevet
      */
-    public static JewishTime.Moment getTekufaTime(TekufaCalc opinion, int hebrewYear, int seasonIndex) {
-        JewishTime.Moment firstMoladNisan  = JewishCalendarImpl.INSTANCE.molad(1, 1);
-        JewishTime.Moment firstTekufaNisan = firstMoladNisan.subtract(opinion.nisanOffset);
-        int n = (hebrewYear - 1) * 4 + seasonIndex;
+    public static JewishTime.Moment getTekufaTime(final TekufaCalc opinion, final int hebrewYear, final int seasonIndex) {
+        final JewishTime.Moment firstMoladNisan  = JewishCalendarImpl.INSTANCE.molad(1, 1);
+        final JewishTime.Moment firstTekufaNisan = firstMoladNisan.subtract(opinion.nisanOffset);
+        final int n = (hebrewYear - 1) * 4 + seasonIndex;
         return firstTekufaNisan.add(opinion.seasonLength.times(n));
     }
 }

@@ -16,7 +16,7 @@ public final class NegationSpecialDay<C extends ICalendar<C>>
      * @param name Name of the holiday
      * @param referenceHoliday the referenced {@link SpecialDay}
      */
-    public NegationSpecialDay(String name, SpecialDay<C> referenceHoliday)
+    public NegationSpecialDay(final String name, final SpecialDay<C> referenceHoliday)
     {
         super(referenceHoliday.getCalendar(), name);
         _referenceDay = referenceHoliday;
@@ -25,7 +25,7 @@ public final class NegationSpecialDay<C extends ICalendar<C>>
     /**
      * @param referenceHoliday the referenced {@link SpecialDay}
      */
-    public NegationSpecialDay(SpecialDay<C> referenceHoliday)
+    public NegationSpecialDay(final SpecialDay<C> referenceHoliday)
     {
         this("Not " + referenceHoliday.getName(), referenceHoliday);
     }

@@ -10,18 +10,19 @@ public final class JulianCalendar
     private JulianCalendar() {}
 
     @Override
-    public boolean isLeap(int year)
+    public final boolean isLeap(final int year)
     {
         return year%4 == 0;
     }
 
     @Override
-    public CalendarType getType()
+    public final CalendarType getType()
     {
         return CalendarType.JULIAN;
     }
 
-    long getStart()
+    @Override
+    final long getStart()
     {
         return 1373427;
     }

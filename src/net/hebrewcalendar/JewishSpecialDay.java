@@ -138,8 +138,8 @@ public enum JewishSpecialDay
     ));
 
 
-    private static Set<JewishSpecialDay> createCollection(JewishSpecialDay[] hh) {
-        HashSet<JewishSpecialDay> buildSet = new HashSet<>(Arrays.asList(hh));
+    private static Set<JewishSpecialDay> createCollection(final JewishSpecialDay[] hh) {
+        final HashSet<JewishSpecialDay> buildSet = new HashSet<>(Arrays.asList(hh));
         return Collections.unmodifiableSet(buildSet);
     }
 
@@ -184,7 +184,7 @@ public enum JewishSpecialDay
 
     private static final Set<String> CHANUKAH_NAMES;
     static {
-        Set<String> s = new HashSet<>();
+        final Set<String> s = new HashSet<>();
         for (JewishSpecialDay d : CHANUKAH_DAYS) s.add(d.getName());
         CHANUKAH_NAMES = Collections.unmodifiableSet(s);
     }
@@ -237,33 +237,33 @@ public enum JewishSpecialDay
 
 
     @Override
-    public String getName()
+    public final String getName()
     {
         return _delegate.getName();
     }
 
     @Override
-    public IDate<JewishCalendar> getNextOccurrence(IDate<JewishCalendar> date, boolean strict)
+    public final IDate<JewishCalendar> getNextOccurrence(final IDate<JewishCalendar> date, final boolean strict)
             throws NoSuchHolidayException
     {
         return _delegate.getNextOccurrence(date, strict);
     }
 
     @Override
-    public IDate<JewishCalendar> getPrevOccurrence(IDate<JewishCalendar> date, boolean strict)
+    public final IDate<JewishCalendar> getPrevOccurrence(final IDate<JewishCalendar> date, final boolean strict)
             throws NoSuchHolidayException
     {
         return _delegate.getPrevOccurrence(date, strict);
     }
 
     @Override
-    public JewishCalendar getCalendar()
+    public final JewishCalendar getCalendar()
     {
         return ICalendar.JEWISH;
     }
 
     @Override
-    public boolean matches(IDate<JewishCalendar> date)
+    public final boolean matches(final IDate<JewishCalendar> date)
     {
         return _delegate.matches(date);
     }

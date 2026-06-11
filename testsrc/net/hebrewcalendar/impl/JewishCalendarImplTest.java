@@ -166,6 +166,15 @@ public class JewishCalendarImplTest
         IDate<JewishCalendar> fallen = hc.anniversaryFor(cheshvan30, 5777);
         assertEquals(9, fallen.getMonth()); // Kislev
         assertEquals(1, fallen.getDay());
+
+        // Born 30 Adar I 5779 (leap) — anniversary in 5780 (non-leap) falls on 1 Nissan
+        assertTrue(hc.isLeap(5779));
+        assertFalse(hc.isLeap(5780));
+        DateImpl<JewishCalendar> born30AdarI = hc.fromYMD(5779, 12, 30);
+        IDate<JewishCalendar> bday30AdarI = hc.anniversaryFor(born30AdarI, 5780);
+        assertEquals(1, bday30AdarI.getMonth()); // Nissan
+        assertEquals(1, bday30AdarI.getDay());   // Rosh Chodesh Nissan
+        assertEquals(5780, bday30AdarI.getYear());
     }
 
     @Test
@@ -183,5 +192,12 @@ public class JewishCalendarImplTest
         IDate<JewishCalendar> yahrzeit2 = hc.yahrzeitFor(death2, 5779);
         assertEquals(12, yahrzeit2.getMonth()); // Adar I (month 12 in leap year)
         assertEquals(5, yahrzeit2.getDay());
+
+        // Died 30 Adar I 5779 (leap) — yahrzeit in 5780 (non-leap) falls on 1 Nissan
+        DateImpl<JewishCalendar> death30AdarI = hc.fromYMD(5779, 12, 30);
+        IDate<JewishCalendar> yahrzeit30AdarI = hc.yahrzeitFor(death30AdarI, 5780);
+        assertEquals(1, yahrzeit30AdarI.getMonth()); // Nissan
+        assertEquals(1, yahrzeit30AdarI.getDay());   // Rosh Chodesh Nissan
+        assertEquals(5780, yahrzeit30AdarI.getYear());
     }
 }

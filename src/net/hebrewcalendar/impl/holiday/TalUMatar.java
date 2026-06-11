@@ -20,29 +20,29 @@ public class TalUMatar extends AbstractRecurringSpecialDay<JewishCalendar> {
     private static final JewishCalendar JEWISH = ICalendar.JEWISH;
     private final boolean inIsrael;
 
-    public TalUMatar(boolean inIsrael, String name) {
+    public TalUMatar(final boolean inIsrael, final String name) {
         super(ICalendar.JEWISH, name);
         this.inIsrael = inIsrael;
     }
 
     @Override
-    public boolean matches(IDate<JewishCalendar> date) {
+    public boolean matches(final IDate<JewishCalendar> date) {
         return date.compareTo(computeDate(date.getYear())) == 0;
     }
 
     @Override
-    public IDate<JewishCalendar> getNextOccurrence(IDate<JewishCalendar> date, boolean strict) throws NoSuchHolidayException {
-        IDate<JewishCalendar> start = strict ? date.addDays(1) : date;
-        int y = start.getYear();
+    public IDate<JewishCalendar> getNextOccurrence(final IDate<JewishCalendar> date, final boolean strict) throws NoSuchHolidayException {
+        final IDate<JewishCalendar> start = strict ? date.addDays(1) : date;
+        final int y = start.getYear();
         IDate<JewishCalendar> candidate = computeDate(y);
         if (candidate.before(start)) candidate = computeDate(y + 1);
         return candidate;
     }
 
     @Override
-    public IDate<JewishCalendar> getPrevOccurrence(IDate<JewishCalendar> date, boolean strict) throws NoSuchHolidayException {
-        IDate<JewishCalendar> end = strict ? date.addDays(-1) : date;
-        int y = end.getYear();
+    public IDate<JewishCalendar> getPrevOccurrence(final IDate<JewishCalendar> date, final boolean strict) throws NoSuchHolidayException {
+        final IDate<JewishCalendar> end = strict ? date.addDays(-1) : date;
+        final int y = end.getYear();
         IDate<JewishCalendar> candidate = computeDate(y);
         if (candidate.after(end)) candidate = computeDate(y - 1);
         return candidate;
@@ -50,7 +50,7 @@ public class TalUMatar extends AbstractRecurringSpecialDay<JewishCalendar> {
 
     // ── helpers ───────────────────────────────────────────────────────────────
 
-    private IDate<JewishCalendar> computeDate(int hebrewYear) {
+    private IDate<JewishCalendar> computeDate(final int hebrewYear) {
         IDate<JewishCalendar> base;
         if (inIsrael) {
             base = ICalendar.JEWISH.fromYMD(hebrewYear, 8, 7);
@@ -58,7 +58,7 @@ public class TalUMatar extends AbstractRecurringSpecialDay<JewishCalendar> {
             // getTekufatShmuel(Y, TISHREI) gives the tekufa in the fall of the same Gregorian year
             // as Nisan of year Y — i.e. the tekufa at the END of year Y, not the start.
             // For year Y we need the tekufa at the START of year Y, which is getTekufatShmuel(Y-1, TISHREI).
-            JewishMoment tekufa = JEWISH.getTekufatShmuel(hebrewYear - 1, JewishCalendar.Season.TISHREI);
+            final JewishMoment tekufa = JEWISH.getTekufatShmuel(hebrewYear - 1, JewishCalendar.Season.TISHREI);
             base = JEWISH.fromMoment(tekufa).addDays(59);
         }
         if (base.getDayOfWeek() == 7) base = base.addDays(1);

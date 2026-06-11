@@ -36,7 +36,7 @@ public class JewishCalendarImpl
     private static final JewishTime.Duration ONE_MONTH  = new JewishTime.Duration(29, 12, 793);
 
     @Override
-    public boolean isLeap(int year)
+    public final boolean isLeap(final int year)
     {
         return LEAP_CYCLE[year%19];
     }
@@ -47,7 +47,7 @@ public class JewishCalendarImpl
      * @return length of Jewish month, 29 or 30 days.
      */
     @Override
-    public int monthLength(int year, int month)
+    public final int monthLength(final int year, final int month)
     {
         switch(JewishMonth.get(month)) {
             case NISAN:
@@ -81,7 +81,7 @@ public class JewishCalendarImpl
      * @param month month
      * @return the {@link JewishTime.Moment} in absolute days, hours and parts from the epoch.
      */
-    JewishTime.Moment molad(int year, int month)
+    JewishTime.Moment molad(final int year, final int month)
     {
         final int cycles = (year-1)/19;
         // 0th year did not exist; it would be leap
@@ -97,9 +97,9 @@ public class JewishCalendarImpl
         return MOLAD_TOHU.add(ONE_MONTH.times(preMonths));
     }
 
-    long absDayRoshHashana(int year)
+    long absDayRoshHashana(final int year)
     {
-        JewishTime.Moment moladTime = molad(year, 7);
+        final JewishTime.Moment moladTime = molad(year, 7);
 
         long candidate = moladTime.getDay();
 
@@ -129,7 +129,7 @@ public class JewishCalendarImpl
     }
 
     @Override
-    public CalendarType getType()
+    public final CalendarType getType()
     {
         return CalendarType.HEBREW;
     }
@@ -141,7 +141,7 @@ public class JewishCalendarImpl
     }
 
     @Override
-    long absDay(IDate<JewishCalendar> date)
+    final long absDay(final IDate<JewishCalendar> date)
     {
         // search for abs day last RoshHashana
         final int year = date.getYear();
@@ -150,11 +150,11 @@ public class JewishCalendarImpl
         int m = 7;
         while (m != month) {
             toReturn += monthLength(date.getYear(), m);
-            int[] nextYM = nextYearMonth(year, m);
+            final int[] nextYM = nextYearMonth(year, m);
             m = nextYM[1];
             if (nextYM[0] != year)
                 throw new IllegalStateException(
-                    "ran through whol year without finding month " + month);
+                    "ran through whole year without finding month " + month);
         }
         toReturn += date.getDay();
         return toReturn;
@@ -187,26 +187,27 @@ public class JewishCalendarImpl
         return 0;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
-    DateImpl<JewishCalendar> fromAbs(long absDayFromBeginning)
+    final DateImpl<JewishCalendar> fromAbs(final long absDayFromBeginning)
     {
         final int monthsIn19 = 12*19+7;
 
-        JewishTime.Duration cycle19 = ONE_MONTH.times(monthsIn19);
+        final JewishTime.Duration cycle19 = ONE_MONTH.times(monthsIn19);
 
-        int cyclesToSkip = (int)(absDayFromBeginning/(cycle19.getDay() + 1));
+        final int cyclesToSkip = (int)(absDayFromBeginning/(cycle19.getDay() + 1));
 
-        DateImpl<JewishCalendar> startDay = new DateImpl<>((JewishCalendar) this, cyclesToSkip*19 + 1, 7, 1);
+        final DateImpl<JewishCalendar> startDay = new DateImpl<>((JewishCalendar) this, cyclesToSkip*19 + 1, 7, 1);
         return startDay.addDays((int)(absDayFromBeginning - absDay(startDay)));
     }
 
-    YearCheshvanKislevType getYearType(int year)
+    YearCheshvanKislevType getYearType(final int year)
     {
         final long rosh0 = absDay(new DateImpl<>((JewishCalendar) this, year, 7, 1));
         final long rosh1 = absDay(new DateImpl<>((JewishCalendar) this, year+1, 7, 1));
         final int yearLength  = (int)(rosh1-rosh0);
 
-        int excessLength = isLeap(year) ? yearLength - 383 : yearLength - 353;
+        final int excessLength = isLeap(year) ? yearLength - 383 : yearLength - 353;
 
         switch(excessLength) {
             case 0: return YearCheshvanKislevType.SHORT;
@@ -218,7 +219,7 @@ public class JewishCalendarImpl
     }
 
     @Override
-    public int getSefira(IDate<JewishCalendar> date)
+    public final int getSefira(final IDate<JewishCalendar> date)
     {
         final int m0 = date.getMonth();
         if (m0 > 3 || (m0 == 3 && date.getDay() > 5) || (m0 == 1 && date.getDay() < 16))
@@ -233,48 +234,48 @@ public class JewishCalendarImpl
     }
 
     @Override
-    public DateImpl<JewishCalendar> firstDayOfYear(int year)
+    public final DateImpl<JewishCalendar> firstDayOfYear(final int year)
     {
         return fromYMD(year, 7 ,1);
     }
 
     @Override
-    public JewishMoment moladOfMonth(int year, int month)
+    public final JewishMoment moladOfMonth(final int year, final int month)
     {
         return molad(year, month);
     }
 
     @Override
-    public IDate<JewishCalendar> fromMoment(JewishMoment moment)
+    public final IDate<JewishCalendar> fromMoment(final JewishMoment moment)
     {
         return fromAbs(moment.getDay());
     }
 
     @Override
-    public JewishMoment getTekufatRavAda(int hebrewYear, Season season)
+    public final JewishMoment getTekufatRavAda(final int hebrewYear, final Season season)
     {
         return TekufaCalc.getTekufaTime(TekufaCalc.RAV_ADA, hebrewYear, season.getIndex());
     }
 
     @Override
-    public JewishMoment getTekufatShmuel(int hebrewYear, Season season)
+    public final JewishMoment getTekufatShmuel(final int hebrewYear, final Season season)
     {
         return TekufaCalc.getTekufaTime(TekufaCalc.SHMUEL, hebrewYear, season.getIndex());
     }
 
     @Override
-    public List<Parsha> getParsha(IDate<JewishCalendar> date, boolean inIsrael)
+    public final List<Parsha> getParsha(final IDate<JewishCalendar> date, final boolean inIsrael)
     {
         return Parshiot.getParsha(date, inIsrael);
     }
 
     @Override
-    public IDate<JewishCalendar> anniversaryFor(IDate<JewishCalendar> originalDate, int year)
+    public final IDate<JewishCalendar> anniversaryFor(final IDate<JewishCalendar> originalDate, final int year)
     {
         int month = originalDate.getMonth();
-        int day   = originalDate.getDay();
-        boolean origIsLeap   = isLeap(originalDate.getYear());
-        boolean targetIsLeap = isLeap(year);
+        final int day   = originalDate.getDay();
+        final boolean origIsLeap   = isLeap(originalDate.getYear());
+        final boolean targetIsLeap = isLeap(year);
 
         if (month == 12 && !origIsLeap && targetIsLeap)
             month = 13;  // non-leap Adar → Adar II in leap year
@@ -285,16 +286,16 @@ public class JewishCalendarImpl
             return fromYMD(year, month, day);
         } catch (IllegalStateException e) {
             // Cheshvan 30 or Kislev 30 not present in this year → Rosh Chodesh of next month
-            int[] next = nextYearMonth(year, month);
+            final int[] next = nextYearMonth(year, month);
             return fromYMD(next[0], next[1], 1);
         }
     }
 
     @Override
-    public IDate<JewishCalendar> yahrzeitFor(IDate<JewishCalendar> deathDate, int year)
+    public final IDate<JewishCalendar> yahrzeitFor(final IDate<JewishCalendar> deathDate, final int year)
     {
         int month = deathDate.getMonth();
-        int day   = deathDate.getDay();
+        final int day   = deathDate.getDay();
 
         if (month == 13 && !isLeap(year))
             month = 12;  // Adar II → Adar in non-leap year
@@ -303,7 +304,7 @@ public class JewishCalendarImpl
             return fromYMD(year, month, day);
         } catch (IllegalStateException e) {
             // Cheshvan 30 or Kislev 30 not present in this year → Rosh Chodesh of next month
-            int[] next = nextYearMonth(year, month);
+            final int[] next = nextYearMonth(year, month);
             return fromYMD(next[0], next[1], 1);
         }
     }

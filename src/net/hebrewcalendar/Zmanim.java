@@ -58,7 +58,7 @@ public class Zmanim {
      * @param date     Gregorian date for which to compute zmanim
      * @param location geographic location with its halachic properties (Israel / Jerusalem flags)
      */
-    public Zmanim(LocalDate date, Location location) {
+    public Zmanim(final LocalDate date, final Location location) {
         this.date     = date;
         this.location = location;
     }
@@ -99,8 +99,8 @@ public class Zmanim {
      * Returns 0 under polar conditions.
      */
     public long shaahZmanitSeconds() {
-        ZonedDateTime r = hanetzAmitiOrNull();
-        ZonedDateTime s = shkiahAmitisOrNull();
+        final ZonedDateTime r = hanetzAmitiOrNull();
+        final ZonedDateTime s = shkiahAmitisOrNull();
         if (r == null || s == null) return 0;
         return Duration.between(r, s).getSeconds() / 12;
     }
@@ -130,8 +130,8 @@ public class Zmanim {
      * Returns a {@link Zman} with null time under polar conditions.
      */
     public Zman getLatestShema() {
-        ZonedDateTime r = hanetzAmitiOrNull();
-        long sha = shaahZmanitSeconds();
+        final ZonedDateTime r = hanetzAmitiOrNull();
+        final long sha = shaahZmanitSeconds();
         return new Zman((r == null || sha == 0) ? null : r.plusSeconds(sha * 3));
     }
 
@@ -141,8 +141,8 @@ public class Zmanim {
      * Returns a {@link Zman} with null time under polar conditions.
      */
     public Zman getLatestShacharis() {
-        ZonedDateTime r = hanetzAmitiOrNull();
-        long sha = shaahZmanitSeconds();
+        final ZonedDateTime r = hanetzAmitiOrNull();
+        final long sha = shaahZmanitSeconds();
         return new Zman((r == null || sha == 0) ? null : r.plusSeconds(sha * 4));
     }
 
@@ -152,8 +152,8 @@ public class Zmanim {
      * Returns a {@link Zman} with null time under polar conditions.
      */
     public Zman getBurningChometz() {
-        ZonedDateTime r = hanetzAmitiOrNull();
-        long sha = shaahZmanitSeconds();
+        final ZonedDateTime r = hanetzAmitiOrNull();
+        final long sha = shaahZmanitSeconds();
         return new Zman((r == null || sha == 0) ? null : r.plusSeconds(sha * 5));
     }
 
@@ -164,8 +164,8 @@ public class Zmanim {
      * Falls back to solar transit under polar conditions; always returns a non-null time.
      */
     public Zman getChatzot() {
-        ZonedDateTime r = hanetzAmitiOrNull();
-        ZonedDateTime s = shkiahAmitisOrNull();
+        final ZonedDateTime r = hanetzAmitiOrNull();
+        final ZonedDateTime s = shkiahAmitisOrNull();
         if (r == null || s == null) return new Zman(NOAA.solarNoon(date, location.getLongitude(), tzOffset()));
         return new Zman(r.plusSeconds(Duration.between(r, s).getSeconds() / 2));
     }
@@ -182,8 +182,8 @@ public class Zmanim {
      * Returns a {@link Zman} with null time under polar conditions.
      */
     public Zman getMinchaGedolah() {
-        ZonedDateTime r = hanetzAmitiOrNull();
-        long sha = shaahZmanitSeconds();
+        final ZonedDateTime r = hanetzAmitiOrNull();
+        final long sha = shaahZmanitSeconds();
         return new Zman((r == null || sha == 0) ? null : r.plusSeconds((long)(sha * 6.5)));
     }
 
@@ -193,8 +193,8 @@ public class Zmanim {
      * Returns a {@link Zman} with null time under polar conditions.
      */
     public Zman getMinchaKetana() {
-        ZonedDateTime r = hanetzAmitiOrNull();
-        long sha = shaahZmanitSeconds();
+        final ZonedDateTime r = hanetzAmitiOrNull();
+        final long sha = shaahZmanitSeconds();
         return new Zman((r == null || sha == 0) ? null : r.plusSeconds((long)(sha * 9.5)));
     }
 
@@ -203,8 +203,8 @@ public class Zmanim {
      * Returns a {@link Zman} with null time under polar conditions.
      */
     public Zman getPlagHaMincha() {
-        ZonedDateTime r = hanetzAmitiOrNull();
-        long sha = shaahZmanitSeconds();
+        final ZonedDateTime r = hanetzAmitiOrNull();
+        final long sha = shaahZmanitSeconds();
         return new Zman((r == null || sha == 0) ? null : r.plusSeconds((long)(sha * 10.75)));
     }
 
@@ -233,7 +233,7 @@ public class Zmanim {
      * Returns a {@link Zman} with null time when sunset is unavailable.
      */
     public Zman getNightfallRabeinuTam() {
-        ZonedDateTime s = sunsetOrNull();
+        final ZonedDateTime s = sunsetOrNull();
         return new Zman(s == null ? null : s.plusMinutes(72));
     }
 
@@ -251,19 +251,19 @@ public class Zmanim {
      * Always returns a non-null time.
      */
     public Zman getEndOfShabbatZman() {
-        ZonedDateTime t = endOfShabbatOrNull();
+        final ZonedDateTime t = endOfShabbatOrNull();
         return t != null ? new Zman(t) : new Zman(midnight(), Flag.NO_NIGHTFALL);
     }
 
-    private Zman getCandleLightingZmanInternal(boolean todayIsRestDay, boolean tomorrowIsYomTov) {
+    private Zman getCandleLightingZmanInternal(final boolean todayIsRestDay, final boolean tomorrowIsYomTov) {
         if (todayIsRestDay && tomorrowIsYomTov) {
-            ZonedDateTime t = nightfallOrNull();
+            final ZonedDateTime t = nightfallOrNull();
             return t != null
                 ? new Zman(t, Flag.CANDLES_AFTER_NIGHTFALL)
                 : new Zman(midnight(), Flag.CANDLES_AFTER_NIGHTFALL, Flag.NO_NIGHTFALL);
         }
-        int minutes = candleMinutesBeforeSunset();
-        ZonedDateTime s = sunsetOrNull();
+        final int minutes = candleMinutesBeforeSunset();
+        final ZonedDateTime s = sunsetOrNull();
         if (s != null) {
             if (location.isInJerusalem())
                 return todayIsRestDay
@@ -304,16 +304,16 @@ public class Zmanim {
      * @return a {@link Zman} with appropriate flags, or {@code null} if tomorrow is not a rest day
      */
     public Zman getCandleLightingZman() {
-        IDate todayGreg    = ICalendar.GREGORIAN.fromYMD(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
-        IDate tomorrowGreg = todayGreg.addDays(1);
+        final IDate todayGreg    = ICalendar.GREGORIAN.fromYMD(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
+        final IDate tomorrowGreg = todayGreg.addDays(1);
         if (!isRestDay(tomorrowGreg, location.isInIsrael())) return null;
-        boolean todayIsRest      = isRestDay(todayGreg, location.isInIsrael());
-        boolean tomorrowIsYomTov = tomorrowGreg.getDayOfWeek() != 7; // Saturday = 7 in IDate
+        final boolean todayIsRest      = isRestDay(todayGreg, location.isInIsrael());
+        final boolean tomorrowIsYomTov = tomorrowGreg.getDayOfWeek() != 7; // Saturday = 7 in IDate
         return getCandleLightingZmanInternal(todayIsRest, tomorrowIsYomTov);
     }
 
     /** Saturday (7 in IDate) or any Yom Tov applicable at the given location. */
-    private static boolean isRestDay(IDate date, boolean inIsrael) {
+    private static boolean isRestDay(final IDate date, final boolean inIsrael) {
         if (date.getDayOfWeek() == 7) return true;
         for (JewishSpecialDay h : JewishSpecialDay.values()) {
             if (h.isYomTov() && h.applies(inIsrael) && h.matches(date)) return true;

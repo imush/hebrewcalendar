@@ -22,12 +22,12 @@ public final class EruvTavshilin extends AbstractRecurringSpecialDay<JewishCalen
      * @param yomTovDays the Yom Tov days relevant for this location (Israel or diaspora)
      */
     @SafeVarargs
-    public EruvTavshilin(String name, SpecialDay<JewishCalendar>... yomTovDays) {
+    public EruvTavshilin(final String name, final SpecialDay<JewishCalendar>... yomTovDays) {
         super(yomTovDays[0].getCalendar(), name);
         _yomTovDays = yomTovDays;
     }
 
-    private boolean isYomTov(IDate<JewishCalendar> date) {
+    private boolean isYomTov(final IDate<JewishCalendar> date) {
         for (SpecialDay<JewishCalendar> h : _yomTovDays) {
             if (h.matches(date)) return true;
         }
@@ -43,11 +43,11 @@ public final class EruvTavshilin extends AbstractRecurringSpecialDay<JewishCalen
      * </ul>
      */
     @Override
-    public boolean matches(IDate<JewishCalendar> date) {
+    public boolean matches(final IDate<JewishCalendar> date) {
         if (date.getDayOfWeek() == 7 || isYomTov(date)) return false; // already in rest day
-        IDate<JewishCalendar> tomorrow = date.addDays(1);
+        final IDate<JewishCalendar> tomorrow = date.addDays(1);
         if (!isYomTov(tomorrow)) return false;
-        int dow = tomorrow.getDayOfWeek();
+        final int dow = tomorrow.getDayOfWeek();
         if (dow == 6) return true;                                 // YT on Friday
         if (dow == 5 && isYomTov(date.addDays(2))) return true;   // YT Thu, Fri also YT
         return false;

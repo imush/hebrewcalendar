@@ -114,14 +114,16 @@ public interface JewishCalendar
      * <p>Returns an empty list if the date is not Shabbat. Otherwise, returns the
      * names of any applicable special readings: Rosh Chodesh, Chanukah, Yom Tov,
      * Chol Hamoed, or one of the four Arba Parshiyot (Shekalim, Zachor, Para, Hachodesh).
+     * Note that there is only one case where there is more than one special maftir:
+     * Shabbat Rosh Chodesh Tevet on Chanukkah. This does not happen every year.
      *
      * @param date     Hebrew date to check
      * @param inIsrael true for Eretz Israel schedule, false for Diaspora
      * @return list of special maftir names; empty if not Shabbat or no special reading
      */
-    default List<String> specialMaftir(IDate<JewishCalendar> date, boolean inIsrael) {
+    default List<String> specialMaftir(final IDate<JewishCalendar> date, final boolean inIsrael) {
         if (date.getDayOfWeek() != 7) return List.of();
-        List<String> result = new ArrayList<>();
+        final List<String> result = new ArrayList<>();
         boolean chanukahAdded = false;
         for (JewishSpecialDay sd : JewishSpecialDay.values()) {
             if (!sd.applies(inIsrael) || !sd.matches(date)) continue;
@@ -146,7 +148,7 @@ public interface JewishCalendar
      * <ul>
      *   <li>Adar (month 12) from a non-leap year → Adar II (month 13) in a leap target year</li>
      *   <li>Adar II (month 13) → Adar (month 12) in a non-leap target year</li>
-     *   <li>Cheshvan 30 or Kislev 30, if that day does not exist in the target year →
+     *   <li>Cheshvan 30 or Kislev 30 or Adar I 30, if that day does not exist in the target year →
      *       1st of the following month</li>
      * </ul>
      *
@@ -162,7 +164,7 @@ public interface JewishCalendar
      * <ul>
      *   <li>Adar II (month 13) → Adar (month 12) in a non-leap target year</li>
      *   <li>Adar (month 12) from any year → remains month 12 (= Adar I in leap years)</li>
-     *   <li>Cheshvan 30 or Kislev 30, if that day does not exist in the target year →
+     *   <li>Cheshvan 30 or Kislev 30 ara Adar I 30, if that day does not exist in the target year →
      *       1st of the following month</li>
      * </ul>
      *

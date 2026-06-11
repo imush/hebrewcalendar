@@ -46,13 +46,13 @@ public class DateImpl<C extends ICalendar<C>>
     public final C getCalendar() { return _calendar; }
 
     @Override
-    public boolean before(IDate<?> otherDate)
+    public final boolean before(final IDate<?> otherDate)
     {
         return compareTo(otherDate) < 0;
     }
 
     @Override
-    public boolean after(IDate<?> otherDate)
+    public final boolean after(final IDate<?> otherDate)
     {
         return compareTo(otherDate) > 0;
     }
@@ -95,16 +95,15 @@ public class DateImpl<C extends ICalendar<C>>
     @Override
     public String toString()
     {
-
-        return String.format("%04d-%02d-%02d", getYear(), getMonth(), getDay()) + _calendar.getType().toString().substring(0,1);
+        return String.format("%04d-%02d-%02d", _year, _month, _day) + _calendar.toString().charAt(0);
     }
 
     @Override
-    public boolean equals(Object o)
+    public boolean equals(final Object o)
     {
         if (!(o instanceof IDate<?>))
             return false;
-        IDate<?> other = (IDate<?>) o;
+        final IDate<?> other = (IDate<?>) o;
         return other.getCalendarType().equals(getCalendarType()) &&
                 other.getYear() == getYear() &&
                 other.getMonth() == getMonth() &&
@@ -113,13 +112,13 @@ public class DateImpl<C extends ICalendar<C>>
 
 
     @Override
-    public int compareTo(IDate<?> o)
+    public int compareTo(final IDate<?> o)
     {
         if (!o.getCalendarType().equals(getCalendarType())) {
             return Long.compare(absDay(), ((DateImpl<?>) o).absDay());
         }
 
-        DateImpl<?> other = (DateImpl<?>) o;
+        final DateImpl<?> other = (DateImpl<?>) o;
         if (other._year != _year)
             return Integer.compare(_year, other._year);
 
@@ -135,9 +134,9 @@ public class DateImpl<C extends ICalendar<C>>
      * @param m month
      * @return the int 1..12 denoting the month's chronological place in Jewish year
      */
-    private int chronologicalMonthOrder(int m)
+    private int chronologicalMonthOrder(final int m)
     {
-        boolean isHebrew = _calendar.getType().equals(CalendarType.HEBREW);
+        final boolean isHebrew = _calendar.getType().equals(CalendarType.HEBREW);
         if (isHebrew) {
             return m < 7 ? m + 13 : m;
         } else {

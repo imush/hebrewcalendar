@@ -24,8 +24,8 @@ public class Location {
      * @param inIsrael        true for Eretz Israel — determines which holidays apply
      * @param inJerusalem     true when candle lighting should follow the Jerusalem custom (40 min before sunset)
      */
-    public Location(double latitude, double longitude, double elevationMeters, String timezone,
-                     boolean inIsrael, boolean inJerusalem) {
+    public Location(final double latitude, final double longitude, final double elevationMeters, final String timezone,
+                     final boolean inIsrael, final boolean inJerusalem) {
         this.latitude       = latitude;
         this.longitude      = longitude;
         this.elevationMeters = elevationMeters;
@@ -45,7 +45,7 @@ public class Location {
      * Returns true when the given coordinates fall within the city of Jerusalem.
      * Callers may use this to set the {@code inJerusalem} constructor argument.
      */
-    public static boolean isJerusalem(double latitude, double longitude) {
+    public static boolean isJerusalem(final double latitude, final double longitude) {
         return latitude >= 31.71 && latitude <= 31.85
             && longitude >= 35.13 && longitude <= 35.28;
     }

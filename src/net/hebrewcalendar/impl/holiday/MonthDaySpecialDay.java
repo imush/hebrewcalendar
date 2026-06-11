@@ -23,7 +23,7 @@ public class MonthDaySpecialDay<C extends ICalendar<C>>
      *              of days from <i>end of month</i>, e.g. -1 will indicate the LAST day of month. day=0 can be used
      *            to match ANY day of the month, e.g. month=4, day = 0 will match the entire April in Gregorian calendar.
      */
-    public MonthDaySpecialDay(C calendar, String name, int month, int day)
+    public MonthDaySpecialDay(final C calendar, final String name, final int month, final int day)
     {
         super(calendar, name);
         _month = month;
@@ -41,7 +41,7 @@ public class MonthDaySpecialDay<C extends ICalendar<C>>
     }
 
     @Override
-    public boolean matches(IDate<C> date)
+    public boolean matches(final IDate<C> date)
     {
         final ICalendar<C> cal = getCalendar();
         final boolean monthMatch = _month == 0 ||

@@ -40,19 +40,19 @@ public enum ParshiotYearType {
     final int pesach;
     private final Function<Boolean, List<List<Parsha>>> schedule;
 
-    ParshiotYearType(int rosh, YearCheshvanKislevType yearType, int pesach,
-                      Function<Boolean, List<List<Parsha>>> schedule) {
+    ParshiotYearType(final int rosh, final YearCheshvanKislevType yearType, final int pesach,
+                      final Function<Boolean, List<List<Parsha>>> schedule) {
         this.rosh     = rosh;
         this.yearType = yearType;
         this.pesach   = pesach;
         this.schedule = schedule;
     }
 
-    public List<List<Parsha>> schedule(boolean inIsrael) {
+    public List<List<Parsha>> schedule(final boolean inIsrael) {
         return schedule.apply(inIsrael);
     }
 
-    public static ParshiotYearType forYear(int rosh, YearCheshvanKislevType yearType, int pesach) {
+    public static ParshiotYearType forYear(final int rosh, final YearCheshvanKislevType yearType, final int pesach) {
         for (ParshiotYearType t : values())
             if (t.rosh == rosh && t.yearType == yearType && t.pesach == pesach) return t;
         throw new IllegalArgumentException(
@@ -61,8 +61,8 @@ public enum ParshiotYearType {
 
     // ── helpers ───────────────────────────────────────────────────────────────
 
-    private static List<Parsha> s(Parsha a)           { return Collections.singletonList(a); }
-    private static List<Parsha> d(Parsha a, Parsha b) { return Arrays.asList(a, b); }
+    private static List<Parsha> s(final Parsha a)           { return Collections.singletonList(a); }
+    private static List<Parsha> d(final Parsha a, final Parsha b) { return Arrays.asList(a, b); }
     private static List<Parsha> e()                    { return Collections.emptyList(); }
 
     // ── schedule definitions ──────────────────────────────────────────────────

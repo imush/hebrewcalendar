@@ -17,7 +17,7 @@ public final class ConjunctionSpecialDay<C extends ICalendar<C>>
      * @param underlying underlying {@link SpecialDay}s (varargs)
      */
     @SafeVarargs
-    public ConjunctionSpecialDay(String name, SpecialDay<C>... underlying)
+    public ConjunctionSpecialDay(final String name, final SpecialDay<C>... underlying)
     {
         super(underlying[0].getCalendar(), name);
         _underlying = underlying;
@@ -27,7 +27,7 @@ public final class ConjunctionSpecialDay<C extends ICalendar<C>>
      * @param underlying underlying {@link SpecialDay}s (varargs)
      */
     @SafeVarargs
-    public ConjunctionSpecialDay(SpecialDay<C>... underlying)
+    public ConjunctionSpecialDay(final SpecialDay<C>... underlying)
     {
         this("ConjunctionSpecialDay", underlying);
     }
@@ -37,7 +37,7 @@ public final class ConjunctionSpecialDay<C extends ICalendar<C>>
      * @return true if all underlying holidays match, false otherwise
      */
     @Override
-    public boolean matches(IDate<C> date)
+    public boolean matches(final IDate<C> date)
     {
         for (SpecialDay<C> h : _underlying) {
             if (!h.matches(date))

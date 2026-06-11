@@ -17,7 +17,7 @@ public class Zman {
      *              (e.g. no sunrise at polar latitudes)
      * @param flags zero or more flags describing how the time was derived
      */
-    public Zman(ZonedDateTime time, Zmanim.Flag... flags) {
+    public Zman(final ZonedDateTime time, final Zmanim.Flag... flags) {
         this.time = time;
         this.flags = flags.length > 0
             ? EnumSet.copyOf(Arrays.asList(flags))

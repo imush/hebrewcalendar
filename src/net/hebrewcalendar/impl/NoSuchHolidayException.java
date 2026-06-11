@@ -6,18 +6,18 @@ import net.hebrewcalendar.SpecialDay;
 public class NoSuchHolidayException
         extends Exception
 {
-    private String _msg;
-    private SpecialDay<?> _h;
-    private IDate<?> _refDate;
+    private final String _msg;
+    private final SpecialDay<?> _h;
+    private final IDate<?> _refDate;
 
-    public NoSuchHolidayException(SpecialDay<?> h, IDate<?> refDate, String msg) {
+    public NoSuchHolidayException(final SpecialDay<?> h, final IDate<?> refDate, final String msg) {
         _h = h;
         _msg = msg;
         _refDate = refDate;
     }
 
     @Override
-    public String getMessage()
+    public final String getMessage()
     {
         return _msg + ", holiday=" + _h + ", refDate=" + _refDate;
     }

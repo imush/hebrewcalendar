@@ -13,14 +13,14 @@ public final class UnionSpecialDay<C extends ICalendar<C>>
     private final SpecialDay<C>[] _underlying;
 
     @SafeVarargs
-    public UnionSpecialDay(String name, SpecialDay<C>... underlying)
+    public UnionSpecialDay(final String name, final SpecialDay<C>... underlying)
     {
         super(underlying[0].getCalendar(), name);
         _underlying = underlying;
     }
 
     @Override
-    public boolean matches(IDate<C> date)
+    public boolean matches(final IDate<C> date)
     {
         for (SpecialDay<C> h : _underlying) {
             if (h.matches(date))

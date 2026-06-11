@@ -78,10 +78,10 @@ final class JewishTime
         public int  getRega() { return _rega; }
 
         @Override
-        public boolean equals(Object o)
+        public boolean equals(final Object o)
         {
             if (!(o instanceof Duration)) return false;
-            Duration d = (Duration) o;
+            final Duration d = (Duration) o;
             return d._day == _day && d._hour == _hour && d._part == _part && d._rega == _rega;
         }
 
@@ -145,10 +145,10 @@ final class JewishTime
         @Override public int  getRega() { return _rega; }
 
         @Override
-        public boolean equals(Object o)
+        public boolean equals(final Object o)
         {
             if (!(o instanceof Moment)) return false;
-            Moment m = (Moment) o;
+            final Moment m = (Moment) o;
             return m._day == _day && m._hour == _hour && m._part == _part && m._rega == _rega;
         }
 

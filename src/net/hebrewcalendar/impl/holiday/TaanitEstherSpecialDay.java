@@ -11,22 +11,22 @@ import net.hebrewcalendar.JewishCalendar;
  */
 public final class TaanitEstherSpecialDay extends AbstractRecurringSpecialDay<JewishCalendar> {
 
-    public TaanitEstherSpecialDay(String name) {
+    public TaanitEstherSpecialDay(final String name) {
         super(ICalendar.JEWISH, name);
     }
 
     @Override
-    public boolean matches(IDate<JewishCalendar> date) {
-        int year = date.getYear();
+    public boolean matches(final IDate<JewishCalendar> date) {
+        final int year = date.getYear();
         // Last month = Adar in regular years, Adar II in leap years
-        int lastMonth = ICalendar.JEWISH.monthsInYear(year);
+        final int lastMonth = ICalendar.JEWISH.monthsInYear(year);
 
         if (date.getMonth() != lastMonth) return false;
 
         // Find Purim (day 14) in this month to determine its day of week
-        IDate<JewishCalendar> purim = date.addDays(14 - date.getDay());
+        final IDate<JewishCalendar> purim = date.addDays(14 - date.getDay());
         // Sunday=1 per IDate.getDayOfWeek() contract
-        int taanitDay = (purim.getDayOfWeek() == 1) ? 11 : 13;
+        final int taanitDay = (purim.getDayOfWeek() == 1) ? 11 : 13;
         return date.getDay() == taanitDay;
     }
 }

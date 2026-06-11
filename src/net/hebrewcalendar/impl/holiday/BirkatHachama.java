@@ -20,21 +20,21 @@ public class BirkatHachama extends AbstractRecurringSpecialDay<JewishCalendar> {
 
     private static final JewishCalendar JEWISH = ICalendar.JEWISH;
 
-    public BirkatHachama(String name) {
+    public BirkatHachama(final String name) {
         super(ICalendar.JEWISH, name);
     }
 
     @Override
-    public boolean matches(IDate<JewishCalendar> date) {
-        int year = date.getYear();
+    public final boolean matches(final IDate<JewishCalendar> date) {
+        final int year = date.getYear();
         if (!JEWISH.isBirkatHaChamaYear(year)) return false;
         return date.compareTo(tekufaDateForYear(year)) == 0;
     }
 
     @Override
-    public IDate<JewishCalendar> getNextOccurrence(IDate<JewishCalendar> date, boolean strict) throws NoSuchHolidayException {
-        IDate<JewishCalendar> start = strict ? date.addDays(1) : date;
-        int y = start.getYear();
+    public final IDate<JewishCalendar> getNextOccurrence(final IDate<JewishCalendar> date, final boolean strict) throws NoSuchHolidayException {
+        final IDate<JewishCalendar> start = strict ? date.addDays(1) : date;
+        final int y = start.getYear();
 
         int bhYear = nearestAtOrAfter(y);
         IDate<JewishCalendar> tekufaDate = tekufaDateForYear(bhYear);
@@ -48,9 +48,9 @@ public class BirkatHachama extends AbstractRecurringSpecialDay<JewishCalendar> {
     }
 
     @Override
-    public IDate<JewishCalendar> getPrevOccurrence(IDate<JewishCalendar> date, boolean strict) throws NoSuchHolidayException {
-        IDate<JewishCalendar> end = strict ? date.addDays(-1) : date;
-        int y = end.getYear();
+    public final IDate<JewishCalendar> getPrevOccurrence(final IDate<JewishCalendar> date, final boolean strict) throws NoSuchHolidayException {
+        final IDate<JewishCalendar> end = strict ? date.addDays(-1) : date;
+        final int y = end.getYear();
 
         int bhYear = nearestAtOrBefore(y);
         IDate<JewishCalendar> tekufaDate = tekufaDateForYear(bhYear);
@@ -65,18 +65,18 @@ public class BirkatHachama extends AbstractRecurringSpecialDay<JewishCalendar> {
 
     // ── helpers ───────────────────────────────────────────────────────────────
 
-    private static IDate<JewishCalendar> tekufaDateForYear(int year) {
-        JewishMoment tekufa = JEWISH.getTekufatShmuel(year, JewishCalendar.Season.NISAN);
+    private static IDate<JewishCalendar> tekufaDateForYear(final int year) {
+        final JewishMoment tekufa = JEWISH.getTekufatShmuel(year, JewishCalendar.Season.NISAN);
         return JEWISH.fromMoment(tekufa);
     }
 
     /** Nearest BH year (y % 28 == 1) that is >= y. */
-    private static int nearestAtOrAfter(int y) {
+    private static int nearestAtOrAfter(final int y) {
         return y + ((1 - y % 28 + 28) % 28);
     }
 
     /** Nearest BH year (y % 28 == 1) that is <= y. */
-    private static int nearestAtOrBefore(int y) {
+    private static int nearestAtOrBefore(final int y) {
         return y - ((y % 28 - 1 + 28) % 28);
     }
 }

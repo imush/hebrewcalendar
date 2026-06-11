@@ -16,7 +16,7 @@ public final class ShiftedDateSpecialDay<C extends ICalendar<C>>
      * @param referenceDay the referenced {@link SpecialDay}
      * @param shift days to add to reference date, may be negative
      */
-    public ShiftedDateSpecialDay(String name, SpecialDay<C> referenceDay, int shift)
+    public ShiftedDateSpecialDay(final String name, final SpecialDay<C> referenceDay, final int shift)
     {
         super(referenceDay.getCalendar(), name);
         _referenceDay = referenceDay;
@@ -24,14 +24,14 @@ public final class ShiftedDateSpecialDay<C extends ICalendar<C>>
     }
 
     @Override
-    public IDate<C> getNextOccurrence(IDate<C> date, final boolean strict)
+    public IDate<C> getNextOccurrence(final IDate<C> date, final boolean strict)
             throws NoSuchHolidayException
     {
         return _referenceDay.getNextOccurrence(date.subtractDays(_shift), strict).addDays(_shift);
     }
 
     @Override
-    public IDate<C> getPrevOccurrence(IDate<C> date, final boolean strict)
+    public IDate<C> getPrevOccurrence(final IDate<C> date, final boolean strict)
             throws NoSuchHolidayException
     {
         return _referenceDay.getPrevOccurrence(date.subtractDays(_shift), strict).addDays(_shift);
@@ -39,7 +39,7 @@ public final class ShiftedDateSpecialDay<C extends ICalendar<C>>
 
 
     @Override
-    public boolean matches(IDate<C> date)
+    public boolean matches(final IDate<C> date)
     {
         return _referenceDay.matches(date.subtractDays(_shift));
     }

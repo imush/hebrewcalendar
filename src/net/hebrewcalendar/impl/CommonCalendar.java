@@ -45,74 +45,61 @@ public abstract class CommonCalendar<C extends CommonCalendar<C>>
     }
 
     @Override
-    long absDay(IDate<C> date)
+    final long absDay(final IDate<C> date)
     {
-        long toReturn = getStart();
+        final int year       = date.getYear();
+        final int month      = date.getMonth();
+        final int day        = date.getDay();
+        final boolean julian = monthLength(1900, 2) == 29;
+        final int daysIn400  = julian ? 146100 : 146097;
+        final int priorYears = year - 1;
+        final int fullCycles = priorYears / 400;
 
-        int d = date.getDay();
-        toReturn += d;
+        long result = getStart() + day;
 
-        int m = date.getMonth();
-        int y = date.getYear();
+        for (int m = 1; m < month; m++)
+            result += monthLength(year, m);
 
-        while (m > 1) {
-            toReturn += monthLength(y,m-1);
-            --m;
-        }
+        result += (long) fullCycles * daysIn400;
+        for (int y = fullCycles * 400 + 1; y <= priorYears; y++)
+            result += isLeap(y) ? 366 : 365;
 
-        y -= 1;
-
-        int fourHundredYearCycles = (y-1)/400;
-
-        boolean isJulian = monthLength(1900, 2)==29;
-
-        long daysin400 = 365*400 + (isJulian ? 100 : 97);
-        toReturn += fourHundredYearCycles * daysin400;
-
-        y -= (400*fourHundredYearCycles);
-
-        while (y > 0) {
-            toReturn += (isLeap(y) ? 366 : 365);
-            --y;
-        }
-        return toReturn;
+        return result;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    DateImpl<C> fromAbs(long absDay)
+    final DateImpl<C> fromAbs(long absDay)
     {
-        long absDayFromStart = absDay-getStart();
+        final long absDayFromStart = absDay-getStart();
         final boolean isJulian = monthLength(1900, 2)==29;
         final int daysin400 = 365*400 + (isJulian ? 100 : 97);
 
         final int cycles = (int)((absDayFromStart-1)/daysin400);
-        DateImpl<C> d0 = new DateImpl<>((C) this, 1 + 400*cycles, 1, 1);
+        final DateImpl<C> d0 = new DateImpl<>((C) this, 1 + 400*cycles, 1, 1);
 
         return d0.addDays((int)(absDayFromStart - cycles*daysin400-1));
     }
 
     @Override
-    public DateImpl<C> firstDayOfYear(int year)
+    public final DateImpl<C> firstDayOfYear(int year)
     {
         return fromYMD(year, 1, 1);
     }
 
     /**
      * Returns the anniversary of {@code originalDate} in {@code targetYear}.
-     * Maps Feb 29 → March 1 when the target year is not a leap year.
-     *
-     * @throws IllegalArgumentException if the original date is Feb 30 or later (never valid)
+     * If the day exceeds the month length in the target year, falls to the 1st of the next month.
      */
-    public DateImpl<C> anniversaryFor(IDate<C> originalDate, int targetYear)
+    @Override
+    public final DateImpl<C> anniversaryFor(final IDate<C> originalDate, final int targetYear)
     {
-        int month = originalDate.getMonth();
-        int day   = originalDate.getDay();
-        if (month == 2 && day > 29)
-            throw new IllegalArgumentException(
-                "Day " + day + " of February is never valid in any year");
-        if (month == 2 && day == 29 && !isLeap(targetYear))
-            return fromYMD(targetYear, 3, 1);
+        final int month = originalDate.getMonth();
+        final int day   = originalDate.getDay();
+        if (day > monthLength(targetYear, month)) {
+            final int[] next = nextYearMonth(targetYear, month);
+            return fromYMD(next[0], next[1], 1);
+        }
         return fromYMD(targetYear, month, day);
     }
 }

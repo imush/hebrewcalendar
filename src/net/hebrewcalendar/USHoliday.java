@@ -16,40 +16,40 @@ public enum USHoliday implements SpecialDay<GregorianCalendar>
     THANKSGIVING(new NthDayOfWeekInMonthSpecialDay<>(ICalendar.GREGORIAN, "Thanksgiving", 11, 5, 4)),
     X_HOLIDAY(new MonthDaySpecialDay<>(ICalendar.GREGORIAN, "Dec 25", 12, 25));
 
-    private SpecialDay<GregorianCalendar> _delegate;
+    private final SpecialDay<GregorianCalendar> _delegate;
 
-    USHoliday(SpecialDay<GregorianCalendar> delegate) {
+    USHoliday(final SpecialDay<GregorianCalendar> delegate) {
         _delegate = delegate;
     }
 
     @Override
-    public String getName()
+    public final String getName()
     {
         return _delegate.getName();
     }
 
     @Override
-    public IDate<GregorianCalendar> getNextOccurrence(IDate<GregorianCalendar> date, boolean strict)
+    public final IDate<GregorianCalendar> getNextOccurrence(final IDate<GregorianCalendar> date, final boolean strict)
             throws NoSuchHolidayException
     {
         return _delegate.getNextOccurrence(date, strict);
     }
 
     @Override
-    public IDate<GregorianCalendar> getPrevOccurrence(IDate<GregorianCalendar> date, boolean strict)
+    public final IDate<GregorianCalendar> getPrevOccurrence(final IDate<GregorianCalendar> date, final boolean strict)
             throws NoSuchHolidayException
     {
         return _delegate.getPrevOccurrence(date, strict);
     }
 
     @Override
-    public GregorianCalendar getCalendar()
+    public final GregorianCalendar getCalendar()
     {
         return ICalendar.GREGORIAN;
     }
 
     @Override
-    public boolean matches(IDate<GregorianCalendar> date)
+    public final boolean matches(final IDate<GregorianCalendar> date)
     {
         return _delegate.matches(date);
     }

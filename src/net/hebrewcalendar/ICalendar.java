@@ -89,4 +89,15 @@ public interface ICalendar<C extends ICalendar<C>>
      * @return whether the given args are valid to construct an {@link IDate}.
      */
     boolean isValidDate(int year, int month, int day);
+
+    /**
+     * Returns the anniversary of {@code originalDate} in {@code targetYear}.
+     * If the exact day does not exist in the target year (e.g. Feb 29 in a non-leap year,
+     * Cheshvan/Kislev 30 in a short year), falls to the
+     * 1st of the following month. In Jewish calendar on leap years Adar generally converts to Adar II.
+     * @param originalDate the original date
+     * @param targetYear   the year to project the anniversary into
+     * @return the anniversary date
+     */
+    IDate<C> anniversaryFor(IDate<C> originalDate, int targetYear);
 }

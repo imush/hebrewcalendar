@@ -11,7 +11,7 @@ public abstract class AbstractRecurringSpecialDay<C extends ICalendar<C>>
     private final C _calendar;
     private final String _name;
 
-    AbstractRecurringSpecialDay(C calendar, String name)
+    AbstractRecurringSpecialDay(final C calendar, final String name)
     {
         _calendar = calendar;
         _name = name;
@@ -37,7 +37,7 @@ public abstract class AbstractRecurringSpecialDay<C extends ICalendar<C>>
      * @return next occurrence in this holiday's calendar
      */
     @Override
-    public IDate<C> getNextOccurrence(IDate<C> date, boolean strict)
+    public IDate<C> getNextOccurrence(final IDate<C> date, final boolean strict)
         throws NoSuchHolidayException
     {
         IDate<C> d = strict ? date.addDays(1) : date;
@@ -58,7 +58,7 @@ public abstract class AbstractRecurringSpecialDay<C extends ICalendar<C>>
      * @return previous occurrence in the same calendar as {@code date}
      */
     @Override
-    public IDate<C> getPrevOccurrence(IDate<C> date, boolean strict)
+    public IDate<C> getPrevOccurrence(final IDate<C> date, final boolean strict)
             throws NoSuchHolidayException
     {
         IDate<C> d = strict ? date.addDays(-1) : date;

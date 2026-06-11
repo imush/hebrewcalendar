@@ -26,7 +26,7 @@ public class NthDayOfWeekInMonthSpecialDay<C extends ICalendar<C>>
      *          e.g. Thanksgiving in US is last Thursday in November, so would use constructor args (11, 5, -1)
 
      */
-    public NthDayOfWeekInMonthSpecialDay(C calendar, String name, int month, int dayOfWeek, int n)
+    public NthDayOfWeekInMonthSpecialDay(final C calendar, final String name, final int month, final int dayOfWeek, final int n)
     {
         super(calendar, name);
         _month = month;
@@ -51,27 +51,27 @@ public class NthDayOfWeekInMonthSpecialDay<C extends ICalendar<C>>
     @Override
     public boolean matches(final IDate<C> date)
     {
-        ICalendar<C> cal = getCalendar();
-        int m0 = date.getMonth();
-        int y0 = date.getYear();
-        int d0 = date.getDay();
-        boolean monthMatch = _month == 0 ||
+        final ICalendar<C> cal = getCalendar();
+        final int m0 = date.getMonth();
+        final int y0 = date.getYear();
+        final int d0 = date.getDay();
+        final boolean monthMatch = _month == 0 ||
                 _month > 0 && _month == m0 ||
                 _month < 0 && m0 == _month + 1 + cal.monthsInYear(y0);
         return monthMatch && d0 == getNthDayOfWeekInMonth(y0, m0);
     }
 
-    private int getNthDayOfWeekInMonth(int year, int month)
+    private int getNthDayOfWeekInMonth(final int year, final int month)
     {
-        ICalendar<C> cal = getCalendar();
-        IDate<C> firstDayOfMonth = cal.fromYMD(year, month, _n > 0 ? 1 : -1);
+        final ICalendar<C> cal = getCalendar();
+        final IDate<C> firstDayOfMonth = cal.fromYMD(year, month, _n > 0 ? 1 : -1);
         int d1 = firstDayOfMonth.getDay();
         int toAddForFirstCorrectDay = _dayOfWeek - firstDayOfMonth.getDayOfWeek();
         if (_n*toAddForFirstCorrectDay < 0)
             toAddForFirstCorrectDay += (_n > 0) ? 7 : -7;
         d1 += toAddForFirstCorrectDay;
 
-        int numWeeksToAdjust = _n > 0 ? _n -1 : _n + 1;
+        final int numWeeksToAdjust = _n > 0 ? _n -1 : _n + 1;
         d1 += numWeeksToAdjust*7;
         return  cal.isValidDate(year, month, d1) ? d1 : 0;
     }

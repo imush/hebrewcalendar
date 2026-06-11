@@ -29,13 +29,13 @@ public class Parshiot {
      * @return list of 1 or 2 Parshiot, or empty list if Yom Tov / Chol Hamoed Shabbat
      * @throws IllegalArgumentException if date is not a Saturday
      */
-    public static List<Parsha> getParsha(IDate<net.hebrewcalendar.JewishCalendar> date, boolean inIsrael) {
+    public static List<Parsha> getParsha(final IDate<net.hebrewcalendar.JewishCalendar> date, final boolean inIsrael) {
         if (date.getDayOfWeek() != 7)
             throw new IllegalArgumentException("getParsha requires a Saturday; got day-of-week " + date.getDayOfWeek());
 
         int hebrewYear = date.getYear();
 
-        LocalDate thisShabbat  = toLocalDate(date);
+        final LocalDate thisShabbat  = toLocalDate(date);
         LocalDate firstShabbat = firstShabbatOfYear(hebrewYear);
 
         long weekOffset = ChronoUnit.WEEKS.between(firstShabbat, thisShabbat);
@@ -46,29 +46,29 @@ public class Parshiot {
             weekOffset   = ChronoUnit.WEEKS.between(firstShabbat, thisShabbat);
         }
 
-        List<List<Parsha>> schedule = scheduleFor(hebrewYear, inIsrael);
+        final List<List<Parsha>> schedule = scheduleFor(hebrewYear, inIsrael);
         if (weekOffset < 0 || weekOffset >= schedule.size()) return Collections.emptyList();
         return schedule.get((int) weekOffset);
     }
 
     // ── helpers ──────────────────────────────────────────────────────────────
 
-    private static LocalDate firstShabbatOfYear(int hebrewYear) {
-        IDate<net.hebrewcalendar.JewishCalendar> rosh = ICalendar.JEWISH.fromYMD(hebrewYear, 7, 1);
+    private static LocalDate firstShabbatOfYear(final int hebrewYear) {
+        final IDate<net.hebrewcalendar.JewishCalendar> rosh = ICalendar.JEWISH.fromYMD(hebrewYear, 7, 1);
         return toLocalDate(rosh).with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
     }
 
-    private static LocalDate toLocalDate(IDate<?> date) {
-        IDate<?> g = ICalendar.GREGORIAN.convert(date);
+    private static LocalDate toLocalDate(final IDate<?> date) {
+        final IDate<?> g = ICalendar.GREGORIAN.convert(date);
         return LocalDate.of(g.getYear(), g.getMonth(), g.getDay());
     }
 
-    private static List<List<Parsha>> scheduleFor(int year, boolean inIsrael) {
-        IDate<net.hebrewcalendar.JewishCalendar> rosh   = ICalendar.JEWISH.fromYMD(year, 7, 1);
-        IDate<net.hebrewcalendar.JewishCalendar> pesach = ICalendar.JEWISH.fromYMD(year, 1, 15);
-        int r   = rosh.getDayOfWeek();
-        int p   = pesach.getDayOfWeek();
-        YearCheshvanKislevType yearType = JewishCalendarImpl.INSTANCE.getYearType(year);
+    private static List<List<Parsha>> scheduleFor(final int year, final boolean inIsrael) {
+        final IDate<net.hebrewcalendar.JewishCalendar> rosh   = ICalendar.JEWISH.fromYMD(year, 7, 1);
+        final IDate<net.hebrewcalendar.JewishCalendar> pesach = ICalendar.JEWISH.fromYMD(year, 1, 15);
+        final int r   = rosh.getDayOfWeek();
+        final int p   = pesach.getDayOfWeek();
+        final YearCheshvanKislevType yearType = JewishCalendarImpl.INSTANCE.getYearType(year);
         return ParshiotYearType.forYear(r, yearType, p).schedule(inIsrael);
     }
 }

@@ -26,10 +26,10 @@ public final class NOAA {
     // ── private helpers ───────────────────────────────────────────────────────
 
     /** Julian Day Number for a Gregorian date (noon UT). */
-    private static double julianDay(int year, int month, int day) {
+    private static double julianDay(int year, int month, final int day) {
         if (month <= 2) { year--; month += 12; }
-        int A = year / 100;
-        int B = 2 - A + A / 4;
+        final int A = year / 100;
+        final int B = 2 - A + A / 4;
         return (int)(365.25 * (year + 4716)) + (int)(30.6001 * (month + 1)) + day + B - 1524.5;
     }
 
@@ -37,32 +37,32 @@ public final class NOAA {
      * Solar noon in minutes from local midnight; fills {@code declOut[0]} with
      * declination in radians.  Pass {@code null} for {@code declOut} to skip.
      */
-    private static double solarNoonMinutes(int year, int month, int day,
-                                   double lon, double tzOffsetHours,
-                                   double[] declOut) {
-        double JD = julianDay(year, month, day);
-        double JC = (JD - 2451545.0) / 36525.0;
+    private static double solarNoonMinutes(final int year, final int month, final int day,
+                                   final double lon, final double tzOffsetHours,
+                                   final double[] declOut) {
+        final double JD = julianDay(year, month, day);
+        final double JC = (JD - 2451545.0) / 36525.0;
 
-        double L0   = mod360(280.46646 + JC * (36000.76983 + JC * 0.0003032));
-        double M    = 357.52911 + JC * (35999.05029 - 0.0001537 * JC);
-        double Mrad = M * DEG2RAD;
-        double C    = Math.sin(Mrad)   * (1.914602 - JC * (0.004817 + 0.000014 * JC))
+        final double L0   = mod360(280.46646 + JC * (36000.76983 + JC * 0.0003032));
+        final double M    = 357.52911 + JC * (35999.05029 - 0.0001537 * JC);
+        final double Mrad = M * DEG2RAD;
+        final double C    = Math.sin(Mrad)   * (1.914602 - JC * (0.004817 + 0.000014 * JC))
                     + Math.sin(2*Mrad) * (0.019993 - 0.000101 * JC)
                     + Math.sin(3*Mrad) * 0.000289;
-        double sunLon = L0 + C;
-        double omega  = 125.04 - 1934.136 * JC;
-        double lambda = sunLon - 0.00569 - 0.00478 * Math.sin(omega * DEG2RAD);
-        double eps0   = 23.0 + (26.0 + (21.448 - JC * (46.8150 + JC * (0.00059 - JC * 0.001813))) / 60.0) / 60.0;
-        double eps    = eps0 + 0.00256 * Math.cos(omega * DEG2RAD);
+        final double sunLon = L0 + C;
+        final double omega  = 125.04 - 1934.136 * JC;
+        final double lambda = sunLon - 0.00569 - 0.00478 * Math.sin(omega * DEG2RAD);
+        final double eps0   = 23.0 + (26.0 + (21.448 - JC * (46.8150 + JC * (0.00059 - JC * 0.001813))) / 60.0) / 60.0;
+        final double eps    = eps0 + 0.00256 * Math.cos(omega * DEG2RAD);
 
         if (declOut != null)
             declOut[0] = Math.asin(Math.sin(eps * DEG2RAD) * Math.sin(lambda * DEG2RAD));
 
         double yVar = Math.tan(eps / 2.0 * DEG2RAD);
         yVar *= yVar;
-        double L0r = L0 * DEG2RAD;
-        double Mr  = M  * DEG2RAD;
-        double eqt = 4.0 * RAD2DEG * (
+        final double L0r = L0 * DEG2RAD;
+        final double Mr  = M  * DEG2RAD;
+        final double eqt = 4.0 * RAD2DEG * (
                   yVar * Math.sin(2*L0r)
                 - 2.0 * 0.016708634 * Math.sin(Mr)
                 + 4.0 * 0.016708634 * yVar * Math.sin(Mr) * Math.cos(2*L0r)
@@ -76,17 +76,17 @@ public final class NOAA {
      * Hour angle in degrees for the given elevation.
      * Returns {@link Double#NaN} if the sun never reaches that angle.
      */
-    private static double hourAngleForElevation(double latRad, double declRad, double elevDeg) {
-        double elevRad = elevDeg * DEG2RAD;
-        double cosHa   = (Math.sin(elevRad) - Math.sin(latRad) * Math.sin(declRad))
+    private static double hourAngleForElevation(final double latRad, final double declRad, final double elevDeg) {
+        final double elevRad = elevDeg * DEG2RAD;
+        final double cosHa   = (Math.sin(elevRad) - Math.sin(latRad) * Math.sin(declRad))
                        / (Math.cos(latRad) * Math.cos(declRad));
         if (cosHa < -1.0 || cosHa > 1.0) return Double.NaN;
         return Math.acos(cosHa) * RAD2DEG;
     }
 
     /** Convert minutes from local midnight to a {@link ZonedDateTime}. */
-    private static ZonedDateTime minutesToZdt(LocalDate date, double minutes, ZoneOffset tz) {
-        long secs = Math.round(minutes * 60.0);
+    private static ZonedDateTime minutesToZdt(final LocalDate date, final double minutes, final ZoneOffset tz) {
+        final long secs = Math.round(minutes * 60.0);
         return date.atStartOfDay(tz).plusSeconds(secs);
     }
 
@@ -105,9 +105,9 @@ public final class NOAA {
      * @param lon   longitude in decimal degrees (east positive)
      * @param tz    UTC offset for this date (DST-aware if needed)
      */
-    public static ZonedDateTime solarNoon(LocalDate date, double lon, ZoneOffset tz) {
-        double tzH  = tz.getTotalSeconds() / 3600.0;
-        double noon = solarNoonMinutes(date.getYear(), date.getMonthValue(), date.getDayOfMonth(),
+    public static ZonedDateTime solarNoon(final LocalDate date, final double lon, final ZoneOffset tz) {
+        final double tzH  = tz.getTotalSeconds() / 3600.0;
+        final double noon = solarNoonMinutes(date.getYear(), date.getMonthValue(), date.getDayOfMonth(),
                                        lon, tzH, null);
         return minutesToZdt(date, noon, tz);
     }
@@ -134,21 +134,21 @@ public final class NOAA {
      * @param observerElevMeters observer elevation above sea level in metres (≥ 0)
      * @return the event time, or {@code null} for polar conditions
      */
-    public static ZonedDateTime sunEvent(LocalDate date, double lat, double lon,
-                                         ZoneOffset tz, double elevDeg, boolean isRise,
-                                         double observerElevMeters) {
+    public static ZonedDateTime sunEvent(final LocalDate date, final double lat, final double lon,
+                                         final ZoneOffset tz, final double elevDeg, final boolean isRise,
+                                         final double observerElevMeters) {
         double effectiveElev = elevDeg;
         if (observerElevMeters > 0.0) {
-            double dip = RAD2DEG * Math.sqrt(2.0 * observerElevMeters / 6371000.0);
+            final double dip = RAD2DEG * Math.sqrt(2.0 * observerElevMeters / 6371000.0);
             effectiveElev -= dip;
         }
-        double tzH  = tz.getTotalSeconds() / 3600.0;
-        int y = date.getYear(), m = date.getMonthValue(), d = date.getDayOfMonth();
-        double[] decl = new double[1];
-        double noon = solarNoonMinutes(y, m, d, lon, tzH, decl);
-        double ha   = hourAngleForElevation(lat * DEG2RAD, decl[0], effectiveElev);
+        final double tzH  = tz.getTotalSeconds() / 3600.0;
+        final int y = date.getYear(), m = date.getMonthValue(), d = date.getDayOfMonth();
+        final double[] decl = new double[1];
+        final double noon = solarNoonMinutes(y, m, d, lon, tzH, decl);
+        final double ha   = hourAngleForElevation(lat * DEG2RAD, decl[0], effectiveElev);
         if (Double.isNaN(ha)) return null;
-        double minutes = isRise ? noon - ha * 4.0 : noon + ha * 4.0;
+        final double minutes = isRise ? noon - ha * 4.0 : noon + ha * 4.0;
         return minutesToZdt(date, minutes, tz);
     }
 }

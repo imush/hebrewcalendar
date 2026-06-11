@@ -31,11 +31,11 @@ public abstract class AbstractCalendar<C extends ICalendar<C>>
      * @return whether the date would be valid
      */
     @Override
-    public boolean isValidDate(int year, int month, int day)
+    public final boolean isValidDate(final int year, final int month, final int day)
     {
         if (year == 0 || month == 0 || day <= 0 || Math.abs(month) > monthsInYear(year))
             return false;
-        int m = month > 0 ? month : monthsInYear(year) + 1 + month;
+        final int m = month > 0 ? month : monthsInYear(year) + 1 + month;
         return Math.abs(day) <= monthLength(year, m);
     }
 
@@ -57,7 +57,7 @@ public abstract class AbstractCalendar<C extends ICalendar<C>>
         while (inc > monthLength(y, m) - d) {
             inc -= (monthLength(y, m) - d + 1);
             d = 1;
-            int[] nextYearMonth = nextYearMonth(y, m);
+            final int[] nextYearMonth = nextYearMonth(y, m);
             y = nextYearMonth[0];
             m = nextYearMonth[1];
         }
@@ -73,7 +73,7 @@ public abstract class AbstractCalendar<C extends ICalendar<C>>
      * @return a new {@link IDate} object
      */
     @Override
-    public DateImpl<C> subtractDays(IDate<C> date, final int numDays)
+    public final DateImpl<C> subtractDays(IDate<C> date, final int numDays)
     {
         if (numDays < 0)
             return addDays(date, -numDays);
@@ -84,7 +84,7 @@ public abstract class AbstractCalendar<C extends ICalendar<C>>
 
         while (inc >= d) {
             inc -= d;
-            int[] prevYearMonth = prevYearMonth(y, m);
+            final int[] prevYearMonth = prevYearMonth(y, m);
             y = prevYearMonth[0];
             m = prevYearMonth[1];
             d = monthLength(y, m);
@@ -116,12 +116,19 @@ public abstract class AbstractCalendar<C extends ICalendar<C>>
     abstract DateImpl<C> fromAbs(long absDay);
 
     @Override
+    public final String toString()
+    {
+        final String name = getType().name();
+        return name.charAt(0) + name.substring(1).toLowerCase();
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public final DateImpl<C> convert(IDate<?> otherDate)
     {
         if (getType().equals(otherDate.getCalendarType()))
             return (DateImpl<C>) otherDate; // safe: same type guarantees same calendar C
-        long absDay = ((DateImpl<?>) otherDate).absDay();
+        final long absDay = ((DateImpl<?>) otherDate).absDay();
         return fromAbs(absDay);
     }
 }
