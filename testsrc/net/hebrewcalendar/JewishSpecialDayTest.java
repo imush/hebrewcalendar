@@ -1,5 +1,6 @@
 package net.hebrewcalendar;
 
+import net.hebrewcalendar.impl.GregorianCalendar;
 import net.hebrewcalendar.impl.NoSuchHolidayException;
 import org.junit.Test;
 
@@ -7,16 +8,20 @@ import static org.junit.Assert.*;
 
 public class JewishSpecialDayTest
 {
-    private static IDate H20171231 = ICalendar.GREGORIAN.fromYMD(2017, 12, 31);
-    private static IDate H20181231 = ICalendar.GREGORIAN.fromYMD(2018, 12, 31);
+    private static IDate<JewishCalendar> H20171231 = ICalendar.JEWISH.convert(ICalendar.GREGORIAN.fromYMD(2017, 12, 31));
+    private static IDate<JewishCalendar> H20181231 = ICalendar.JEWISH.convert(ICalendar.GREGORIAN.fromYMD(2018, 12, 31));
+
+    private static IDate<GregorianCalendar> greg(IDate<?> d) {
+        return ICalendar.GREGORIAN.convert(d);
+    }
 
     @Test
     public void testAllBackAndForth()
     {
         try {
             for (JewishSpecialDay h : JewishSpecialDay.values()) {
-                final IDate d0 = h.getNextOccurrence(H20171231, true);
-                IDate d = d0;
+                final IDate<JewishCalendar> d0 = h.getNextOccurrence(H20171231, true);
+                IDate<JewishCalendar> d = d0;
                 for (int i = 0; i < 5; i++) {
                     d = h.getNextOccurrence(d, true);
                 }
@@ -38,9 +43,9 @@ public class JewishSpecialDayTest
     {
         try {
             assertEquals(ICalendar.GREGORIAN.fromYMD(2018, 3, 27),
-                    JewishSpecialDay.NISAN_11.getNextOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.NISAN_11.getNextOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 4, 16),
-                    JewishSpecialDay.NISAN_11.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.NISAN_11.getNextOccurrence(H20181231, true)));
         } catch (NoSuchHolidayException nshe) {
             fail(nshe.toString());
         }
@@ -53,9 +58,9 @@ public class JewishSpecialDayTest
     {
         try {
             assertEquals(ICalendar.GREGORIAN.fromYMD(2018, 3, 30),
-                    JewishSpecialDay.EREV_PESACH.getNextOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.EREV_PESACH.getNextOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 4, 19),
-                    JewishSpecialDay.EREV_PESACH.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.EREV_PESACH.getNextOccurrence(H20181231, true)));
         } catch (NoSuchHolidayException nshe) {
             fail(nshe.toString());
         }
@@ -68,9 +73,9 @@ public class JewishSpecialDayTest
     {
         try {
             assertEquals(ICalendar.GREGORIAN.fromYMD(2018, 3, 31),
-                    JewishSpecialDay.FIRST_DAY_PESACH.getNextOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.FIRST_DAY_PESACH.getNextOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 4, 20),
-                    JewishSpecialDay.FIRST_DAY_PESACH.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.FIRST_DAY_PESACH.getNextOccurrence(H20181231, true)));
         } catch (NoSuchHolidayException nshe) {
             fail(nshe.toString());
         }
@@ -84,11 +89,11 @@ public class JewishSpecialDayTest
     {
         try {
             assertEquals(ICalendar.GREGORIAN.fromYMD(2018, 4, 1),
-                    JewishSpecialDay.SECOND_DAY_PESACH_C.getNextOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.SECOND_DAY_PESACH_C.getNextOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 4, 21),
-                    JewishSpecialDay.SECOND_DAY_PESACH_C.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.SECOND_DAY_PESACH_C.getNextOccurrence(H20181231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 4, 21),
-                    JewishSpecialDay.CHOL_HAMOED_PESACH_1I.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.CHOL_HAMOED_PESACH_1I.getNextOccurrence(H20181231, true)));
         } catch (NoSuchHolidayException nshe) {
             fail(nshe.toString());
         }
@@ -106,23 +111,23 @@ public class JewishSpecialDayTest
     {
         try {
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 4, 21),
-                    JewishSpecialDay.CHOL_HAMOED_PESACH_1I.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.CHOL_HAMOED_PESACH_1I.getNextOccurrence(H20181231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 4, 22),
-                    JewishSpecialDay.CHOL_HAMOED_PESACH_2I.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.CHOL_HAMOED_PESACH_2I.getNextOccurrence(H20181231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 4, 22),
-                    JewishSpecialDay.CHOL_HAMOED_PESACH_1C.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.CHOL_HAMOED_PESACH_1C.getNextOccurrence(H20181231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 4, 23),
-                    JewishSpecialDay.CHOL_HAMOED_PESACH_3I.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.CHOL_HAMOED_PESACH_3I.getNextOccurrence(H20181231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 4, 23),
-                    JewishSpecialDay.CHOL_HAMOED_PESACH_2C.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.CHOL_HAMOED_PESACH_2C.getNextOccurrence(H20181231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 4, 24),
-                    JewishSpecialDay.CHOL_HAMOED_PESACH_4I.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.CHOL_HAMOED_PESACH_4I.getNextOccurrence(H20181231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 4, 24),
-                    JewishSpecialDay.CHOL_HAMOED_PESACH_3C.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.CHOL_HAMOED_PESACH_3C.getNextOccurrence(H20181231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 4, 25),
-                    JewishSpecialDay.CHOL_HAMOED_PESACH_5I.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.CHOL_HAMOED_PESACH_5I.getNextOccurrence(H20181231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 4, 25),
-                    JewishSpecialDay.CHOL_HAMOED_PESACH_4C.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.CHOL_HAMOED_PESACH_4C.getNextOccurrence(H20181231, true)));
         } catch (NoSuchHolidayException nshe) {
             fail(nshe.toString());
         }
@@ -164,13 +169,13 @@ public class JewishSpecialDayTest
     public void testPesachLast() {
         try {
             assertEquals(ICalendar.GREGORIAN.fromYMD(2018, 4, 6),
-                    JewishSpecialDay.SEVENTH_DAY_PESACH.getNextOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.SEVENTH_DAY_PESACH.getNextOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2018, 4, 7),
-                    JewishSpecialDay.LAST_DAY_PESACH_C.getNextOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.LAST_DAY_PESACH_C.getNextOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 4, 26),
-                    JewishSpecialDay.SEVENTH_DAY_PESACH.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.SEVENTH_DAY_PESACH.getNextOccurrence(H20181231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 4, 27),
-                    JewishSpecialDay.LAST_DAY_PESACH_C.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.LAST_DAY_PESACH_C.getNextOccurrence(H20181231, true)));
         } catch (NoSuchHolidayException nshe) {
             fail(nshe.toString());
         }
@@ -187,9 +192,9 @@ public class JewishSpecialDayTest
     public void testShavuos() {
         try {
             assertEquals(ICalendar.GREGORIAN.fromYMD(2018, 5, 20),
-                    JewishSpecialDay.SHAVUOT.getNextOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.SHAVUOT.getNextOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2018, 5, 21),
-                    JewishSpecialDay.SHAVUOT_2C.getNextOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.SHAVUOT_2C.getNextOccurrence(H20171231, true)));
         } catch (NoSuchHolidayException nshe) {
             fail(nshe.toString());
         }
@@ -206,13 +211,13 @@ public class JewishSpecialDayTest
     public void testTamuz12() {
         try {
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 7, 6),
-                    JewishSpecialDay.TAMUZ_12.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.TAMUZ_12.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2018, 6, 25),
-                    JewishSpecialDay.TAMUZ_12.getNextOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.TAMUZ_12.getNextOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 7, 15),
-                    JewishSpecialDay.TAMUZ_12.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.TAMUZ_12.getNextOccurrence(H20181231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 7, 16),
-                    JewishSpecialDay.TAMUZ_13.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.TAMUZ_13.getNextOccurrence(H20181231, true)));
         } catch (NoSuchHolidayException nshe) {
             fail(nshe.toString());
         }
@@ -231,11 +236,11 @@ public class JewishSpecialDayTest
     public void testTamuz17() {
         try {
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 7, 11),
-                    JewishSpecialDay.FAST_TAMUZ_17.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.FAST_TAMUZ_17.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2018, 7, 1),
-                    JewishSpecialDay.FAST_TAMUZ_17.getNextOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.FAST_TAMUZ_17.getNextOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 7, 21),
-                    JewishSpecialDay.FAST_TAMUZ_17.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.FAST_TAMUZ_17.getNextOccurrence(H20181231, true)));
         } catch (NoSuchHolidayException nshe) {
             fail(nshe.toString());
         }
@@ -249,11 +254,11 @@ public class JewishSpecialDayTest
     public void testAv9() {
         try {
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 8, 1),
-                    JewishSpecialDay.FAST_AV_9.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.FAST_AV_9.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2018, 7, 22),
-                    JewishSpecialDay.FAST_AV_9.getNextOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.FAST_AV_9.getNextOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 8, 11),
-                    JewishSpecialDay.FAST_AV_9.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.FAST_AV_9.getNextOccurrence(H20181231, true)));
         } catch (NoSuchHolidayException nshe) {
             fail(nshe.toString());
         }
@@ -267,13 +272,13 @@ public class JewishSpecialDayTest
     public void testRoshHashana() {
         try {
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 9, 21),
-                    JewishSpecialDay.ROSH_HASHANA_1.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.ROSH_HASHANA_1.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 9, 22),
-                    JewishSpecialDay.ROSH_HASHANA_2.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.ROSH_HASHANA_2.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2018, 9, 10),
-                    JewishSpecialDay.ROSH_HASHANA_1.getNextOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.ROSH_HASHANA_1.getNextOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2018, 9, 11),
-                    JewishSpecialDay.ROSH_HASHANA_2.getNextOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.ROSH_HASHANA_2.getNextOccurrence(H20171231, true)));
             assertTrue(JewishSpecialDay.ROSH_HASHANA_1.isYomTov());
             assertTrue(JewishSpecialDay.ROSH_HASHANA_2.isYomTov());
             assertTrue(JewishSpecialDay.ROSH_HASHANA_1.applies(true));
@@ -286,10 +291,10 @@ public class JewishSpecialDayTest
     @Test
     public void testTzomGedalia() {
         try {
-            assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 9, 23),
-                    JewishSpecialDay.TZOM_GEDALIA.getPrevOccurrence(H20171231, true));
+            assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 9, 24),
+                    greg(JewishSpecialDay.TZOM_GEDALIA.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2018, 9, 12),
-                    JewishSpecialDay.TZOM_GEDALIA.getNextOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.TZOM_GEDALIA.getNextOccurrence(H20171231, true)));
             assertTrue(JewishSpecialDay.TZOM_GEDALIA.applies(true));
             assertTrue(JewishSpecialDay.TZOM_GEDALIA.applies(false));
         } catch (NoSuchHolidayException e) {
@@ -301,46 +306,46 @@ public class JewishSpecialDayTest
     public void testSukkos() {
         try {
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 10, 5),
-                    JewishSpecialDay.FIRST_DAY_SUKKOT.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.FIRST_DAY_SUKKOT.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2018, 9, 24),
-                    JewishSpecialDay.FIRST_DAY_SUKKOT.getNextOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.FIRST_DAY_SUKKOT.getNextOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 10, 6),
-                    JewishSpecialDay.SECOND_DAY_SUKKOT_C.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.SECOND_DAY_SUKKOT_C.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2018, 9, 25),
-                    JewishSpecialDay.SECOND_DAY_SUKKOT_C.getNextOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.SECOND_DAY_SUKKOT_C.getNextOccurrence(H20171231, true)));
             assertFalse(JewishSpecialDay.SECOND_DAY_SUKKOT_C.applies(true));
             assertTrue(JewishSpecialDay.SECOND_DAY_SUKKOT_C.applies(false));
             assertTrue(JewishSpecialDay.FIRST_DAY_SUKKOT.isYomTov());
             assertTrue(JewishSpecialDay.SECOND_DAY_SUKKOT_C.isYomTov());
 
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 10, 6),
-                    JewishSpecialDay.CHOL_HAMOED_SUKKOT_1I.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.CHOL_HAMOED_SUKKOT_1I.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 10, 7),
-                    JewishSpecialDay.CHOL_HAMOED_SUKKOT_2I.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.CHOL_HAMOED_SUKKOT_2I.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 10, 8),
-                    JewishSpecialDay.CHOL_HAMOED_SUKKOT_3I.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.CHOL_HAMOED_SUKKOT_3I.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 10, 9),
-                    JewishSpecialDay.CHOL_HAMOED_SUKKOT_4I.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.CHOL_HAMOED_SUKKOT_4I.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 10, 10),
-                    JewishSpecialDay.CHOL_HAMOED_SUKKOT_5I.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.CHOL_HAMOED_SUKKOT_5I.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 10, 7),
-                    JewishSpecialDay.CHOL_HAMOED_SUKKOT_1C.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.CHOL_HAMOED_SUKKOT_1C.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 10, 8),
-                    JewishSpecialDay.CHOL_HAMOED_SUKKOT_2C.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.CHOL_HAMOED_SUKKOT_2C.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 10, 9),
-                    JewishSpecialDay.CHOL_HAMOED_SUKKOT_3C.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.CHOL_HAMOED_SUKKOT_3C.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 10, 10),
-                    JewishSpecialDay.CHOL_HAMOED_SUKKOT_4C.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.CHOL_HAMOED_SUKKOT_4C.getPrevOccurrence(H20171231, true)));
 
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 10, 11),
-                    JewishSpecialDay.HOSHANA_RABBA.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.HOSHANA_RABBA.getPrevOccurrence(H20171231, true)));
 
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 10, 12),
-                    JewishSpecialDay.SHMINI_ATZERES_C.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.SHMINI_ATZERES_C.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 10, 13),
-                    JewishSpecialDay.SIMCHAT_TORAH_C.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.SIMCHAT_TORAH_C.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 10, 12),
-                    JewishSpecialDay.SIMCHAT_TORAH_I.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.SIMCHAT_TORAH_I.getPrevOccurrence(H20171231, true)));
 
             assertTrue(JewishSpecialDay.SHMINI_ATZERES_C.isYomTov());
             assertTrue(JewishSpecialDay.SIMCHAT_TORAH_I.isYomTov());
@@ -364,21 +369,21 @@ public class JewishSpecialDayTest
     public void testChanukkah() {
         try {
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 12, 13),
-                    JewishSpecialDay.FIRST_DAY_CHANUKAH.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.FIRST_DAY_CHANUKAH.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 12, 14),
-                    JewishSpecialDay.SECOND_DAY_CHANUKAH.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.SECOND_DAY_CHANUKAH.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 12, 15),
-                    JewishSpecialDay.THIRD_DAY_CHANUKAH.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.THIRD_DAY_CHANUKAH.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 12, 16),
-                    JewishSpecialDay.FOURTH_DAY_CHANUKAH.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.FOURTH_DAY_CHANUKAH.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 12, 17),
-                    JewishSpecialDay.FIFTH_DAY_CHANUKAH.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.FIFTH_DAY_CHANUKAH.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 12, 18),
-                    JewishSpecialDay.SIXTH_DAY_CHANUKAH.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.SIXTH_DAY_CHANUKAH.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 12, 19),
-                    JewishSpecialDay.SEVENTH_DAY_CHANUKAH.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.SEVENTH_DAY_CHANUKAH.getPrevOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 12, 20),
-                    JewishSpecialDay.EIGHTH_DAY_CHANUKAH.getPrevOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.EIGHTH_DAY_CHANUKAH.getPrevOccurrence(H20171231, true)));
         } catch (NoSuchHolidayException e) {
             fail(e.toString());
         }
@@ -394,9 +399,9 @@ public class JewishSpecialDayTest
     {
         try {
             assertEquals(ICalendar.GREGORIAN.fromYMD(2018, 3, 1),
-                    JewishSpecialDay.PURIM.getNextOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.PURIM.getNextOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 3, 21),
-                    JewishSpecialDay.PURIM.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.PURIM.getNextOccurrence(H20181231, true)));
         } catch (NoSuchHolidayException nshe) {
             fail(nshe.toString());
         }
@@ -407,9 +412,9 @@ public class JewishSpecialDayTest
     {
         try {
             assertEquals(ICalendar.GREGORIAN.fromYMD(2018, 3, 2),
-                    JewishSpecialDay.SHUSHAN_PURIM.getNextOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.SHUSHAN_PURIM.getNextOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 3, 22),
-                    JewishSpecialDay.SHUSHAN_PURIM.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.SHUSHAN_PURIM.getNextOccurrence(H20181231, true)));
         } catch (NoSuchHolidayException nshe) {
             fail(nshe.toString());
         }
@@ -421,9 +426,9 @@ public class JewishSpecialDayTest
         try {
             // no Purim Katan in 2018/5778
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 2, 19),
-                    JewishSpecialDay.PURIM_KATAN.getNextOccurrence(H20171231, true));
+                    greg(JewishSpecialDay.PURIM_KATAN.getNextOccurrence(H20171231, true)));
             assertEquals(ICalendar.GREGORIAN.fromYMD(2019, 2, 19),
-                    JewishSpecialDay.PURIM_KATAN.getNextOccurrence(H20181231, true));
+                    greg(JewishSpecialDay.PURIM_KATAN.getNextOccurrence(H20181231, true)));
         } catch (NoSuchHolidayException nshe) {
             fail(nshe.toString());
         }

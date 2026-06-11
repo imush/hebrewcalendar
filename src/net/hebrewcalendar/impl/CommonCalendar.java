@@ -4,10 +4,10 @@ import net.hebrewcalendar.IDate;
 
 
 /**
- * Created by itz on 7/20/17.
+ * Abstract base for Gregorian and Julian calendars.
  */
-public abstract class CommonCalendar
-    extends AbstractCalendar
+public abstract class CommonCalendar<C extends CommonCalendar<C>>
+    extends AbstractCalendar<C>
 {
     @Override
     public final int monthLength(int year, int month)
@@ -45,7 +45,7 @@ public abstract class CommonCalendar
     }
 
     @Override
-    long absDay(IDate date)
+    long absDay(IDate<C> date)
     {
         long toReturn = getStart();
 
@@ -66,7 +66,7 @@ public abstract class CommonCalendar
 
         boolean isJulian = monthLength(1900, 2)==29;
 
-        int daysin400 = 365*400 + (isJulian ? 100 : 97);
+        long daysin400 = 365*400 + (isJulian ? 100 : 97);
         toReturn += fourHundredYearCycles * daysin400;
 
         y -= (400*fourHundredYearCycles);
@@ -79,21 +79,40 @@ public abstract class CommonCalendar
     }
 
     @Override
-    DateImpl fromAbs(long absDay)
+    @SuppressWarnings("unchecked")
+    DateImpl<C> fromAbs(long absDay)
     {
         long absDayFromStart = absDay-getStart();
         final boolean isJulian = monthLength(1900, 2)==29;
         final int daysin400 = 365*400 + (isJulian ? 100 : 97);
 
         final int cycles = (int)((absDayFromStart-1)/daysin400);
-        IDate d0 = new DateImpl(this, 1 + 400*cycles, 1, 1);
+        DateImpl<C> d0 = new DateImpl<>((C) this, 1 + 400*cycles, 1, 1);
 
-        return (DateImpl)d0.addDays((int)(absDayFromStart - cycles*daysin400-1));
+        return d0.addDays((int)(absDayFromStart - cycles*daysin400-1));
     }
 
     @Override
-    public DateImpl firstDayOfYear(int year)
+    public DateImpl<C> firstDayOfYear(int year)
     {
         return fromYMD(year, 1, 1);
+    }
+
+    /**
+     * Returns the anniversary of {@code originalDate} in {@code targetYear}.
+     * Maps Feb 29 → March 1 when the target year is not a leap year.
+     *
+     * @throws IllegalArgumentException if the original date is Feb 30 or later (never valid)
+     */
+    public DateImpl<C> anniversaryFor(IDate<C> originalDate, int targetYear)
+    {
+        int month = originalDate.getMonth();
+        int day   = originalDate.getDay();
+        if (month == 2 && day > 29)
+            throw new IllegalArgumentException(
+                "Day " + day + " of February is never valid in any year");
+        if (month == 2 && day == 29 && !isLeap(targetYear))
+            return fromYMD(targetYear, 3, 1);
+        return fromYMD(targetYear, month, day);
     }
 }

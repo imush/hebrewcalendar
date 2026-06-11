@@ -2,11 +2,8 @@ package net.hebrewcalendar.impl;
 
 import net.hebrewcalendar.CalendarType;
 
-/**
- * Created by itz on 7/20/17.
- */
 public final class GregorianCalendar
-    extends CommonCalendar
+    extends CommonCalendar<GregorianCalendar>
 {
     public static final GregorianCalendar INSTANCE = new GregorianCalendar();
 

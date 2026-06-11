@@ -1,21 +1,22 @@
 package net.hebrewcalendar.impl.holiday;
 
+import net.hebrewcalendar.ICalendar;
 import net.hebrewcalendar.IDate;
 import net.hebrewcalendar.impl.NoSuchHolidayException;
 import net.hebrewcalendar.SpecialDay;
 
-public final class ShiftedDateSpecialDay
-    extends AbstractRecurringSpecialDay
+public final class ShiftedDateSpecialDay<C extends ICalendar<C>>
+    extends AbstractRecurringSpecialDay<C>
 {
     private final int _shift;
-    private final SpecialDay _referenceDay;
+    private final SpecialDay<C> _referenceDay;
 
     /**
      * @param name Name of the holiday
      * @param referenceDay the referenced {@link SpecialDay}
      * @param shift days to add to reference date, may be negative
      */
-    public ShiftedDateSpecialDay(String name, SpecialDay referenceDay, int shift)
+    public ShiftedDateSpecialDay(String name, SpecialDay<C> referenceDay, int shift)
     {
         super(referenceDay.getCalendar(), name);
         _referenceDay = referenceDay;
@@ -23,14 +24,14 @@ public final class ShiftedDateSpecialDay
     }
 
     @Override
-    public IDate getNextOccurrence(IDate date, final boolean strict)
+    public IDate<C> getNextOccurrence(IDate<C> date, final boolean strict)
             throws NoSuchHolidayException
     {
         return _referenceDay.getNextOccurrence(date.subtractDays(_shift), strict).addDays(_shift);
     }
 
     @Override
-    public IDate getPrevOccurrence(IDate date, final boolean strict)
+    public IDate<C> getPrevOccurrence(IDate<C> date, final boolean strict)
             throws NoSuchHolidayException
     {
         return _referenceDay.getPrevOccurrence(date.subtractDays(_shift), strict).addDays(_shift);
@@ -38,7 +39,7 @@ public final class ShiftedDateSpecialDay
 
 
     @Override
-    public boolean matches(IDate date)
+    public boolean matches(IDate<C> date)
     {
         return _referenceDay.matches(date.subtractDays(_shift));
     }

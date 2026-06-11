@@ -5,13 +5,13 @@ import net.hebrewcalendar.IDate;
 import net.hebrewcalendar.SpecialDay;
 import net.hebrewcalendar.impl.NoSuchHolidayException;
 
-public abstract class AbstractRecurringSpecialDay
-    implements SpecialDay
+public abstract class AbstractRecurringSpecialDay<C extends ICalendar<C>>
+    implements SpecialDay<C>
 {
-    private final ICalendar _calendar;
+    private final C _calendar;
     private final String _name;
 
-    AbstractRecurringSpecialDay(ICalendar calendar, String name)
+    AbstractRecurringSpecialDay(C calendar, String name)
     {
         _calendar = calendar;
         _name = name;
@@ -24,7 +24,7 @@ public abstract class AbstractRecurringSpecialDay
     }
 
     @Override
-    public final ICalendar getCalendar()
+    public final C getCalendar()
     {
         return _calendar;
     }
@@ -34,15 +34,15 @@ public abstract class AbstractRecurringSpecialDay
      * @param date date to start search from
      * @param strict when true, an exact match does not qualify, so the date
      *               returned is always strictly later than date.
-     * @return next occurrence
+     * @return next occurrence in this holiday's calendar
      */
     @Override
-    public IDate getNextOccurrence(IDate date, boolean strict)
+    public IDate<C> getNextOccurrence(IDate<C> date, boolean strict)
         throws NoSuchHolidayException
     {
-        IDate d = strict ? date.addDays(1) : date;
+        IDate<C> d = strict ? date.addDays(1) : date;
 
-        for (int c =0; c < 3*380; c++) {
+        for (int c = 0; c < 3*380; c++) {
             if (matches(d))
                 return d;
             d = d.addDays(1);
@@ -51,19 +51,19 @@ public abstract class AbstractRecurringSpecialDay
     }
 
     /**
-     * Search for next occurrence
+     * Search for previous occurrence
      * @param date date to start search from
-     * @param strict when true, an exact match does not qualify, si the date
+     * @param strict when true, an exact match does not qualify, so the date
      *               returned is always strictly earlier than param date.
-     * @return previous occurrence
+     * @return previous occurrence in the same calendar as {@code date}
      */
     @Override
-    public IDate getPrevOccurrence(IDate date, boolean strict)
+    public IDate<C> getPrevOccurrence(IDate<C> date, boolean strict)
             throws NoSuchHolidayException
     {
-        IDate d = strict ? date.addDays(-1) : date;
+        IDate<C> d = strict ? date.addDays(-1) : date;
 
-        for (int c =0; c < 3*380; c++) {
+        for (int c = 0; c < 3*380; c++) {
             if (matches(d))
                 return d;
             d = d.addDays(-1);

@@ -3,8 +3,8 @@ package net.hebrewcalendar.impl;
 import net.hebrewcalendar.ICalendar;
 import net.hebrewcalendar.IDate;
 
-public abstract class AbstractCalendar
-    implements ICalendar
+public abstract class AbstractCalendar<C extends ICalendar<C>>
+    implements ICalendar<C>
 {
     /**
      * Create an {@link IDate} for this calendar.
@@ -13,11 +13,13 @@ public abstract class AbstractCalendar
      * @param day the day
      * @return an {@link IDate} object
      */
-    public final DateImpl fromYMD(int year, int month, int day)
+    @Override
+    @SuppressWarnings("unchecked")
+    public final DateImpl<C> fromYMD(int year, int month, int day)
     {
         int m = month > 0 ? month : monthsInYear(year) + 1 + month;
         int d = day > 0 ? day : monthLength(year, m) + 1 + day;
-        return new DateImpl(this, year, m, d);
+        return new DateImpl<>((C) this, year, m, d);
     }
 
 
@@ -44,7 +46,7 @@ public abstract class AbstractCalendar
      * @return a new {@link IDate} object
      */
     @Override
-    public final DateImpl addDays(final IDate date, final int numDays)
+    public final DateImpl<C> addDays(IDate<C> date, final int numDays)
     {
         if (numDays < 0)
             return subtractDays(date, -numDays);
@@ -52,9 +54,8 @@ public abstract class AbstractCalendar
         int m = date.getMonth();
         int d = date.getDay();
         int inc = numDays;
-        ICalendar cal = date.getCalendar();
-        while (inc > cal.monthLength(y, m) - d) {
-            inc -= (cal.monthLength(y, m) - d + 1);
+        while (inc > monthLength(y, m) - d) {
+            inc -= (monthLength(y, m) - d + 1);
             d = 1;
             int[] nextYearMonth = nextYearMonth(y, m);
             y = nextYearMonth[0];
@@ -72,7 +73,7 @@ public abstract class AbstractCalendar
      * @return a new {@link IDate} object
      */
     @Override
-    public DateImpl subtractDays(final IDate date, final int numDays)
+    public DateImpl<C> subtractDays(IDate<C> date, final int numDays)
     {
         if (numDays < 0)
             return addDays(date, -numDays);
@@ -81,20 +82,19 @@ public abstract class AbstractCalendar
         int d = date.getDay();
         int inc = numDays;
 
-        ICalendar cal = date.getCalendar();
         while (inc >= d) {
             inc -= d;
             int[] prevYearMonth = prevYearMonth(y, m);
             y = prevYearMonth[0];
             m = prevYearMonth[1];
-            d = cal.monthLength(y, m);
+            d = monthLength(y, m);
         }
         d -= inc;
         return fromYMD(y, m, d);
 
     }
 
-    abstract long absDay(IDate date);
+    abstract long absDay(IDate<C> date);
 
     /**
      * Calculate the next year and month
@@ -107,21 +107,21 @@ public abstract class AbstractCalendar
     /**
      * Calculate the previous year and month
      * @param y year
-     * @param m month
      * @return array of 2 ints [year, month]
      */
     abstract int[] prevYearMonth(int y, int m);
 
     abstract long getStart();
 
-    abstract DateImpl fromAbs(long absDay);
+    abstract DateImpl<C> fromAbs(long absDay);
 
     @Override
-    public final IDate convert(IDate otherDate)
+    @SuppressWarnings("unchecked")
+    public final DateImpl<C> convert(IDate<?> otherDate)
     {
         if (getType().equals(otherDate.getCalendarType()))
-            return otherDate;
-        long absDay = ((DateImpl)otherDate).absDay();
+            return (DateImpl<C>) otherDate; // safe: same type guarantees same calendar C
+        long absDay = ((DateImpl<?>) otherDate).absDay();
         return fromAbs(absDay);
     }
 }

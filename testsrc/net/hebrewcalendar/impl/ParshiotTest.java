@@ -50,7 +50,7 @@ public class ParshiotTest {
     }
 
     private static List<Parsha> getParsha(LocalDate shabbat, boolean inIsrael) {
-        IDate d = GREG.fromYMD(shabbat.getYear(), shabbat.getMonthValue(), shabbat.getDayOfMonth());
+        IDate<JewishCalendar> d = JEWISH.convert(GREG.fromYMD(shabbat.getYear(), shabbat.getMonthValue(), shabbat.getDayOfMonth()));
         return Parshiot.getParsha(d, inIsrael);
     }
 
@@ -169,7 +169,7 @@ public class ParshiotTest {
 
     @Test
     public void may30_2026() {
-        IDate date = GREG.fromYMD(2026, 5, 30);
+        IDate<JewishCalendar> date = JEWISH.convert(GREG.fromYMD(2026, 5, 30));
         assertEquals("May 30 2026 should be Saturday", 7, date.getDayOfWeek());
 
         List<Parsha> diaspora = Parshiot.getParsha(date, false);
@@ -297,10 +297,8 @@ public class ParshiotTest {
                 int scheduleSize = ParshiotYearType.forYear(rosh, yearType, pesach).schedule(inIsrael).size();
                 for (int week = 0; week < scheduleSize; week++) {
                     LocalDate shabbat = firstShabbat.plusWeeks(week);
-                    IDate gregDate = GREG.fromYMD(shabbat.getYear(), shabbat.getMonthValue(), shabbat.getDayOfMonth());
-                    if (!Parshiot.getParsha(gregDate, inIsrael).isEmpty()) continue;
-
-                    IDate hDate = JEWISH.convert(gregDate);
+                    IDate<JewishCalendar> hDate = JEWISH.convert(GREG.fromYMD(shabbat.getYear(), shabbat.getMonthValue(), shabbat.getDayOfMonth()));
+                    if (!Parshiot.getParsha(hDate, inIsrael).isEmpty()) continue;
                     boolean isHoliday = false;
                     for (JewishSpecialDay sd : JewishSpecialDay.values()) {
                         if (sd.applies(inIsrael) && sd.matches(hDate)

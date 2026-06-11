@@ -8,7 +8,7 @@ import java.util.List;
  * such as sefira counting, tekufa (solar season) calculations, and Torah reading schedule.
  */
 public interface JewishCalendar
-    extends ICalendar
+    extends ICalendar<JewishCalendar>
 {
     /**
      * The four Jewish solar seasons (tekufot), in calendar order starting from spring.
@@ -35,7 +35,7 @@ public interface JewishCalendar
      * @param date day to test
      * @return sefira count (1-49), or 0 if it is not between Pesach and Shavuot
      */
-    int getSefira(IDate date);
+    int getSefira(IDate<JewishCalendar> date);
 
     /**
      * Returns the molad (lunar conjunction) time for the given Hebrew year and month.
@@ -56,7 +56,7 @@ public interface JewishCalendar
      * @param moment a {@link JewishMoment} such as a molad or tekufa time
      * @return the corresponding Hebrew {@link IDate}
      */
-    IDate fromMoment(JewishMoment moment);
+    IDate<JewishCalendar> fromMoment(JewishMoment moment);
 
     /**
      * Returns the time of the requested tekufa according to Rav Ada bar Ahavah.
@@ -101,12 +101,12 @@ public interface JewishCalendar
     /**
      * Returns the weekly Torah reading (parsha) for the given Shabbat date.
      *
-     * @param date     any IDate that falls on a Saturday
+     * @param date     a Hebrew date that falls on a Saturday
      * @param inIsrael true for Eretz Israel schedule, false for Diaspora
      * @return list of 1 {@link Parsha} (regular week) or 2 (double portion);
      *         empty list on a Shabbat that falls on Yom Tov or Chol Hamoed
      */
-    List<Parsha> getParsha(IDate date, boolean inIsrael);
+    List<Parsha> getParsha(IDate<JewishCalendar> date, boolean inIsrael);
 
     /**
      * Returns the special maftir Torah readings for the given Shabbat date.
@@ -115,11 +115,11 @@ public interface JewishCalendar
      * names of any applicable special readings: Rosh Chodesh, Chanukah, Yom Tov,
      * Chol Hamoed, or one of the four Arba Parshiyot (Shekalim, Zachor, Para, Hachodesh).
      *
-     * @param date     date to check (any calendar)
+     * @param date     Hebrew date to check
      * @param inIsrael true for Eretz Israel schedule, false for Diaspora
      * @return list of special maftir names; empty if not Shabbat or no special reading
      */
-    default List<String> specialMaftir(IDate date, boolean inIsrael) {
+    default List<String> specialMaftir(IDate<JewishCalendar> date, boolean inIsrael) {
         if (date.getDayOfWeek() != 7) return List.of();
         List<String> result = new ArrayList<>();
         boolean chanukahAdded = false;
@@ -139,4 +139,36 @@ public interface JewishCalendar
         }
         return result;
     }
+
+    /**
+     * Returns the Hebrew anniversary of {@code originalDate} in {@code targetYear},
+     * applying birthday fallback rules:
+     * <ul>
+     *   <li>Adar (month 12) from a non-leap year → Adar II (month 13) in a leap target year</li>
+     *   <li>Adar II (month 13) → Adar (month 12) in a non-leap target year</li>
+     *   <li>Cheshvan 30 or Kislev 30, if that day does not exist in the target year →
+     *       1st of the following month</li>
+     * </ul>
+     *
+     * @param originalDate the original date (e.g., a birth date; must be a Hebrew calendar date)
+     * @param targetYear   the Hebrew target year
+     * @return the anniversary date in the target year
+     */
+    IDate<JewishCalendar> anniversaryFor(IDate<JewishCalendar> originalDate, int targetYear);
+
+    /**
+     * Returns the Hebrew yahrzeit of {@code deathDate} in {@code targetYear},
+     * applying yahrzeit fallback rules:
+     * <ul>
+     *   <li>Adar II (month 13) → Adar (month 12) in a non-leap target year</li>
+     *   <li>Adar (month 12) from any year → remains month 12 (= Adar I in leap years)</li>
+     *   <li>Cheshvan 30 or Kislev 30, if that day does not exist in the target year →
+     *       1st of the following month</li>
+     * </ul>
+     *
+     * @param deathDate  the original death date (must be a Hebrew calendar date)
+     * @param targetYear the Hebrew target year
+     * @return the yahrzeit date in the target year
+     */
+    IDate<JewishCalendar> yahrzeitFor(IDate<JewishCalendar> deathDate, int targetYear);
 }

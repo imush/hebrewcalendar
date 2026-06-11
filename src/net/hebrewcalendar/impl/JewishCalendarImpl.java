@@ -16,7 +16,7 @@ import net.hebrewcalendar.JewishMonth;
  * Singleton access via {@link #INSTANCE}; use through the {@link net.hebrewcalendar.ICalendar#JEWISH} constant.
  */
 public class JewishCalendarImpl
-    extends AbstractCalendar
+    extends AbstractCalendar<JewishCalendar>
     implements JewishCalendar
 {
     public static final JewishCalendarImpl INSTANCE = new JewishCalendarImpl();
@@ -141,7 +141,7 @@ public class JewishCalendarImpl
     }
 
     @Override
-    long absDay(IDate date)
+    long absDay(IDate<JewishCalendar> date)
     {
         // search for abs day last RoshHashana
         final int year = date.getYear();
@@ -187,7 +187,8 @@ public class JewishCalendarImpl
         return 0;
     }
 
-    DateImpl fromAbs(long absDayFromBeginning)
+    @SuppressWarnings("unchecked")
+    DateImpl<JewishCalendar> fromAbs(long absDayFromBeginning)
     {
         final int monthsIn19 = 12*19+7;
 
@@ -195,14 +196,14 @@ public class JewishCalendarImpl
 
         int cyclesToSkip = (int)(absDayFromBeginning/(cycle19.getDay() + 1));
 
-        DateImpl startDay = new DateImpl(this, cyclesToSkip*19 + 1, 7, 1);
+        DateImpl<JewishCalendar> startDay = new DateImpl<>((JewishCalendar) this, cyclesToSkip*19 + 1, 7, 1);
         return startDay.addDays((int)(absDayFromBeginning - absDay(startDay)));
     }
 
     YearCheshvanKislevType getYearType(int year)
     {
-        final long rosh0 = absDay(new DateImpl(this, year, 7, 1));
-        final long rosh1 = absDay(new DateImpl(this, year+1, 7, 1));
+        final long rosh0 = absDay(new DateImpl<>((JewishCalendar) this, year, 7, 1));
+        final long rosh1 = absDay(new DateImpl<>((JewishCalendar) this, year+1, 7, 1));
         final int yearLength  = (int)(rosh1-rosh0);
 
         int excessLength = isLeap(year) ? yearLength - 383 : yearLength - 353;
@@ -217,23 +218,22 @@ public class JewishCalendarImpl
     }
 
     @Override
-    public int getSefira(IDate date)
+    public int getSefira(IDate<JewishCalendar> date)
     {
-        final IDate d0 = convert(date);
-        final int m0 = d0.getMonth();
-        if (m0 > 3 || (m0 == 3 && d0.getDay() > 5) || (m0 == 1 && d0.getDay() < 16))
+        final int m0 = date.getMonth();
+        if (m0 > 3 || (m0 == 3 && date.getDay() > 5) || (m0 == 1 && date.getDay() < 16))
             return 0;
-        final IDate pesach;
+        final IDate<JewishCalendar> pesach;
         try {
-            pesach = JewishSpecialDay.FIRST_DAY_PESACH.getPrevOccurrence(d0, true);
+            pesach = JewishSpecialDay.FIRST_DAY_PESACH.getPrevOccurrence(date, true);
         } catch(NoSuchHolidayException nshe) {
             throw new IllegalArgumentException("Cannot find pesach preceding " + date);
         }
-        return (int)(absDay(d0) - absDay(pesach));
+        return (int)(absDay(date) - absDay(pesach));
     }
 
     @Override
-    public DateImpl firstDayOfYear(int year)
+    public DateImpl<JewishCalendar> firstDayOfYear(int year)
     {
         return fromYMD(year, 7 ,1);
     }
@@ -245,7 +245,7 @@ public class JewishCalendarImpl
     }
 
     @Override
-    public IDate fromMoment(JewishMoment moment)
+    public IDate<JewishCalendar> fromMoment(JewishMoment moment)
     {
         return fromAbs(moment.getDay());
     }
@@ -263,8 +263,48 @@ public class JewishCalendarImpl
     }
 
     @Override
-    public List<Parsha> getParsha(IDate date, boolean inIsrael)
+    public List<Parsha> getParsha(IDate<JewishCalendar> date, boolean inIsrael)
     {
         return Parshiot.getParsha(date, inIsrael);
+    }
+
+    @Override
+    public IDate<JewishCalendar> anniversaryFor(IDate<JewishCalendar> originalDate, int year)
+    {
+        int month = originalDate.getMonth();
+        int day   = originalDate.getDay();
+        boolean origIsLeap   = isLeap(originalDate.getYear());
+        boolean targetIsLeap = isLeap(year);
+
+        if (month == 12 && !origIsLeap && targetIsLeap)
+            month = 13;  // non-leap Adar → Adar II in leap year
+        else if (month == 13 && !targetIsLeap)
+            month = 12;  // Adar II → Adar in non-leap year
+
+        try {
+            return fromYMD(year, month, day);
+        } catch (IllegalStateException e) {
+            // Cheshvan 30 or Kislev 30 not present in this year → Rosh Chodesh of next month
+            int[] next = nextYearMonth(year, month);
+            return fromYMD(next[0], next[1], 1);
+        }
+    }
+
+    @Override
+    public IDate<JewishCalendar> yahrzeitFor(IDate<JewishCalendar> deathDate, int year)
+    {
+        int month = deathDate.getMonth();
+        int day   = deathDate.getDay();
+
+        if (month == 13 && !isLeap(year))
+            month = 12;  // Adar II → Adar in non-leap year
+
+        try {
+            return fromYMD(year, month, day);
+        } catch (IllegalStateException e) {
+            // Cheshvan 30 or Kislev 30 not present in this year → Rosh Chodesh of next month
+            int[] next = nextYearMonth(year, month);
+            return fromYMD(next[0], next[1], 1);
+        }
     }
 }

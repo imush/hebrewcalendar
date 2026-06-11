@@ -29,12 +29,11 @@ public class Parshiot {
      * @return list of 1 or 2 Parshiot, or empty list if Yom Tov / Chol Hamoed Shabbat
      * @throws IllegalArgumentException if date is not a Saturday
      */
-    public static List<Parsha> getParsha(IDate date, boolean inIsrael) {
+    public static List<Parsha> getParsha(IDate<net.hebrewcalendar.JewishCalendar> date, boolean inIsrael) {
         if (date.getDayOfWeek() != 7)
             throw new IllegalArgumentException("getParsha requires a Saturday; got day-of-week " + date.getDayOfWeek());
 
-        IDate hDate  = ICalendar.JEWISH.convert(date);
-        int hebrewYear = hDate.getYear();
+        int hebrewYear = date.getYear();
 
         LocalDate thisShabbat  = toLocalDate(date);
         LocalDate firstShabbat = firstShabbatOfYear(hebrewYear);
@@ -55,18 +54,18 @@ public class Parshiot {
     // ── helpers ──────────────────────────────────────────────────────────────
 
     private static LocalDate firstShabbatOfYear(int hebrewYear) {
-        IDate rosh = ICalendar.JEWISH.fromYMD(hebrewYear, 7, 1);
+        IDate<net.hebrewcalendar.JewishCalendar> rosh = ICalendar.JEWISH.fromYMD(hebrewYear, 7, 1);
         return toLocalDate(rosh).with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
     }
 
-    private static LocalDate toLocalDate(IDate date) {
-        IDate g = ICalendar.GREGORIAN.convert(date);
+    private static LocalDate toLocalDate(IDate<?> date) {
+        IDate<?> g = ICalendar.GREGORIAN.convert(date);
         return LocalDate.of(g.getYear(), g.getMonth(), g.getDay());
     }
 
     private static List<List<Parsha>> scheduleFor(int year, boolean inIsrael) {
-        IDate rosh   = ICalendar.JEWISH.fromYMD(year, 7, 1);
-        IDate pesach = ICalendar.JEWISH.fromYMD(year, 1, 15);
+        IDate<net.hebrewcalendar.JewishCalendar> rosh   = ICalendar.JEWISH.fromYMD(year, 7, 1);
+        IDate<net.hebrewcalendar.JewishCalendar> pesach = ICalendar.JEWISH.fromYMD(year, 1, 15);
         int r   = rosh.getDayOfWeek();
         int p   = pesach.getDayOfWeek();
         YearCheshvanKislevType yearType = JewishCalendarImpl.INSTANCE.getYearType(year);

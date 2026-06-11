@@ -66,7 +66,7 @@ public class NthDayOfWeekInMonthSpecialDayTest
         assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 11,23),
                 thanksgiving.getNextOccurrence(ICalendar.GREGORIAN.fromYMD(2016, 12,2), false));
         assertEquals(ICalendar.GREGORIAN.convert(ICalendar.JEWISH.fromYMD(5777 ,1,5)),
-                firstShabbos.getNextOccurrence(ICalendar.GREGORIAN.fromYMD(2017, 3,22), false));
+                ICalendar.GREGORIAN.convert(firstShabbos.getNextOccurrence(ICalendar.JEWISH.fromYMD(5777, 1, 1), false)));
     }
 
     @Test

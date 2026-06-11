@@ -7,8 +7,8 @@ import net.hebrewcalendar.IDate;
  * Represents a holiday that occurs yearly on the same date.
  * It is initialized with month and day.
  */
-public class MonthDaySpecialDay
-    extends AbstractRecurringSpecialDay
+public class MonthDaySpecialDay<C extends ICalendar<C>>
+    extends AbstractRecurringSpecialDay<C>
 {
     private final int _month;
     private final int _day;
@@ -23,7 +23,7 @@ public class MonthDaySpecialDay
      *              of days from <i>end of month</i>, e.g. -1 will indicate the LAST day of month. day=0 can be used
      *            to match ANY day of the month, e.g. month=4, day = 0 will match the entire April in Gregorian calendar.
      */
-    public MonthDaySpecialDay(ICalendar calendar, String name, int month, int day)
+    public MonthDaySpecialDay(C calendar, String name, int month, int day)
     {
         super(calendar, name);
         _month = month;
@@ -41,17 +41,16 @@ public class MonthDaySpecialDay
     }
 
     @Override
-    public boolean matches(IDate date)
+    public boolean matches(IDate<C> date)
     {
-        final ICalendar cal = getCalendar();
-        final IDate toMatch = cal.convert(date);
+        final ICalendar<C> cal = getCalendar();
         final boolean monthMatch = _month == 0 ||
-                (_month > 0 && _month == toMatch.getMonth()) ||
-                (_month < 0 && toMatch.getMonth() == cal.monthsInYear(toMatch.getYear()) + 1 + _month);
+                (_month > 0 && _month == date.getMonth()) ||
+                (_month < 0 && date.getMonth() == cal.monthsInYear(date.getYear()) + 1 + _month);
         return monthMatch &&
                 (_day == 0 ||
-                (_day > 0 && _day == toMatch.getDay()) ||
-                (_day < 0 && toMatch.getDay() == cal.monthLength(toMatch.getYear(), toMatch.getMonth()) + 1 + _day));
+                (_day > 0 && _day == date.getDay()) ||
+                (_day < 0 && date.getDay() == cal.monthLength(date.getYear(), date.getMonth()) + 1 + _day));
     }
 
     public String toString()

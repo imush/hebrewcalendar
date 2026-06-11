@@ -7,8 +7,8 @@ import net.hebrewcalendar.IDate;
  * Represents a holiday that occurs yearly on the same date.
  * It is initialized with month and day.
  */
-public class NthDayOfWeekInMonthSpecialDay
-    extends AbstractRecurringSpecialDay
+public class NthDayOfWeekInMonthSpecialDay<C extends ICalendar<C>>
+    extends AbstractRecurringSpecialDay<C>
 {
     private final int _month;
     private int _n;
@@ -26,7 +26,7 @@ public class NthDayOfWeekInMonthSpecialDay
      *          e.g. Thanksgiving in US is last Thursday in November, so would use constructor args (11, 5, -1)
 
      */
-    public NthDayOfWeekInMonthSpecialDay(ICalendar calendar, String name, int month, int dayOfWeek, int n)
+    public NthDayOfWeekInMonthSpecialDay(C calendar, String name, int month, int dayOfWeek, int n)
     {
         super(calendar, name);
         _month = month;
@@ -49,13 +49,12 @@ public class NthDayOfWeekInMonthSpecialDay
     public final int getN() { return _n; }
 
     @Override
-    public boolean matches(final IDate date)
+    public boolean matches(final IDate<C> date)
     {
-        ICalendar cal = getCalendar();
-        IDate date0 = cal.convert(date);
-        int m0 = date0.getMonth();
-        int y0 = date0.getYear();
-        int d0 = date0.getDay();
+        ICalendar<C> cal = getCalendar();
+        int m0 = date.getMonth();
+        int y0 = date.getYear();
+        int d0 = date.getDay();
         boolean monthMatch = _month == 0 ||
                 _month > 0 && _month == m0 ||
                 _month < 0 && m0 == _month + 1 + cal.monthsInYear(y0);
@@ -64,8 +63,8 @@ public class NthDayOfWeekInMonthSpecialDay
 
     private int getNthDayOfWeekInMonth(int year, int month)
     {
-        ICalendar cal = getCalendar();
-        IDate firstDayOfMonth = cal.fromYMD(year, month, _n > 0 ? 1 : -1);
+        ICalendar<C> cal = getCalendar();
+        IDate<C> firstDayOfMonth = cal.fromYMD(year, month, _n > 0 ? 1 : -1);
         int d1 = firstDayOfMonth.getDay();
         int toAddForFirstCorrectDay = _dayOfWeek - firstDayOfMonth.getDayOfWeek();
         if (_n*toAddForFirstCorrectDay < 0)

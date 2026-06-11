@@ -8,24 +8,29 @@ import net.hebrewcalendar.IDate;
  * Concrete implementation of {@link net.hebrewcalendar.IDate}.
  * Instances are created by {@link AbstractCalendar#fromYMD} and conversion methods; not intended for direct construction.
  */
-public class DateImpl
-    implements IDate
+public class DateImpl<C extends ICalendar<C>>
+    implements IDate<C>
 
 {
     private final int _day;
     private final int _month;
     private final int _year;
-    private AbstractCalendar _calendar;
+    private final C _calendar;
 
 
-    DateImpl(AbstractCalendar calendar, int year, int month, int day)
+    DateImpl(C calendar, int year, int month, int day)
     {
         _calendar = calendar;
         _year = year;
         _month = month;
         _day = day;
-        if (!_calendar.isValidDate(year, month, day))
+        if (!absCalendar().isValidDate(year, month, day))
             throw new IllegalStateException("Invalid date created for calendar " + _calendar.getType() + ": " + this);
+    }
+
+    @SuppressWarnings("unchecked")
+    private AbstractCalendar<C> absCalendar() {
+        return (AbstractCalendar<C>) _calendar;
     }
 
     @Override
@@ -38,16 +43,16 @@ public class DateImpl
     public final int getDay() { return _day; }
 
     @Override
-    public final ICalendar getCalendar() { return _calendar; }
+    public final C getCalendar() { return _calendar; }
 
     @Override
-    public boolean before(IDate otherDate)
+    public boolean before(IDate<?> otherDate)
     {
         return compareTo(otherDate) < 0;
     }
 
     @Override
-    public boolean after(IDate otherDate)
+    public boolean after(IDate<?> otherDate)
     {
         return compareTo(otherDate) > 0;
     }
@@ -57,19 +62,19 @@ public class DateImpl
 
     public long absDay()
     {
-        return _calendar.absDay(this);
+        return absCalendar().absDay(this);
     }
 
     @Override
-    public final DateImpl addDays(int numDays)
+    public final DateImpl<C> addDays(int numDays)
     {
-        return _calendar.addDays(this, numDays);
+        return absCalendar().addDays(this, numDays);
     }
 
     @Override
-    public final DateImpl subtractDays(int numDays)
+    public final DateImpl<C> subtractDays(int numDays)
     {
-        return _calendar.subtractDays(this, numDays);
+        return absCalendar().subtractDays(this, numDays);
     }
 
     final boolean isValid()
@@ -97,9 +102,9 @@ public class DateImpl
     @Override
     public boolean equals(Object o)
     {
-        if (o == null || !(o instanceof IDate))
+        if (!(o instanceof IDate<?>))
             return false;
-        IDate other = (IDate)o;
+        IDate<?> other = (IDate<?>) o;
         return other.getCalendarType().equals(getCalendarType()) &&
                 other.getYear() == getYear() &&
                 other.getMonth() == getMonth() &&
@@ -108,15 +113,15 @@ public class DateImpl
 
 
     @Override
-    public int compareTo(IDate o)
+    public int compareTo(IDate<?> o)
     {
         if (!o.getCalendarType().equals(getCalendarType())) {
-            return Long.compare(absDay(), ((DateImpl)o).absDay());
+            return Long.compare(absDay(), ((DateImpl<?>) o).absDay());
         }
 
-        DateImpl other = (DateImpl)o;
+        DateImpl<?> other = (DateImpl<?>) o;
         if (other._year != _year)
-            return other._year-_year;
+            return Integer.compare(_year, other._year);
 
         if (other._month != _month)
             return Integer.compare(chronologicalMonthOrder(_month), chronologicalMonthOrder(other._month));

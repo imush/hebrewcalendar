@@ -94,4 +94,31 @@ public class ConversionTest
         }
 
     }
+
+    @Test
+    public void testAnniversaryForGregorian()
+    {
+        net.hebrewcalendar.impl.GregorianCalendar greg =
+            (net.hebrewcalendar.impl.GregorianCalendar) ICalendar.GREGORIAN;
+
+        // Feb 29 in leap year source → Feb 29 in leap target year
+        IDate<net.hebrewcalendar.impl.GregorianCalendar> feb29leap = ICalendar.GREGORIAN.fromYMD(2000, 2, 29);
+        IDate<net.hebrewcalendar.impl.GregorianCalendar> result2004 = greg.anniversaryFor(feb29leap, 2004);
+        assertEquals(2, result2004.getMonth());
+        assertEquals(29, result2004.getDay());
+        assertEquals(2004, result2004.getYear());
+
+        // Feb 29 in leap year source → March 1 in non-leap target year
+        IDate<net.hebrewcalendar.impl.GregorianCalendar> result2001 = greg.anniversaryFor(feb29leap, 2001);
+        assertEquals(3, result2001.getMonth());
+        assertEquals(1, result2001.getDay());
+        assertEquals(2001, result2001.getYear());
+
+        // Regular dates pass through unchanged
+        IDate<net.hebrewcalendar.impl.GregorianCalendar> march15 = ICalendar.GREGORIAN.fromYMD(2000, 3, 15);
+        IDate<net.hebrewcalendar.impl.GregorianCalendar> result = greg.anniversaryFor(march15, 2023);
+        assertEquals(3, result.getMonth());
+        assertEquals(15, result.getDay());
+        assertEquals(2023, result.getYear());
+    }
 }

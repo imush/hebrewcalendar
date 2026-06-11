@@ -2,6 +2,8 @@ package net.hebrewcalendar.impl;
 
 import net.hebrewcalendar.ICalendar;
 import net.hebrewcalendar.CalendarType;
+import net.hebrewcalendar.IDate;
+import net.hebrewcalendar.JewishCalendar;
 import net.hebrewcalendar.JewishMonth;
 
 import org.junit.Assert;
@@ -72,8 +74,8 @@ public class JewishCalendarImplTest
 
         assertEquals(molad5776, molad5775.add(ONE_MONTH.times(12)));
 
-        DateImpl h57750701 = hc.fromYMD(5775, 7, 1);
-        DateImpl h57760701 = hc.fromYMD(5776, 7, 1);
+        DateImpl<JewishCalendar> h57750701 = hc.fromYMD(5775, 7, 1);
+        DateImpl<JewishCalendar> h57760701 = hc.fromYMD(5776, 7, 1);
 
         assertEquals(354L, h57760701.absDay() - h57750701.absDay());
     }
@@ -91,20 +93,20 @@ public class JewishCalendarImplTest
     @Test
     public void testAddSubtractDays()
     {
-        DateImpl d1 = new DateImpl(hc, 5777, 9, 1);
-        assertEquals(new DateImpl(hc, 5777, 8, 29), d1.subtractDays(1));
+        DateImpl<JewishCalendar> d1 = new DateImpl<>((JewishCalendar) hc, 5777, 9, 1);
+        assertEquals(new DateImpl<>((JewishCalendar) hc, 5777, 8, 29), d1.subtractDays(1));
     }
 
     @Test
     public void testDayOfWeek()
     {
-        DateImpl d20161003 = new DateImpl(hc, 5777, 7, 1);
+        DateImpl<JewishCalendar> d20161003 = new DateImpl<>((JewishCalendar) hc, 5777, 7, 1);
         assertEquals(2, d20161003.getDayOfWeek());
 
-        DateImpl d0 = new DateImpl(hc, 5777, 8, 1);
+        DateImpl<JewishCalendar> d0 = new DateImpl<>((JewishCalendar) hc, 5777, 8, 1);
         assertEquals(4, d0.getDayOfWeek());
 
-        DateImpl d1 = new DateImpl(hc, 5777, 9, 1);
+        DateImpl<JewishCalendar> d1 = new DateImpl<>((JewishCalendar) hc, 5777, 9, 1);
         assertEquals(5, d1.getDayOfWeek());
     }
 
@@ -136,5 +138,50 @@ public class JewishCalendarImplTest
         assertEquals(1,  ICalendar.JEWISH.getSefira(ICalendar.JEWISH.fromYMD(5777, 1, 16)));
         assertEquals(33, ICalendar.JEWISH.getSefira(ICalendar.JEWISH.fromYMD(5779, 2, 18)));
         assertEquals(49, ICalendar.JEWISH.getSefira(ICalendar.JEWISH.fromYMD(5777, 3, 5)));
+    }
+
+    @Test
+    public void testBirthdayRule()
+    {
+        // Born 12 Adar 5778 (non-leap) — should celebrate 13 Adar II in 5779 (leap)
+        DateImpl<JewishCalendar> born = hc.fromYMD(5778, 12, 12);
+        assertFalse(hc.isLeap(5778));
+        assertTrue(hc.isLeap(5779));
+        IDate<JewishCalendar> bday5779 = hc.anniversaryFor(born, 5779);
+        assertEquals(13, bday5779.getMonth()); // Adar II
+        assertEquals(12, bday5779.getDay());
+        assertEquals(5779, bday5779.getYear());
+
+        // Born 13 Adar II 5779 (leap) — should celebrate 12 Adar in 5780 (non-leap)
+        DateImpl<JewishCalendar> born2 = hc.fromYMD(5779, 13, 15);
+        assertFalse(hc.isLeap(5780));
+        IDate<JewishCalendar> bday5780 = hc.anniversaryFor(born2, 5780);
+        assertEquals(12, bday5780.getMonth()); // Adar
+        assertEquals(15, bday5780.getDay());
+
+        // Cheshvan 30 in a FULL year → same day in a SHORT year falls back to 1 Kislev
+        // 5779 is FULL (Cheshvan has 30 days), 5777 is SHORT (Cheshvan has 29 days)
+        DateImpl<JewishCalendar> cheshvan30 = hc.fromYMD(5779, 8, 30);
+        assertEquals(YearCheshvanKislevType.SHORT, hc.getYearType(5777));
+        IDate<JewishCalendar> fallen = hc.anniversaryFor(cheshvan30, 5777);
+        assertEquals(9, fallen.getMonth()); // Kislev
+        assertEquals(1, fallen.getDay());
+    }
+
+    @Test
+    public void testYahrzeitRule()
+    {
+        // Died 13 Adar II 5779 (leap) — yahrzeit in 5780 (non-leap) falls on 12 Adar
+        DateImpl<JewishCalendar> death = hc.fromYMD(5779, 13, 20);
+        assertFalse(hc.isLeap(5780));
+        IDate<JewishCalendar> yahrzeit = hc.yahrzeitFor(death, 5780);
+        assertEquals(12, yahrzeit.getMonth());
+        assertEquals(20, yahrzeit.getDay());
+
+        // Died 12 Adar 5778 (non-leap) — yahrzeit in 5779 (leap) stays on 12 Adar I
+        DateImpl<JewishCalendar> death2 = hc.fromYMD(5778, 12, 5);
+        IDate<JewishCalendar> yahrzeit2 = hc.yahrzeitFor(death2, 5779);
+        assertEquals(12, yahrzeit2.getMonth()); // Adar I (month 12 in leap year)
+        assertEquals(5, yahrzeit2.getDay());
     }
 }

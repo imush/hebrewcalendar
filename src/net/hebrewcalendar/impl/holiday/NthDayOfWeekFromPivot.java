@@ -7,10 +7,10 @@ import net.hebrewcalendar.SpecialDay;
 /**
  * Represents a special day that occurs on Nth day from another special day (holiday).
  */
-public class NthDayOfWeekFromPivot
-    extends AbstractRecurringSpecialDay
+public class NthDayOfWeekFromPivot<C extends ICalendar<C>>
+    extends AbstractRecurringSpecialDay<C>
 {
-    private final SpecialDay _pivot;
+    private final SpecialDay<C> _pivot;
     private final int _n;
     private final int _dayOfWeek;
     private final boolean _inclusive;
@@ -25,7 +25,7 @@ public class NthDayOfWeekFromPivot
      *          e.g. Shabbat Hagadol is the last Shabbat before Pesach would use (1,15,-1, not inclusive)
      * @param inclusive whether pivot date counts if it matches the day of week
      */
-    public NthDayOfWeekFromPivot(ICalendar calendar, String name, SpecialDay pivotDate, int dayOfWeek, int n, boolean inclusive)
+    public NthDayOfWeekFromPivot(C calendar, String name, SpecialDay<C> pivotDate, int dayOfWeek, int n, boolean inclusive)
     {
         super(calendar, name);
         _pivot = pivotDate;
@@ -42,16 +42,16 @@ public class NthDayOfWeekFromPivot
      * @return true when matches
      */
     @Override
-    public boolean matches(IDate date0)
+    public boolean matches(IDate<C> date0)
     {
         if (date0.getDayOfWeek() != _dayOfWeek)
             return false;
 
         int sign = _n > 0 ? 1 : -1;
-        IDate startSearch = _inclusive ? date0.addDays(-(_n-sign)*7) : date0.addDays(-(_n-sign)*7-sign);
-        IDate endSearch = _inclusive ? date0.addDays(-_n*7) : date0.addDays(-_n*7-sign);
+        IDate<C> startSearch = _inclusive ? date0.addDays(-(_n-sign)*7) : date0.addDays(-(_n-sign)*7-sign);
+        IDate<C> endSearch = _inclusive ? date0.addDays(-_n*7) : date0.addDays(-_n*7-sign);
 
-        for (IDate d = startSearch; !d.equals(endSearch); d = d.addDays(-sign)) {
+        for (IDate<C> d = startSearch; !d.equals(endSearch); d = d.addDays(-sign)) {
             if (_pivot.matches(d))
                 return true;
         }

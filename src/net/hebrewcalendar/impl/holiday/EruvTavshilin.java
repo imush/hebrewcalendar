@@ -1,6 +1,8 @@
 package net.hebrewcalendar.impl.holiday;
 
+import net.hebrewcalendar.ICalendar;
 import net.hebrewcalendar.IDate;
+import net.hebrewcalendar.JewishCalendar;
 import net.hebrewcalendar.SpecialDay;
 
 /**
@@ -11,21 +13,22 @@ import net.hebrewcalendar.SpecialDay;
  * <p>Day-of-week convention (same as {@link net.hebrewcalendar.IDate#getDayOfWeek()}):
  * 1=Sun, 2=Mon, 3=Tue, 4=Wed, 5=Thu, 6=Fri, 7=Sat.</p>
  */
-public final class EruvTavshilin extends AbstractRecurringSpecialDay {
+public final class EruvTavshilin extends AbstractRecurringSpecialDay<JewishCalendar> {
 
-    private final SpecialDay[] _yomTovDays;
+    private final SpecialDay<JewishCalendar>[] _yomTovDays;
 
     /**
      * @param name       display name
      * @param yomTovDays the Yom Tov days relevant for this location (Israel or diaspora)
      */
-    public EruvTavshilin(String name, SpecialDay[] yomTovDays) {
+    @SafeVarargs
+    public EruvTavshilin(String name, SpecialDay<JewishCalendar>... yomTovDays) {
         super(yomTovDays[0].getCalendar(), name);
         _yomTovDays = yomTovDays;
     }
 
-    private boolean isYomTov(IDate date) {
-        for (SpecialDay h : _yomTovDays) {
+    private boolean isYomTov(IDate<JewishCalendar> date) {
+        for (SpecialDay<JewishCalendar> h : _yomTovDays) {
             if (h.matches(date)) return true;
         }
         return false;
@@ -40,9 +43,9 @@ public final class EruvTavshilin extends AbstractRecurringSpecialDay {
      * </ul>
      */
     @Override
-    public boolean matches(IDate date) {
+    public boolean matches(IDate<JewishCalendar> date) {
         if (date.getDayOfWeek() == 7 || isYomTov(date)) return false; // already in rest day
-        IDate tomorrow = date.addDays(1);
+        IDate<JewishCalendar> tomorrow = date.addDays(1);
         if (!isYomTov(tomorrow)) return false;
         int dow = tomorrow.getDayOfWeek();
         if (dow == 6) return true;                                 // YT on Friday

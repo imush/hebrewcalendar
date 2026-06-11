@@ -1,5 +1,6 @@
 package net.hebrewcalendar;
 
+import net.hebrewcalendar.impl.GregorianCalendar;
 import net.hebrewcalendar.impl.NoSuchHolidayException;
 import org.junit.Test;
 
@@ -9,7 +10,7 @@ public class USHolidayTest
 {
     @Test
     public void test2018() {
-        IDate H20171231 = ICalendar.GREGORIAN.fromYMD(2017,12,31);
+        IDate<GregorianCalendar> H20171231 = ICalendar.GREGORIAN.fromYMD(2017,12,31);
         try {
             assertEquals(ICalendar.GREGORIAN.fromYMD(2018,1,1),
                     USHoliday.NEW_YEAR.getNextOccurrence(H20171231, true));

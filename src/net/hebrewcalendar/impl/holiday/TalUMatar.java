@@ -15,9 +15,9 @@ import net.hebrewcalendar.impl.NoSuchHolidayException;
  *
  * <p>If the computed date falls on Shabbat (day 7), it is postponed to the following day.
  */
-public class TalUMatar extends AbstractRecurringSpecialDay {
+public class TalUMatar extends AbstractRecurringSpecialDay<JewishCalendar> {
 
-    private static final JewishCalendar JEWISH = (JewishCalendar) ICalendar.JEWISH;
+    private static final JewishCalendar JEWISH = ICalendar.JEWISH;
     private final boolean inIsrael;
 
     public TalUMatar(boolean inIsrael, String name) {
@@ -26,33 +26,32 @@ public class TalUMatar extends AbstractRecurringSpecialDay {
     }
 
     @Override
-    public boolean matches(IDate date) {
-        IDate hDate = ICalendar.JEWISH.convert(date);
-        return hDate.compareTo(computeDate(hDate.getYear())) == 0;
+    public boolean matches(IDate<JewishCalendar> date) {
+        return date.compareTo(computeDate(date.getYear())) == 0;
     }
 
     @Override
-    public IDate getNextOccurrence(IDate date, boolean strict) throws NoSuchHolidayException {
-        IDate start = strict ? date.addDays(1) : date;
-        int y = ICalendar.JEWISH.convert(start).getYear();
-        IDate candidate = computeDate(y);
+    public IDate<JewishCalendar> getNextOccurrence(IDate<JewishCalendar> date, boolean strict) throws NoSuchHolidayException {
+        IDate<JewishCalendar> start = strict ? date.addDays(1) : date;
+        int y = start.getYear();
+        IDate<JewishCalendar> candidate = computeDate(y);
         if (candidate.before(start)) candidate = computeDate(y + 1);
         return candidate;
     }
 
     @Override
-    public IDate getPrevOccurrence(IDate date, boolean strict) throws NoSuchHolidayException {
-        IDate end = strict ? date.addDays(-1) : date;
-        int y = ICalendar.JEWISH.convert(end).getYear();
-        IDate candidate = computeDate(y);
+    public IDate<JewishCalendar> getPrevOccurrence(IDate<JewishCalendar> date, boolean strict) throws NoSuchHolidayException {
+        IDate<JewishCalendar> end = strict ? date.addDays(-1) : date;
+        int y = end.getYear();
+        IDate<JewishCalendar> candidate = computeDate(y);
         if (candidate.after(end)) candidate = computeDate(y - 1);
         return candidate;
     }
 
     // ── helpers ───────────────────────────────────────────────────────────────
 
-    private IDate computeDate(int hebrewYear) {
-        IDate base;
+    private IDate<JewishCalendar> computeDate(int hebrewYear) {
+        IDate<JewishCalendar> base;
         if (inIsrael) {
             base = ICalendar.JEWISH.fromYMD(hebrewYear, 8, 7);
         } else {

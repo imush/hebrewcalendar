@@ -8,10 +8,10 @@ import net.hebrewcalendar.impl.GregorianCalendar;
  * A calendar system capable of creating and manipulating {@link IDate} objects.
  * Three instances are provided as constants: {@link #GREGORIAN}, {@link #JULIAN}, and {@link #JEWISH}.
  */
-public interface ICalendar
+public interface ICalendar<C extends ICalendar<C>>
 {
-    ICalendar GREGORIAN = GregorianCalendar.INSTANCE;
-    ICalendar JULIAN = JulianCalendar.INSTANCE;
+    GregorianCalendar GREGORIAN = GregorianCalendar.INSTANCE;
+    JulianCalendar JULIAN = JulianCalendar.INSTANCE;
     JewishCalendar JEWISH = JewishCalendarImpl.INSTANCE;
 
     /**
@@ -38,7 +38,7 @@ public interface ICalendar
      * @param day day of month
      * @return an {@link IDate} object
      */
-    IDate fromYMD(int year, int month, int day);
+    IDate<C> fromYMD(int year, int month, int day);
 
     /**
      * @return calendar type
@@ -58,7 +58,7 @@ public interface ICalendar
      * @param days number of days to add
      * @return a new {@link IDate} object
      */
-    IDate addDays(IDate date, int days);
+    IDate<C> addDays(IDate<C> date, int days);
 
     /**
      * Decrement date by given number of days.
@@ -66,20 +66,20 @@ public interface ICalendar
      * @param days number of days to subtract
      * @return a new {@link IDate} object
      */
-    IDate subtractDays(IDate date, int days);
+    IDate<C> subtractDays(IDate<C> date, int days);
 
     /**
      * Convert a date from a different calendar
      * @param otherDate date to convert from
      * @return the {@link IDate} representing the same day in this calendar.
      */
-    IDate convert(IDate otherDate);
+    IDate<C> convert(IDate<?> otherDate);
 
     /**
      * @param year year
      * @return first day of the year
      */
-    IDate firstDayOfYear(int year);
+    IDate<C> firstDayOfYear(int year);
 
     /**
      * Check if given year, month and day represent a valid date in this calendar.
