@@ -200,4 +200,86 @@ public class JewishCalendarImplTest
         assertEquals(1, yahrzeit30AdarI.getDay());   // Rosh Chodesh Nissan
         assertEquals(5780, yahrzeit30AdarI.getYear());
     }
+
+    @Test
+    public void testYahrzeitCheshvan30()
+    {
+        // 5779=FULL, 5780=FULL, 5781=SHORT
+        assertEquals(YearCheshvanKislevType.FULL,  hc.getYearType(5779));
+        assertEquals(YearCheshvanKislevType.FULL,  hc.getYearType(5780));
+        assertEquals(YearCheshvanKislevType.SHORT, hc.getYearType(5781));
+
+        // Died 30 Cheshvan 5779 — first year 5780 is FULL (30 Cheshvan exists) → always 1 Kislev.
+
+        DateImpl<JewishCalendar> death5779 = hc.fromYMD(5779, 8, 30);
+
+        // In a FULL target year the old code returned 30 Cheshvan; new rule requires 1 Kislev.
+        IDate<JewishCalendar> y5780 = hc.yahrzeitFor(death5779, 5780);
+        assertEquals(9,    y5780.getMonth()); // Kislev
+        assertEquals(1,    y5780.getDay());
+        assertEquals(5780, y5780.getYear());
+
+        // In a SHORT target year also 1 Kislev (unchanged from old behaviour, but now for the right reason).
+        IDate<JewishCalendar> y5781 = hc.yahrzeitFor(death5779, 5781);
+        assertEquals(9,    y5781.getMonth()); // Kislev
+        assertEquals(1,    y5781.getDay());
+        assertEquals(5781, y5781.getYear());
+
+        // Died 30 Cheshvan 5780 — first year 5781 is SHORT (30 Cheshvan absent) → always 29 Cheshvan.
+
+        DateImpl<JewishCalendar> death5780 = hc.fromYMD(5780, 8, 30);
+
+        // In a SHORT target year the old code returned 1 Kislev; new rule requires 29 Cheshvan.
+        IDate<JewishCalendar> y5781b = hc.yahrzeitFor(death5780, 5781);
+        assertEquals(8,    y5781b.getMonth()); // Cheshvan
+        assertEquals(29,   y5781b.getDay());
+        assertEquals(5781, y5781b.getYear());
+
+        // In a FULL target year also 29 Cheshvan (old code would have returned 30 Cheshvan).
+        IDate<JewishCalendar> y5780b = hc.yahrzeitFor(death5780, 5780);
+        assertEquals(8,    y5780b.getMonth()); // Cheshvan
+        assertEquals(29,   y5780b.getDay());
+        assertEquals(5780, y5780b.getYear());
+    }
+
+    @Test
+    public void testYahrzeitKislev30()
+    {
+        // 5779=FULL, 5780=FULL, 5781=SHORT
+        assertEquals(YearCheshvanKislevType.FULL,  hc.getYearType(5779));
+        assertEquals(YearCheshvanKislevType.FULL,  hc.getYearType(5780));
+        assertEquals(YearCheshvanKislevType.SHORT, hc.getYearType(5781));
+
+        // Died 30 Kislev 5779 — first year 5780 is FULL (30 Kislev exists) → always 1 Tevet.
+
+        DateImpl<JewishCalendar> death5779 = hc.fromYMD(5779, 9, 30);
+
+        // In a FULL target year the old code returned 30 Kislev; new rule requires 1 Tevet.
+        IDate<JewishCalendar> y5780 = hc.yahrzeitFor(death5779, 5780);
+        assertEquals(10,   y5780.getMonth()); // Tevet
+        assertEquals(1,    y5780.getDay());
+        assertEquals(5780, y5780.getYear());
+
+        // In a SHORT target year also 1 Tevet (unchanged from old behaviour).
+        IDate<JewishCalendar> y5781 = hc.yahrzeitFor(death5779, 5781);
+        assertEquals(10,   y5781.getMonth()); // Tevet
+        assertEquals(1,    y5781.getDay());
+        assertEquals(5781, y5781.getYear());
+
+        // Died 30 Kislev 5780 — first year 5781 is SHORT (30 Kislev absent) → always 29 Kislev.
+
+        DateImpl<JewishCalendar> death5780 = hc.fromYMD(5780, 9, 30);
+
+        // In a SHORT target year the old code returned 1 Tevet; new rule requires 29 Kislev.
+        IDate<JewishCalendar> y5781b = hc.yahrzeitFor(death5780, 5781);
+        assertEquals(9,    y5781b.getMonth()); // Kislev
+        assertEquals(29,   y5781b.getDay());
+        assertEquals(5781, y5781b.getYear());
+
+        // In a FULL target year also 29 Kislev (old code would have returned 30 Kislev).
+        IDate<JewishCalendar> y5780b = hc.yahrzeitFor(death5780, 5780);
+        assertEquals(9,    y5780b.getMonth()); // Kislev
+        assertEquals(29,   y5780b.getDay());
+        assertEquals(5780, y5780b.getYear());
+    }
 }
