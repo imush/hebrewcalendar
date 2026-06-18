@@ -300,20 +300,18 @@ public class JewishCalendarImpl
         if (month == 13 && !isLeap(year))
             month = 12;  // Adar II → Adar in non-leap year
 
-        // For 30 Cheshvan or 30 Kislev the observed yahrzeit is fixed for all years
-        // by whether that day existed in the year immediately following death (first yahrzeit year).
-        // If it existed: always Rosh Chodesh of the following month (1 Kislev or 1 Tevet).
-        // If it did not: last day of that month in the target year (30 if the month is full
-        // in that year, 29 otherwise).
+        // For 30 Cheshvan or 30 Kislev the behaviour depends on whether that day existed
+        // in the year immediately following death (first yahrzeit year):
+        // - It existed: observe on the 30th when the target year has it; otherwise 1st of next month
+        //   (falls through to the standard try/catch below — same as anniversaryFor).
+        // - It did not: always the last day of that month in the target year (29 or 30).
         if (day == 30 && (month == JewishMonth.CHESHVAN.getOrdinalNumber()
                        || month == JewishMonth.KISLEV.getOrdinalNumber())) {
             final int firstYear = deathDate.getYear() + 1;
-            if (monthLength(firstYear, month) == 30) {
-                final int[] next = nextYearMonth(year, month);
-                return fromYMD(next[0], next[1], 1);
-            } else {
+            if (monthLength(firstYear, month) != 30) {
                 return fromYMD(year, month, monthLength(year, month));
             }
+            // first year had the 30th: fall through to standard try/catch
         }
 
         try {

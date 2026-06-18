@@ -165,16 +165,16 @@ public interface JewishCalendar
      *   <li>Adar II (month 13) → Adar (month 12) in a non-leap target year</li>
      *   <li>Adar (month 12) from any year → remains Adar I (month 12) in a leap target year
      *       (unlike anniversaryFor, which maps it to Adar II)</li>
-     *   <li>30 Cheshvan or 30 Kislev: the result is fixed for <em>all</em> target years based on
-     *       whether that day existed in {@code deathDate.getYear() + 1} (the first yahrzeit year):
+     *   <li>30 Cheshvan or 30 Kislev: behaviour is determined by whether that day existed in
+     *       {@code deathDate.getYear() + 1} (the first yahrzeit year):
      *       <ul>
-     *         <li>If it existed: yahrzeit is always the 1st of the following month
-     *             (1 Kislev for 30 Cheshvan; 1 Tevet for 30 Kislev)</li>
-     *         <li>If it did not: yahrzeit is the last day of that month in the target year —
-     *             30 if the month is full in that year, 29 otherwise</li>
-     *       </ul>
-     *       This differs from anniversaryFor, which simply overflows to the 1st of the following
-     *       month whenever the day is absent in the specific target year.</li>
+     *         <li>If it existed: observe on the 30th when the target year has it; otherwise
+     *             1st of the following month (1 Kislev for 30 Cheshvan; 1 Tevet for 30 Kislev).
+     *             Identical to the standard overflow used by anniversaryFor.</li>
+     *         <li>If it did not: always the last day of that month in the target year —
+     *             30 if the month is full in that year, 29 otherwise (never overflows to the
+     *             1st of the following month, unlike anniversaryFor).</li>
+     *       </ul></li>
      *   <li>Any other date that does not exist in the target year → 1st of the following month</li>
      * </ul>
      *
