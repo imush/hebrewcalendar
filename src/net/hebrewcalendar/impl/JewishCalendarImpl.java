@@ -303,7 +303,8 @@ public class JewishCalendarImpl
         // For 30 Cheshvan or 30 Kislev the observed yahrzeit is fixed for all years
         // by whether that day existed in the year immediately following death (first yahrzeit year).
         // If it existed: always Rosh Chodesh of the following month (1 Kislev or 1 Tevet).
-        // If it did not: always the last day of that month (29 Cheshvan or 29 Kislev).
+        // If it did not: last day of that month in the target year (30 if the month is full
+        // in that year, 29 otherwise).
         if (day == 30 && (month == JewishMonth.CHESHVAN.getOrdinalNumber()
                        || month == JewishMonth.KISLEV.getOrdinalNumber())) {
             final int firstYear = deathDate.getYear() + 1;
@@ -311,7 +312,7 @@ public class JewishCalendarImpl
                 final int[] next = nextYearMonth(year, month);
                 return fromYMD(next[0], next[1], 1);
             } else {
-                return fromYMD(year, month, 29);
+                return fromYMD(year, month, monthLength(year, month));
             }
         }
 

@@ -225,20 +225,20 @@ public class JewishCalendarImplTest
         assertEquals(1,    y5781.getDay());
         assertEquals(5781, y5781.getYear());
 
-        // Died 30 Cheshvan 5780 — first year 5781 is SHORT (30 Cheshvan absent) → always 29 Cheshvan.
+        // Died 30 Cheshvan 5780 — first year 5781 is SHORT → last day of Cheshvan in target year.
 
         DateImpl<JewishCalendar> death5780 = hc.fromYMD(5780, 8, 30);
 
-        // In a SHORT target year the old code returned 1 Kislev; new rule requires 29 Cheshvan.
+        // SHORT target year: Cheshvan has 29 days → 29 Cheshvan.
         IDate<JewishCalendar> y5781b = hc.yahrzeitFor(death5780, 5781);
         assertEquals(8,    y5781b.getMonth()); // Cheshvan
         assertEquals(29,   y5781b.getDay());
         assertEquals(5781, y5781b.getYear());
 
-        // In a FULL target year also 29 Cheshvan (old code would have returned 30 Cheshvan).
+        // FULL target year: Cheshvan has 30 days → 30 Cheshvan.
         IDate<JewishCalendar> y5780b = hc.yahrzeitFor(death5780, 5780);
         assertEquals(8,    y5780b.getMonth()); // Cheshvan
-        assertEquals(29,   y5780b.getDay());
+        assertEquals(30,   y5780b.getDay());
         assertEquals(5780, y5780b.getYear());
     }
 
@@ -266,20 +266,20 @@ public class JewishCalendarImplTest
         assertEquals(1,    y5781.getDay());
         assertEquals(5781, y5781.getYear());
 
-        // Died 30 Kislev 5780 — first year 5781 is SHORT (30 Kislev absent) → always 29 Kislev.
+        // Died 30 Kislev 5780 — first year 5781 is SHORT → last day of Kislev in target year.
 
         DateImpl<JewishCalendar> death5780 = hc.fromYMD(5780, 9, 30);
 
-        // In a SHORT target year the old code returned 1 Tevet; new rule requires 29 Kislev.
+        // SHORT target year: Kislev has 29 days → 29 Kislev.
         IDate<JewishCalendar> y5781b = hc.yahrzeitFor(death5780, 5781);
         assertEquals(9,    y5781b.getMonth()); // Kislev
         assertEquals(29,   y5781b.getDay());
         assertEquals(5781, y5781b.getYear());
 
-        // In a FULL target year also 29 Kislev (old code would have returned 30 Kislev).
+        // FULL target year: Kislev has 30 days → 30 Kislev.
         IDate<JewishCalendar> y5780b = hc.yahrzeitFor(death5780, 5780);
         assertEquals(9,    y5780b.getMonth()); // Kislev
-        assertEquals(29,   y5780b.getDay());
+        assertEquals(30,   y5780b.getDay());
         assertEquals(5780, y5780b.getYear());
     }
 }
