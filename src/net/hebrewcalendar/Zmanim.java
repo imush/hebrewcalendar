@@ -1,5 +1,7 @@
 package net.hebrewcalendar;
 
+import net.hebrewcalendar.impl.GregorianCalendar;
+
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -304,16 +306,18 @@ public class Zmanim {
      * @return a {@link Zman} with appropriate flags, or {@code null} if tomorrow is not a rest day
      */
     public Zman getCandleLightingZman() {
-        final IDate todayGreg    = ICalendar.GREGORIAN.fromYMD(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
-        final IDate tomorrowGreg = todayGreg.addDays(1);
-        if (!isRestDay(tomorrowGreg, location.isInIsrael())) return null;
-        final boolean todayIsRest      = isRestDay(todayGreg, location.isInIsrael());
-        final boolean tomorrowIsYomTov = tomorrowGreg.getDayOfWeek() != 7; // Saturday = 7 in IDate
+        final IDate<GregorianCalendar> todayGreg    = ICalendar.GREGORIAN.fromYMD(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
+        final IDate<GregorianCalendar> tomorrowGreg = todayGreg.addDays(1);
+        final IDate<JewishCalendar>    todayHeb     = ICalendar.JEWISH.convert(todayGreg);
+        final IDate<JewishCalendar>    tomorrowHeb  = ICalendar.JEWISH.convert(tomorrowGreg);
+        if (!isRestDay(tomorrowHeb, location.isInIsrael())) return null;
+        final boolean todayIsRest      = isRestDay(todayHeb, location.isInIsrael());
+        final boolean tomorrowIsYomTov = tomorrowHeb.getDayOfWeek() != 7; // Saturday = 7 in IDate
         return getCandleLightingZmanInternal(todayIsRest, tomorrowIsYomTov);
     }
 
     /** Saturday (7 in IDate) or any Yom Tov applicable at the given location. */
-    private static boolean isRestDay(final IDate date, final boolean inIsrael) {
+    private static boolean isRestDay(final IDate<JewishCalendar> date, final boolean inIsrael) {
         if (date.getDayOfWeek() == 7) return true;
         for (JewishSpecialDay h : JewishSpecialDay.values()) {
             if (h.isYomTov() && h.applies(inIsrael) && h.matches(date)) return true;
