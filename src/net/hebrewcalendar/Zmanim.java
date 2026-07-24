@@ -82,7 +82,7 @@ public class Zmanim {
     private static final double MISHEYAKIR_NIVSHERET_ANGLE = -11.8; // Nivsheret
     private static final double TRUE_HORIZON_ANGLE        = -1.583; // Hanetz amiti / shkiah amitis
     private static final double NIGHTFALL_ANGLE           = -6.0;   // 3 small stars visible
-    private static final double NIGHTFALL_MELAMMED_ANGLE  = -7.083; // Melammed Lehoil
+    private static final double NIGHTFALL_MELAMED_ANGLE  = -7.083; // Melamed Lehoil
     private static final double HAVDALAH_ANGLE            = -8.5;   // Alter Rebbe / Igrot Moshe / Sefer Bein hashmashot
 
     private final LocalDate  date;
@@ -323,10 +323,10 @@ public class Zmanim {
     public Zman getNightfallIgrotMoshe() { return new Zman(endOfShabbatOrNull()); }
 
     /**
-     * Tzait Hakochavim per Melammed Lehoil (מלמד להועיל): sun 7.083°
+     * Tzait Hakochavim per Melamed Lehoil (מלמד להועיל): sun 7.083°
      * below horizon (3 medium stars, ~30 minutes as degrees after shkiah).
      */
-    public Zman getNightfallMelammedLehoil() { return new Zman(set(NIGHTFALL_MELAMMED_ANGLE)); }
+    public Zman getNightfallMelamedLehoil() { return new Zman(set(NIGHTFALL_MELAMED_ANGLE)); }
 
     /**
      * Tzait Hakochavim with 3 medium stars: sun 6° below horizon after sunset.
