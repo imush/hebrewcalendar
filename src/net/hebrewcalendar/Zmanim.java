@@ -47,11 +47,43 @@ public class Zmanim {
         CANDLES_BEFORE_SHABBAT
     }
 
-    private static final double DAWN_ANGLE         = -16.9;  // Chabad: 72 min before hanetz amiti
-    private static final double MISHEYAKIR_ANGLE   = -10.2;  // Chabad: recognise acquaintance at 4 cubits
-    private static final double TRUE_HORIZON_ANGLE = -1.583; // Hanetz amiti / shkiah amitis
-    private static final double NIGHTFALL_ANGLE    = -6.0;   // 3 small stars visible
-    private static final double HAVDALAH_ANGLE     = -8.5;   // Alter Rebbe / end of Shabbat
+    /**
+     * Method for computing the sha'ah zmanit (halachic hour) used by portion-of-day
+     * zmanim (Shema, Tefilla, Mincha, Plag, Biur Chametz).
+     */
+    public enum ShaahMethod {
+        /**
+         * Chabad / Alter Rebbe: sha'ah = (hanetz amiti → shkiah amitis) / 12,
+         * i.e. from sun at −1.583° rising to sun at −1.583° setting. Portion-of-
+         * day zmanim are counted from hanetz amiti. This is what the no-arg
+         * getters use.
+         */
+        CHABAD_AMITI,
+        /**
+         * GR"A: sha'ah = (visible sunrise → visible sunset) / 12. Portion-of-
+         * day zmanim are counted from visible sunrise.
+         */
+        GRA_VISIBLE,
+        /**
+         * Magen Avraham: sha'ah = (Alot at −16.1° → Tzeit at −16.1°) / 12.
+         * Portion-of-day zmanim are counted from Alot at −16.1° (GR"A's Alot).
+         * The −16.1° Tzeit here is purely a computational anchor for the MA
+         * day-length; it is not used as a standalone nightfall.
+         */
+        MAGEN_AVRAHAM
+    }
+
+    private static final double DAWN_ANGLE                = -16.9;  // Chabad: 72 min before hanetz amiti
+    private static final double DAWN_RAV_NAEH_ANGLE       = -26.0;  // Rav Avrohom Chaim Naeh
+    private static final double DAWN_SEFER_BEIN_HASHMASHOT_ANGLE = -19.8; // Sefer Bein haShmashot
+    private static final double DAWN_GRA_ANGLE            = -16.1;  // GR"A; also anchors MA sha'ah
+    private static final double MISHEYAKIR_ANGLE          = -10.2;  // Chabad / Zmanei Halacha Lemaaseh
+    private static final double MISHEYAKIR_SBH_ANGLE      = -11.5;  // Sefer Bein haShmashot
+    private static final double MISHEYAKIR_NIVSHERET_ANGLE = -11.8; // Nivsheret
+    private static final double TRUE_HORIZON_ANGLE        = -1.583; // Hanetz amiti / shkiah amitis
+    private static final double NIGHTFALL_ANGLE           = -6.0;   // 3 small stars visible
+    private static final double NIGHTFALL_MELAMMED_ANGLE  = -7.083; // Melammed Lehoil
+    private static final double HAVDALAH_ANGLE            = -8.5;   // Alter Rebbe / Igrot Moshe / Sefer Bein hashmashot
 
     private final LocalDate  date;
     private final Location  location;
@@ -100,17 +132,77 @@ public class Zmanim {
      * Per Chabad: 1/12 of the period from hanetz amiti to shkiah amitis.
      * Returns 0 under polar conditions.
      */
-    public long shaahZmanitSeconds() {
-        final ZonedDateTime r = hanetzAmitiOrNull();
-        final ZonedDateTime s = shkiahAmitisOrNull();
+    public long shaahZmanitSeconds() { return shaahZmanitSeconds(ShaahMethod.CHABAD_AMITI); }
+
+    /**
+     * Length of one sha'ah zmanit for the given method (see {@link ShaahMethod}).
+     * Returns 0 under polar conditions.
+     */
+    public long shaahZmanitSeconds(final ShaahMethod method) {
+        final ZonedDateTime r = shaahStart(method);
+        final ZonedDateTime s = shaahEnd(method);
         if (r == null || s == null) return 0;
         return Duration.between(r, s).getSeconds() / 12;
+    }
+
+    // Halachic midnight at the start of today's halachic day (= 12h before
+    // the "chatzot halaila" that closes today's daytime). Always computable
+    // since it's a fixed offset from solar noon.
+    private ZonedDateTime chatzotHaLailahStart() {
+        return NOAA.solarNoon(date, location.getLongitude(), tzOffset()).minusHours(12);
+    }
+
+    // Start / end anchors for the sha'ah-zmanit span, per method.
+    private ZonedDateTime shaahStart(final ShaahMethod method) {
+        switch (method) {
+            case CHABAD_AMITI:  return hanetzAmitiOrNull();
+            case GRA_VISIBLE:   return rise(VISUAL_ANGLE);
+            case MAGEN_AVRAHAM: {
+                final ZonedDateTime alot = rise(DAWN_GRA_ANGLE);
+                // Polar fallback: when the sun never dips to −16.1°, treat the
+                // full night-to-night span (Chatzot HaLailah → Chatzot HaLailah)
+                // as the halachic day, so sha'ah = 24h / 12 = 2h and portion-
+                // of-day zmanim count from Chatzot HaLailah.
+                return alot != null ? alot : chatzotHaLailahStart();
+            }
+            default:            throw new IllegalArgumentException("Unknown ShaahMethod: " + method);
+        }
+    }
+
+    private ZonedDateTime shaahEnd(final ShaahMethod method) {
+        switch (method) {
+            case CHABAD_AMITI:  return shkiahAmitisOrNull();
+            case GRA_VISIBLE:   return set(VISUAL_ANGLE);
+            case MAGEN_AVRAHAM: {
+                final ZonedDateTime tzet = set(DAWN_GRA_ANGLE);
+                return tzet != null ? tzet : chatzotHaLailahStart().plusHours(24);
+            }
+            default:            throw new IllegalArgumentException("Unknown ShaahMethod: " + method);
+        }
+    }
+
+    // Portion-of-day zmanim built by adding `count` sha'ot to the method's start
+    // anchor. Returns a Zman with null time under polar conditions.
+    private Zman portionOfDay(final ShaahMethod method, final double count) {
+        final ZonedDateTime start = shaahStart(method);
+        final long sha = shaahZmanitSeconds(method);
+        return new Zman((start == null || sha == 0) ? null
+                : start.plusSeconds((long)(sha * count)));
     }
 
     // ── Morning zmanim ────────────────────────────────────────────────────────
 
     /** Alot Hashachar: sun 16.9° below horizon (72 min before hanetz amiti per Chabad). */
     public Zman getDawn() { return new Zman(rise(DAWN_ANGLE)); }
+
+    /** Alot Hashachar per Rav Avrohom Chaim Naeh: sun 26° below horizon. */
+    public Zman getDawnRavNaeh() { return new Zman(rise(DAWN_RAV_NAEH_ANGLE)); }
+
+    /** Alot Hashachar per Sefer Bein haShmashot: sun 19.8° below horizon. */
+    public Zman getDawnSeferBeinHaShmashot() { return new Zman(rise(DAWN_SEFER_BEIN_HASHMASHOT_ANGLE)); }
+
+    /** Alot Hashachar per GR"A: sun 16.1° below horizon. Also anchors the MA sha'ah zmanit. */
+    public Zman getDawnGRA() { return new Zman(rise(DAWN_GRA_ANGLE)); }
 
     /** Netz Hachama: visible sunrise. */
     public Zman getSunrise() { return new Zman(rise(VISUAL_ANGLE)); }
@@ -123,41 +215,45 @@ public class Zmanim {
 
     /**
      * Misheyakir: earliest time to don tallis and tefillin.
-     * Sun 10.2° below horizon (~45 min before sunrise in Jerusalem at equinox, per Chabad).
+     * Sun 10.2° below horizon (~45 min before sunrise in Jerusalem at equinox,
+     * per Chabad / Zmanei Halacha Lemaaseh).
      */
     public Zman getMisheyakir() { return new Zman(rise(MISHEYAKIR_ANGLE)); }
+
+    /** Misheyakir per Sefer Bein haShmashot: sun 11.5° below horizon. */
+    public Zman getMisheyakirSeferBeinHaShmashot() { return new Zman(rise(MISHEYAKIR_SBH_ANGLE)); }
+
+    /** Misheyakir per Nivsheret: sun 11.8° below horizon. */
+    public Zman getMisheyakirNivsheret() { return new Zman(rise(MISHEYAKIR_NIVSHERET_ANGLE)); }
 
     /**
      * Sof Zman Krias Shema: 3 sha'ot zmaniot after hanetz amiti (per Chabad).
      * Returns a {@link Zman} with null time under polar conditions.
      */
-    public Zman getLatestShema() {
-        final ZonedDateTime r = hanetzAmitiOrNull();
-        final long sha = shaahZmanitSeconds();
-        return new Zman((r == null || sha == 0) ? null : r.plusSeconds(sha * 3));
-    }
+    public Zman getLatestShema() { return getLatestShema(ShaahMethod.CHABAD_AMITI); }
+
+    /** Sof Zman Krias Shema per the given {@link ShaahMethod}. */
+    public Zman getLatestShema(final ShaahMethod method) { return portionOfDay(method, 3); }
 
     /**
      * Sof Zman Tefilla: latest time for morning Shacharit.
      * 4 sha'ot zmaniot after hanetz amiti (per Chabad).
      * Returns a {@link Zman} with null time under polar conditions.
      */
-    public Zman getLatestShacharis() {
-        final ZonedDateTime r = hanetzAmitiOrNull();
-        final long sha = shaahZmanitSeconds();
-        return new Zman((r == null || sha == 0) ? null : r.plusSeconds(sha * 4));
-    }
+    public Zman getLatestShacharis() { return getLatestShacharis(ShaahMethod.CHABAD_AMITI); }
+
+    /** Sof Zman Tefilla per the given {@link ShaahMethod}. */
+    public Zman getLatestShacharis(final ShaahMethod method) { return portionOfDay(method, 4); }
 
     /**
      * Sof Zman Biur Chametz: latest time to burn chametz on Erev Pesach.
      * 5 sha'ot zmaniot after hanetz amiti.
      * Returns a {@link Zman} with null time under polar conditions.
      */
-    public Zman getBurningChometz() {
-        final ZonedDateTime r = hanetzAmitiOrNull();
-        final long sha = shaahZmanitSeconds();
-        return new Zman((r == null || sha == 0) ? null : r.plusSeconds(sha * 5));
-    }
+    public Zman getBurningChometz() { return getBurningChometz(ShaahMethod.CHABAD_AMITI); }
+
+    /** Sof Zman Biur Chametz per the given {@link ShaahMethod}. */
+    public Zman getBurningChometz(final ShaahMethod method) { return portionOfDay(method, 5); }
 
     // ── Midday and afternoon zmanim ───────────────────────────────────────────
 
@@ -183,32 +279,29 @@ public class Zmanim {
      * 6.5 sha'ot zmaniot after hanetz amiti.
      * Returns a {@link Zman} with null time under polar conditions.
      */
-    public Zman getMinchaGedolah() {
-        final ZonedDateTime r = hanetzAmitiOrNull();
-        final long sha = shaahZmanitSeconds();
-        return new Zman((r == null || sha == 0) ? null : r.plusSeconds((long)(sha * 6.5)));
-    }
+    public Zman getMinchaGedolah() { return getMinchaGedolah(ShaahMethod.CHABAD_AMITI); }
+
+    /** Mincha Gedolah per the given {@link ShaahMethod}. */
+    public Zman getMinchaGedolah(final ShaahMethod method) { return portionOfDay(method, 6.5); }
 
     /**
      * Mincha Ketana: optimal time for Mincha.
      * 9.5 sha'ot zmaniot after hanetz amiti.
      * Returns a {@link Zman} with null time under polar conditions.
      */
-    public Zman getMinchaKetana() {
-        final ZonedDateTime r = hanetzAmitiOrNull();
-        final long sha = shaahZmanitSeconds();
-        return new Zman((r == null || sha == 0) ? null : r.plusSeconds((long)(sha * 9.5)));
-    }
+    public Zman getMinchaKetana() { return getMinchaKetana(ShaahMethod.CHABAD_AMITI); }
+
+    /** Mincha Ketana per the given {@link ShaahMethod}. */
+    public Zman getMinchaKetana(final ShaahMethod method) { return portionOfDay(method, 9.5); }
 
     /**
      * Plag HaMincha: 10.75 sha'ot zmaniot after hanetz amiti (1.25 sha'ot before shkiah amitis).
      * Returns a {@link Zman} with null time under polar conditions.
      */
-    public Zman getPlagHaMincha() {
-        final ZonedDateTime r = hanetzAmitiOrNull();
-        final long sha = shaahZmanitSeconds();
-        return new Zman((r == null || sha == 0) ? null : r.plusSeconds((long)(sha * 10.75)));
-    }
+    public Zman getPlagHaMincha() { return getPlagHaMincha(ShaahMethod.CHABAD_AMITI); }
+
+    /** Plag HaMincha per the given {@link ShaahMethod}. */
+    public Zman getPlagHaMincha(final ShaahMethod method) { return portionOfDay(method, 10.75); }
 
     // ── Evening zmanim ────────────────────────────────────────────────────────
 
@@ -221,6 +314,19 @@ public class Zmanim {
      * substitutes halachic midnight under polar conditions, use {@link #getEndOfShabbatZman()}.
      */
     public Zman getNightfallAlterRebbe() { return new Zman(endOfShabbatOrNull()); }
+
+    /**
+     * Tzait Hakochavim per Igrot Moshe / Sefer Bein hashmashot: sun 8.5°
+     * below horizon (same solar angle as {@link #getNightfallAlterRebbe()};
+     * exposed under a distinct name for clarity when citing the source opinion).
+     */
+    public Zman getNightfallIgrotMoshe() { return new Zman(endOfShabbatOrNull()); }
+
+    /**
+     * Tzait Hakochavim per Melammed Lehoil (מלמד להועיל): sun 7.083°
+     * below horizon (3 medium stars, ~30 minutes as degrees after shkiah).
+     */
+    public Zman getNightfallMelammedLehoil() { return new Zman(set(NIGHTFALL_MELAMMED_ANGLE)); }
 
     /**
      * Tzait Hakochavim with 3 medium stars: sun 6° below horizon after sunset.
