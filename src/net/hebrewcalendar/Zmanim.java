@@ -365,7 +365,11 @@ public class Zmanim {
 
     private Zman getCandleLightingZmanInternal(final boolean todayIsRestDay, final boolean tomorrowIsYomTov) {
         if (todayIsRestDay && tomorrowIsYomTov) {
-            final ZonedDateTime t = nightfallOrNull();
+            // Alter Rebbe / Igrot Moshe tzait (−8.5°, three small stars) — matches
+            // End of Shabbat / YT elsewhere in the API. Was previously the three-
+            // medium-stars nightfall (−6°); that time is available separately via
+            // getNightfallMediumStars().
+            final ZonedDateTime t = endOfShabbatOrNull();
             return t != null
                 ? new Zman(t, Flag.CANDLES_AFTER_NIGHTFALL)
                 : new Zman(midnight(), Flag.CANDLES_AFTER_NIGHTFALL, Flag.NO_NIGHTFALL);
@@ -397,7 +401,7 @@ public class Zmanim {
      * Candle-lighting time for this date, with applicable {@link Flag}s.
      *
      * <ul>
-     *   <li>Today is rest day + tomorrow is Yom Tov: nightfall (Tzait at 6°);
+     *   <li>Today is rest day + tomorrow is Yom Tov: Alter Rebbe tzait (−8.5°, three small stars);
      *       {@link Flag#CANDLES_AFTER_NIGHTFALL} set. Falls back to halachic midnight
      *       with {@link Flag#NO_NIGHTFALL}.</li>
      *   <li>Today is Yom Tov + tomorrow is Shabbat: before-sunset lighting from existing flame;
