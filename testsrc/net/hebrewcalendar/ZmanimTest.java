@@ -65,9 +65,9 @@ public class ZmanimTest {
         assertNear("Alot GR\"A", makeZmanim().getDawnGRA().getTime(), 3, 29);
     }
 
-    @Test public void misheyakir_nivsheret_neg11_8deg() {
-        assertNear("Misheyakir Nivsheret",
-                makeZmanim().getMisheyakirNivsheret().getTime(), 4, 8);
+    @Test public void misheyakir_nivreshet_neg11_8deg() {
+        assertNear("Misheyakir Nivreshet",
+                makeZmanim().getMisheyakirNivreshet().getTime(), 4, 8);
     }
 
     @Test public void misheyakir_chabad_neg10_2deg() {
@@ -219,12 +219,12 @@ public class ZmanimTest {
 
     // ── Structural invariants ──────────────────────────────────────────────
 
-    /** Nivsheret uses a larger depression angle than Chabad, so its
+    /** Nivreshet uses a larger depression angle than Chabad, so its
      *  Misheyakir must fall <em>earlier</em> in the morning. */
-    @Test public void misheyakirNivsheret_earlierThanChabad() {
+    @Test public void misheyakirNivreshet_earlierThanChabad() {
         Zmanim z = makeZmanim();
-        assertTrue("Nivsheret Misheyakir (−11.8°) must precede Chabad (−10.2°)",
-                z.getMisheyakirNivsheret().getTime()
+        assertTrue("Nivreshet Misheyakir (−11.8°) must precede Chabad (−10.2°)",
+                z.getMisheyakirNivreshet().getTime()
                         .isBefore(z.getMisheyakir().getTime()));
     }
 

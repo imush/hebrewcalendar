@@ -79,7 +79,7 @@ public class Zmanim {
     private static final double DAWN_GRA_ANGLE            = -16.1;  // GR"A; also anchors MA sha'ah
     private static final double MISHEYAKIR_ANGLE          = -10.2;  // Chabad / Zmanei Halacha Lemaaseh
     private static final double MISHEYAKIR_SBH_ANGLE      = -11.5;  // Sefer Bein haShmashot
-    private static final double MISHEYAKIR_NIVSHERET_ANGLE = -11.8; // Nivsheret
+    private static final double MISHEYAKIR_NIVRESHET_ANGLE = -11.8; // Nivreshet
     private static final double TRUE_HORIZON_ANGLE        = -1.583; // Hanetz amiti / shkiah amitis
     private static final double NIGHTFALL_ANGLE           = -6.0;   // 3 small stars visible
     private static final double NIGHTFALL_MELAMED_ANGLE  = -7.083; // Melamed Lehoil
@@ -223,8 +223,8 @@ public class Zmanim {
     /** Misheyakir per Sefer Bein haShmashot: sun 11.5° below horizon. */
     public Zman getMisheyakirSeferBeinHaShmashot() { return new Zman(rise(MISHEYAKIR_SBH_ANGLE)); }
 
-    /** Misheyakir per Nivsheret: sun 11.8° below horizon. */
-    public Zman getMisheyakirNivsheret() { return new Zman(rise(MISHEYAKIR_NIVSHERET_ANGLE)); }
+    /** Misheyakir per Nivreshet: sun 11.8° below horizon. */
+    public Zman getMisheyakirNivreshet() { return new Zman(rise(MISHEYAKIR_NIVRESHET_ANGLE)); }
 
     /**
      * Sof Zman Krias Shema: 3 sha'ot zmaniot after hanetz amiti (per Chabad).
