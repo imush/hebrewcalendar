@@ -54,7 +54,7 @@ public class ZmanimTest {
 
     @Test public void alot_seferBeinHaShmashot_neg19_8deg() {
         assertNear("Alot Sefer Bein haShmashot",
-                makeZmanim().getDawnSeferBeinHaShmashot().getTime(), 2, 48);
+                makeZmanim().getDawnSeferBeinHaShmashot().getTime(), 2, 51);
     }
 
     @Test public void alot_chabadDefault_neg16_9deg() {

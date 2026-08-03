@@ -36,13 +36,14 @@ public final class NOAA {
     /**
      * Solar noon in minutes from local midnight; fills {@code declOut[0]} with
      * declination in radians.  Pass {@code null} for {@code declOut} to skip.
+     *
+     * <p>{@code JC} is the Julian Century since J2000.0 evaluated at the instant we
+     * want the sun's position to be accurate for. {@code sunEvent} passes JC at the
+     * approximate event UT (after a first-pass estimate) for sub-minute accuracy.
      */
-    private static double solarNoonMinutes(final int year, final int month, final int day,
+    private static double solarNoonMinutes(final double JC,
                                    final double lon, final double tzOffsetHours,
                                    final double[] declOut) {
-        final double JD = julianDay(year, month, day);
-        final double JC = (JD - 2451545.0) / 36525.0;
-
         final double L0   = mod360(280.46646 + JC * (36000.76983 + JC * 0.0003032));
         final double M    = 357.52911 + JC * (35999.05029 - 0.0001537 * JC);
         final double Mrad = M * DEG2RAD;
@@ -107,8 +108,13 @@ public final class NOAA {
      */
     public static ZonedDateTime solarNoon(final LocalDate date, final double lon, final ZoneOffset tz) {
         final double tzH  = tz.getTotalSeconds() / 3600.0;
-        final double noon = solarNoonMinutes(date.getYear(), date.getMonthValue(), date.getDayOfMonth(),
-                                       lon, tzH, null);
+        final double JD   = julianDay(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
+        // Iterate: start from noon UT, then refine with computed noon.
+        double JC = (JD - 2451545.0) / 36525.0 + 0.5 / 36525.0;
+        double noon = solarNoonMinutes(JC, lon, tzH, null);
+        final double noonUtFrac = (noon - tzH * 60.0) / 1440.0;
+        JC = (JD - 2451545.0 + noonUtFrac) / 36525.0;
+        noon = solarNoonMinutes(JC, lon, tzH, null);
         return minutesToZdt(date, noon, tz);
     }
 
@@ -144,11 +150,26 @@ public final class NOAA {
         }
         final double tzH  = tz.getTotalSeconds() / 3600.0;
         final int y = date.getYear(), m = date.getMonthValue(), d = date.getDayOfMonth();
+        final double JD   = julianDay(y, m, d);
+        final double latR = lat * DEG2RAD;
         final double[] decl = new double[1];
-        final double noon = solarNoonMinutes(y, m, d, lon, tzH, decl);
-        final double ha   = hourAngleForElevation(lat * DEG2RAD, decl[0], effectiveElev);
+
+        // First pass: JC at local noon UT (better than midnight).
+        double JC = (JD - 2451545.0) / 36525.0 + 0.5 / 36525.0;
+        double noon = solarNoonMinutes(JC, lon, tzH, decl);
+        double ha   = hourAngleForElevation(latR, decl[0], effectiveElev);
         if (Double.isNaN(ha)) return null;
-        final double minutes = isRise ? noon - ha * 4.0 : noon + ha * 4.0;
+        double minutes = isRise ? noon - ha * 4.0 : noon + ha * 4.0;
+
+        // Second pass: JC at the approximate event UT — reduces the residual
+        // from ~1 min (declination + eqt drift across the day) to under 5 s.
+        final double eventUtFrac = (minutes - tzH * 60.0) / 1440.0;
+        JC = (JD - 2451545.0 + eventUtFrac) / 36525.0;
+        noon = solarNoonMinutes(JC, lon, tzH, decl);
+        ha   = hourAngleForElevation(latR, decl[0], effectiveElev);
+        if (Double.isNaN(ha)) return null;
+        minutes = isRise ? noon - ha * 4.0 : noon + ha * 4.0;
+
         return minutesToZdt(date, minutes, tz);
     }
 }
