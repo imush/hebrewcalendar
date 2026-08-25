@@ -72,9 +72,14 @@ public final class Rambam {
      * @param chapters   {@code 1} for the 1-chapter cycle, {@code 3} for the 3-chapter cycle
      */
     public static String chabadUrl(LocalDate date, int chapters) {
+        return chabadUrl(date, chapters, "en");
+    }
+    /** Locale-aware: {@code lang} = "he" / "ru" / "fr" swaps the
+     *  chabad.org subdomain to the corresponding language site. */
+    public static String chabadUrl(LocalDate date, int chapters, String lang) {
         if (chapters != 1 && chapters != 3)
             throw new IllegalArgumentException("chapters must be 1 or 3: " + chapters);
-        return ChabadOrg.dailyStudyUrl("rambam.asp", date, "rambamChapters=" + chapters);
+        return ChabadOrg.dailyStudyUrl("rambam.asp", date, "rambamChapters=" + chapters, lang);
     }
 
     /** {@link Reading} for the 1-chapter cycle, or {@code null} pre-1984-04-29. */

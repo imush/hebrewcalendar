@@ -37,8 +37,11 @@ public final class SeferHaMitzvot {
         public String raw()        { return raw; }
 
         /** chabad.org's Daily Mitzvah page for this date. Always non-null. */
-        public String chabadUrl() {
-            return ChabadOrg.dailyStudyUrl("seferHamitzvos.asp", date, null);
+        public String chabadUrl() { return chabadUrl("en"); }
+        /** Locale-aware: {@code lang} = "he" / "ru" / "fr" swaps the
+         *  chabad.org subdomain to the corresponding language site. */
+        public String chabadUrl(String lang) {
+            return ChabadOrg.dailyStudyUrl("seferHamitzvos.asp", date, null, lang);
         }
         /**
          * Deep-link to sefaria.org for the day's first Positive or Negative

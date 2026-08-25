@@ -221,8 +221,11 @@ public final class Chumash {
          * boundaries. Same URL for both portions on Simchat Torah — the
          * page shows the combined reading.
          */
-        public String chabadUrl() {
-            return ChabadOrg.dailyStudyUrl("torahreading.asp", date, null);
+        public String chabadUrl() { return chabadUrl("en"); }
+        /** Locale-aware: {@code lang} = "he" / "ru" / "fr" swaps the
+         *  chabad.org subdomain to the corresponding language site. */
+        public String chabadUrl(String lang) {
+            return ChabadOrg.dailyStudyUrl("torahreading.asp", date, null, lang);
         }
         /** e.g. {@code "Bereishit — 3rd aliyah"} or on Simchat Torah
          *  {@code "Vezot HaBracha — aliyot 4-7; Bereishit — aliyot 1-4"}. */

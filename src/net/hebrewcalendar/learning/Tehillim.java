@@ -61,8 +61,11 @@ public final class Tehillim {
          * {@link #forDate(LocalDate)}; {@code null} if built via
          * {@link #forDayOfMonth(int, int)}.
          */
-        public String chabadUrl() {
-            return date == null ? null : ChabadOrg.dailyStudyUrl("tehillim.asp", date, null);
+        public String chabadUrl() { return chabadUrl("en"); }
+        /** Locale-aware: {@code lang} = "he" / "ru" / "fr" swaps the
+         *  chabad.org subdomain to the corresponding language site. */
+        public String chabadUrl(String lang) {
+            return date == null ? null : ChabadOrg.dailyStudyUrl("tehillim.asp", date, null, lang);
         }
     }
 

@@ -189,8 +189,11 @@ public final class Tanya {
          * chabad.org's daily Tanya page, which renders the passage assigned
          * to this Hebrew date in Kehot's printed Tanya.
          */
-        public String chabadUrl() {
-            return date == null ? null : ChabadOrg.dailyStudyUrl("tanya.asp", date, null);
+        public String chabadUrl() { return chabadUrl("en"); }
+        /** Locale-aware: {@code lang} = "he" / "ru" / "fr" swaps the
+         *  chabad.org subdomain to the corresponding language site. */
+        public String chabadUrl(String lang) {
+            return date == null ? null : ChabadOrg.dailyStudyUrl("tanya.asp", date, null, lang);
         }
     }
 
