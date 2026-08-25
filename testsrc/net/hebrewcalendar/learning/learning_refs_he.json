@@ -1,0 +1,2596 @@
+[
+  {
+    "date": "2020-01-01",
+    "daf_en": "Niddah 70",
+    "daf_he": "נדה ע׳",
+    "r1_en": "Ownerless Property and Gifts 11",
+    "r1_he": "הלכות זכייה ומתנה י״א",
+    "r3_en": [
+      "The Chosen Temple 5-7"
+    ],
+    "r3_he": [
+      "הלכות בית הבחירה ה׳-ז׳"
+    ]
+  },
+  {
+    "date": "2020-01-15",
+    "daf_en": "Berakhot 12",
+    "daf_he": "ברכות י״ב",
+    "r1_en": "Neighbors 13",
+    "r1_he": "הלכות שכנים י״ג",
+    "r3_en": [
+      "Sacrificial Procedure 13-15"
+    ],
+    "r3_he": [
+      "הלכות מעשה הקרבנות י״ג-ט״ו"
+    ]
+  },
+  {
+    "date": "2020-01-29",
+    "daf_en": "Berakhot 26",
+    "daf_he": "ברכות כ״ו",
+    "r1_en": "Slaves 3",
+    "r1_he": "הלכות עבדים ג׳",
+    "r3_en": [
+      "Trespass 2-4"
+    ],
+    "r3_he": [
+      "הלכות מעילה ב׳-ד׳"
+    ]
+  },
+  {
+    "date": "2020-02-12",
+    "daf_en": "Berakhot 40",
+    "daf_he": "ברכות מ׳",
+    "r1_en": "Hiring 8",
+    "r1_he": "הלכות שכירות ח׳",
+    "r3_en": [
+      "Offerings for Unintentional Transgressions 15",
+      "Offerings for Those with Incomplete Atonement 1-2"
+    ],
+    "r3_he": [
+      "הלכות שגגות ט״ו",
+      "הלכות מחוסרי כפרה א׳-ב׳"
+    ]
+  },
+  {
+    "date": "2020-02-26",
+    "daf_en": "Berakhot 54",
+    "daf_he": "ברכות נ״ד",
+    "r1_en": "Creditor and Debtor 1",
+    "r1_he": "הלכות מלווה ולווה א׳",
+    "r3_en": [
+      "Red Heifer 8-10"
+    ],
+    "r3_he": [
+      "הלכות פרה אדומה ח׳-י׳"
+    ]
+  },
+  {
+    "date": "2020-03-11",
+    "daf_en": "Shabbat 5",
+    "daf_he": "שבת ה׳",
+    "r1_en": "Creditor and Debtor 15",
+    "r1_he": "הלכות מלווה ולווה ט״ו",
+    "r3_en": [
+      "Other Sources of Defilement 6-8"
+    ],
+    "r3_he": [
+      "הלכות שאר אבות הטומאות ו׳-ח׳"
+    ]
+  },
+  {
+    "date": "2020-03-25",
+    "daf_en": "Shabbat 19",
+    "daf_he": "שבת י״ט",
+    "r1_en": "Plaintiff and Defendant 2",
+    "r1_he": "הלכות טוען ונטען ב׳",
+    "r3_en": [
+      "Vessels 12-14"
+    ],
+    "r3_he": [
+      "הלכות כלים י״ב-י״ד"
+    ]
+  },
+  {
+    "date": "2020-04-08",
+    "daf_en": "Shabbat 33",
+    "daf_he": "שבת ל״ג",
+    "r1_en": "Plaintiff and Defendant 16",
+    "r1_he": "הלכות טוען ונטען ט״ז",
+    "r3_en": [
+      "Theft 1-3"
+    ],
+    "r3_he": [
+      "הלכות גניבה א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2020-04-22",
+    "daf_en": "Shabbat 47",
+    "daf_he": "שבת מ״ז",
+    "r1_en": "The Sanhedrin and the Penalties within Their Jurisdiction 3",
+    "r1_he": "הלכות סנהדרין והעונשין המסורין להם ג׳",
+    "r3_en": [
+      "Murderer and the Preservation of Life 8-10"
+    ],
+    "r3_he": [
+      "הלכות רוצח ושמירת נפש ח׳-י׳"
+    ]
+  },
+  {
+    "date": "2020-05-06",
+    "daf_en": "Shabbat 61",
+    "daf_he": "שבת ס״א",
+    "r1_en": "The Sanhedrin and the Penalties within Their Jurisdiction 17",
+    "r1_he": "הלכות סנהדרין והעונשין המסורין להם י״ז",
+    "r3_en": [
+      "Ownerless Property and Gifts 7-9"
+    ],
+    "r3_he": [
+      "הלכות זכייה ומתנה ז׳-ט׳"
+    ]
+  },
+  {
+    "date": "2020-05-20",
+    "daf_en": "Shabbat 75",
+    "daf_he": "שבת ע״ה",
+    "r1_en": "Testimony 5",
+    "r1_he": "הלכות עדות ה׳",
+    "r3_en": [
+      "Hiring 4-6"
+    ],
+    "r3_he": [
+      "הלכות שכירות ד׳-ו׳"
+    ]
+  },
+  {
+    "date": "2020-06-03",
+    "daf_en": "Shabbat 89",
+    "daf_he": "שבת פ״ט",
+    "r1_en": "Testimony 19",
+    "r1_he": "הלכות עדות י״ט",
+    "r3_en": [
+      "Creditor and Debtor 25-27"
+    ],
+    "r3_he": [
+      "הלכות מלווה ולווה כ״ה-כ״ז"
+    ]
+  },
+  {
+    "date": "2020-06-17",
+    "daf_en": "Shabbat 103",
+    "daf_he": "שבת ק״ג",
+    "r1_en": "Mourning 4",
+    "r1_he": "הלכות אבל ד׳",
+    "r3_en": [
+      "The Sanhedrin and the Penalties within Their Jurisdiction 13-15"
+    ],
+    "r3_he": [
+      "הלכות סנהדרין והעונשין המסורין להם י״ג-ט״ו"
+    ]
+  },
+  {
+    "date": "2020-07-01",
+    "daf_en": "Shabbat 117",
+    "daf_he": "שבת קי״ז",
+    "r1_en": "Kings and Wars 4",
+    "r1_he": "הלכות מלכים ומלחמות ד׳",
+    "r3_en": [
+      "Rebels 7",
+      "Mourning 1-2"
+    ],
+    "r3_he": [
+      "הלכות ממרים ז׳",
+      "הלכות אבל א׳-ב׳"
+    ]
+  },
+  {
+    "date": "2020-07-15",
+    "daf_en": "Shabbat 131",
+    "daf_he": "שבת קל״א",
+    "r1_en": "Positive Mitzvot 167-248",
+    "r1_he": "מצוות עשה קס״ז-רמ״ח",
+    "r3_en": [
+      "Foundations of the Torah 4-6"
+    ],
+    "r3_he": [
+      "הלכות יסודי התורה ד׳-ו׳"
+    ]
+  },
+  {
+    "date": "2020-07-29",
+    "daf_en": "Shabbat 145",
+    "daf_he": "שבת קמ״ה",
+    "r1_en": "Foundations of the Torah 8",
+    "r1_he": "הלכות יסודי התורה ח׳",
+    "r3_en": [
+      "Repentance 10",
+      "Reading the Shema 1-2"
+    ],
+    "r3_he": [
+      "הלכות תשובה י׳",
+      "הלכות קריאת שמע א׳-ב׳"
+    ]
+  },
+  {
+    "date": "2020-08-12",
+    "daf_en": "Eruvin 3",
+    "daf_he": "עירובין ג׳",
+    "r1_en": "Torah Study 5",
+    "r1_he": "הלכות תלמוד תורה ה׳",
+    "r3_en": [
+      "Blessings 10-11",
+      "Circumcision 1"
+    ],
+    "r3_he": [
+      "הלכות ברכות י׳-י״א",
+      "הלכות מילה א׳"
+    ]
+  },
+  {
+    "date": "2020-08-26",
+    "daf_en": "Eruvin 17",
+    "daf_he": "עירובין י״ז",
+    "r1_en": "Foreign Worship and Customs of the Nations 12",
+    "r1_he": "הלכות עבודה זרה וחוקות הגויים י״ב",
+    "r3_en": [
+      "Eruvin 3-5"
+    ],
+    "r3_he": [
+      "הלכות עירובין ג׳-ה׳"
+    ]
+  },
+  {
+    "date": "2020-09-09",
+    "daf_en": "Eruvin 31",
+    "daf_he": "עירובין ל״א",
+    "r1_en": "Reading the Shema 4",
+    "r1_he": "הלכות קריאת שמע ד׳",
+    "r3_en": [
+      "Sanctification of the New Month 6-8"
+    ],
+    "r3_he": [
+      "הלכות קידוש החודש ו׳-ח׳"
+    ]
+  },
+  {
+    "date": "2020-09-23",
+    "daf_en": "Eruvin 45",
+    "daf_he": "עירובין מ״ה",
+    "r1_en": "Prayer and the Priestly Blessing 14",
+    "r1_he": "הלכות תפילה וברכת כהנים י״ד",
+    "r3_en": [
+      "Marriage 20-22"
+    ],
+    "r3_he": [
+      "הלכות אישות כ׳-כ״ב"
+    ]
+  },
+  {
+    "date": "2020-10-07",
+    "daf_en": "Eruvin 59",
+    "daf_he": "עירובין נ״ט",
+    "r1_en": "Fringes 3",
+    "r1_he": "הלכות ציצית ג׳",
+    "r3_en": [
+      "Forbidden Intercourse 9-11"
+    ],
+    "r3_he": [
+      "הלכות איסורי ביאה ט׳-י״א"
+    ]
+  },
+  {
+    "date": "2020-10-21",
+    "daf_en": "Eruvin 73",
+    "daf_he": "עירובין ע״ג",
+    "r1_en": "Circumcision 3",
+    "r1_he": "הלכות מילה ג׳",
+    "r3_en": [
+      "Ritual Slaughter 12-14"
+    ],
+    "r3_he": [
+      "הלכות שחיטה י״ב-י״ד"
+    ]
+  },
+  {
+    "date": "2020-11-04",
+    "daf_en": "Eruvin 87",
+    "daf_he": "עירובין פ״ז",
+    "r1_en": "Sabbath 10",
+    "r1_he": "הלכות שבת י׳",
+    "r3_en": [
+      "Appraisals and Devoted Property 5-7"
+    ],
+    "r3_he": [
+      "הלכות ערכים וחרמין ה׳-ז׳"
+    ]
+  },
+  {
+    "date": "2020-11-18",
+    "daf_en": "Eruvin 101",
+    "daf_he": "עירובין ק״א",
+    "r1_en": "Sabbath 24",
+    "r1_he": "הלכות שבת כ״ד",
+    "r3_en": [
+      "Tithes 4-6"
+    ],
+    "r3_he": [
+      "הלכות מעשרות ד׳-ו׳"
+    ]
+  },
+  {
+    "date": "2020-12-02",
+    "daf_en": "Pesachim 11",
+    "daf_he": "פסחים י״א",
+    "r1_en": "Eruvin 8",
+    "r1_he": "הלכות עירובין ח׳",
+    "r3_en": [
+      "Sabbatical Year and the Jubilee 9-11"
+    ],
+    "r3_he": [
+      "הלכות שמיטה ויובל ט׳-י״א"
+    ]
+  },
+  {
+    "date": "2020-12-16",
+    "daf_en": "Pesachim 25",
+    "daf_he": "פסחים כ״ה",
+    "r1_en": "Leavened and Unleavened Bread 3",
+    "r1_he": "הלכות חמץ ומצה ג׳",
+    "r3_en": [
+      "Sacrificial Procedure 4-6"
+    ],
+    "r3_he": [
+      "הלכות מעשה הקרבנות ד׳-ו׳"
+    ]
+  },
+  {
+    "date": "2020-12-30",
+    "daf_en": "Pesachim 39",
+    "daf_he": "פסחים ל״ט",
+    "r1_en": "Shofar, Sukkah and Lulav 8",
+    "r1_he": "הלכות שופר וסוכה ולולב ח׳",
+    "r3_en": [
+      "Sacrifices Rendered Unfit 17-19"
+    ],
+    "r3_he": [
+      "הלכות פסולי המוקדשין י״ז-י״ט"
+    ]
+  },
+  {
+    "date": "2021-01-13",
+    "daf_en": "Pesachim 53",
+    "daf_he": "פסחים נ״ג",
+    "r1_en": "Sanctification of the New Month 10",
+    "r1_he": "הלכות קידוש החודש י׳",
+    "r3_en": [
+      "Offerings for Unintentional Transgressions 6-8"
+    ],
+    "r3_he": [
+      "הלכות שגגות ו׳-ח׳"
+    ]
+  },
+  {
+    "date": "2021-01-27",
+    "daf_en": "Pesachim 67",
+    "daf_he": "פסחים ס״ז",
+    "r1_en": "Fasts 5",
+    "r1_he": "הלכות תעניות ה׳",
+    "r3_en": [
+      "Defilement by a Corpse 24-25",
+      "Red Heifer 1"
+    ],
+    "r3_he": [
+      "הלכות טומאת מת כ״ד-כ״ה",
+      "הלכות פרה אדומה א׳"
+    ]
+  },
+  {
+    "date": "2021-02-10",
+    "daf_en": "Pesachim 81",
+    "daf_he": "פסחים פ״א",
+    "r1_en": "Marriage 10",
+    "r1_he": "הלכות אישות י׳",
+    "r3_en": [
+      "Those Who Defile Bed or Seat 10-12"
+    ],
+    "r3_he": [
+      "הלכות מטמאי משכב ומושב י׳-י״ב"
+    ]
+  },
+  {
+    "date": "2021-02-24",
+    "daf_en": "Pesachim 95",
+    "daf_he": "פסחים צ״ה",
+    "r1_en": "Marriage 24",
+    "r1_he": "הלכות אישות כ״ד",
+    "r3_en": [
+      "Vessels 3-5"
+    ],
+    "r3_he": [
+      "הלכות כלים ג׳-ה׳"
+    ]
+  },
+  {
+    "date": "2021-03-10",
+    "daf_en": "Pesachim 109",
+    "daf_he": "פסחים ק״ט",
+    "r1_en": "Divorce 13",
+    "r1_he": "הלכות גירושין י״ג",
+    "r3_en": [
+      "Damages to Property 6-8"
+    ],
+    "r3_he": [
+      "הלכות נזקי ממון ו׳-ח׳"
+    ]
+  },
+  {
+    "date": "2021-03-24",
+    "daf_en": "Shekalim 3",
+    "daf_he": "שקלים ג׳",
+    "r1_en": "Woman Suspected of Infidelity 3",
+    "r1_he": "הלכות סוטה ג׳",
+    "r3_en": [
+      "One Who Injures a Person or Property 7-8",
+      "Murderer and the Preservation of Life 1"
+    ],
+    "r3_he": [
+      "הלכות חובל ומזיק ז׳-ח׳",
+      "הלכות רוצח ושמירת נפש א׳"
+    ]
+  },
+  {
+    "date": "2021-04-07",
+    "daf_en": "Shekalim 17",
+    "daf_he": "שקלים י״ז",
+    "r1_en": "Forbidden Intercourse 13",
+    "r1_he": "הלכות איסורי ביאה י״ג",
+    "r3_en": [
+      "Sales 28-30"
+    ],
+    "r3_he": [
+      "הלכות מכירה כ״ח-ל׳"
+    ]
+  },
+  {
+    "date": "2021-04-21",
+    "daf_en": "Yoma 10",
+    "daf_he": "יומא י׳",
+    "r1_en": "Forbidden Foods 5",
+    "r1_he": "הלכות מאכלות אסורות ה׳",
+    "r3_en": [
+      "Slaves 4-6"
+    ],
+    "r3_he": [
+      "הלכות עבדים ד׳-ו׳"
+    ]
+  },
+  {
+    "date": "2021-05-05",
+    "daf_en": "Yoma 24",
+    "daf_he": "יומא כ״ד",
+    "r1_en": "Ritual Slaughter 2",
+    "r1_he": "הלכות שחיטה ב׳",
+    "r3_en": [
+      "Creditor and Debtor 16-18"
+    ],
+    "r3_he": [
+      "הלכות מלווה ולווה ט״ז-י״ח"
+    ]
+  },
+  {
+    "date": "2021-05-19",
+    "daf_en": "Yoma 38",
+    "daf_he": "יומא ל״ח",
+    "r1_en": "Oaths 2",
+    "r1_he": "הלכות שבועות ב׳",
+    "r3_en": [
+      "The Sanhedrin and the Penalties within Their Jurisdiction 4-6"
+    ],
+    "r3_he": [
+      "הלכות סנהדרין והעונשין המסורין להם ד׳-ו׳"
+    ]
+  },
+  {
+    "date": "2021-06-02",
+    "daf_en": "Yoma 52",
+    "daf_he": "יומא נ״ב",
+    "r1_en": "Vows 4",
+    "r1_he": "הלכות נדרים ד׳",
+    "r3_en": [
+      "Testimony 20-22"
+    ],
+    "r3_he": [
+      "הלכות עדות כ׳-כ״ב"
+    ]
+  },
+  {
+    "date": "2021-06-16",
+    "daf_en": "Yoma 66",
+    "daf_he": "יומא ס״ו",
+    "r1_en": "Nazariteship 5",
+    "r1_he": "הלכות נזירות ה׳",
+    "r3_en": [
+      "Negative Mitzvot 1-365"
+    ],
+    "r3_he": [
+      "מצוות לא תעשה א׳-שס״ה"
+    ]
+  },
+  {
+    "date": "2021-06-30",
+    "daf_en": "Yoma 80",
+    "daf_he": "יומא פ׳",
+    "r1_en": "Diverse Species 1",
+    "r1_he": "הלכות כלאים א׳",
+    "r3_en": [
+      "Repentance 1-3"
+    ],
+    "r3_he": [
+      "הלכות תשובה א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2021-07-14",
+    "daf_en": "Sukkah 7",
+    "daf_he": "סוכה ז׳",
+    "r1_en": "Gifts to the Poor 5",
+    "r1_he": "הלכות מתנות עניים ה׳",
+    "r3_en": [
+      "Blessings 1-3"
+    ],
+    "r3_he": [
+      "הלכות ברכות א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2021-07-28",
+    "daf_en": "Sukkah 21",
+    "daf_he": "סוכה כ״א",
+    "r1_en": "Heave Offerings 9",
+    "r1_he": "הלכות תרומות ט׳",
+    "r3_en": [
+      "Sabbath 24-26"
+    ],
+    "r3_he": [
+      "הלכות שבת כ״ד-כ״ו"
+    ]
+  },
+  {
+    "date": "2021-08-11",
+    "daf_en": "Sukkah 35",
+    "daf_he": "סוכה ל״ה",
+    "r1_en": "Tithes 8",
+    "r1_he": "הלכות מעשרות ח׳",
+    "r3_en": [
+      "Sheqel Dues 1-3"
+    ],
+    "r3_he": [
+      "הלכות שקלים א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2021-08-25",
+    "daf_en": "Sukkah 49",
+    "daf_he": "סוכה מ״ט",
+    "r1_en": "Second Tithes and Fourth Year's Fruit 8",
+    "r1_he": "הלכות מעשר שני ונטע רבעי ח׳",
+    "r3_en": [
+      "Marriage 11-13"
+    ],
+    "r3_he": [
+      "הלכות אישות י״א-י״ג"
+    ]
+  },
+  {
+    "date": "2021-09-08",
+    "daf_en": "Beitzah 8",
+    "daf_he": "ביצה ח׳",
+    "r1_en": "First Fruits and other Gifts to Priests Outside the Sanctuary 11",
+    "r1_he": "הלכות ביכורים ושאר מתנות כהונה שבגבולין י״א",
+    "r3_en": [
+      "Woman Suspected of Infidelity 4",
+      "Forbidden Intercourse 1-2"
+    ],
+    "r3_he": [
+      "הלכות סוטה ד׳",
+      "הלכות איסורי ביאה א׳-ב׳"
+    ]
+  },
+  {
+    "date": "2021-09-22",
+    "daf_en": "Beitzah 22",
+    "daf_he": "ביצה כ״ב",
+    "r1_en": "Sabbatical Year and the Jubilee 13",
+    "r1_he": "הלכות שמיטה ויובל י״ג",
+    "r3_en": [
+      "Ritual Slaughter 3-5"
+    ],
+    "r3_he": [
+      "הלכות שחיטה ג׳-ה׳"
+    ]
+  },
+  {
+    "date": "2021-10-06",
+    "daf_en": "Beitzah 36",
+    "daf_he": "ביצה ל״ו",
+    "r1_en": "Vessels of the Sanctuary and Those Who Serve Therein 6",
+    "r1_he": "הלכות כלי המקדש והעובדין בו ו׳",
+    "r3_en": [
+      "Nazariteship 6-8"
+    ],
+    "r3_he": [
+      "הלכות נזירות ו׳-ח׳"
+    ]
+  },
+  {
+    "date": "2021-10-20",
+    "daf_en": "Rosh Hashanah 11",
+    "daf_he": "ראש השנה י״א",
+    "r1_en": "Things Forbidden on the Altar 1",
+    "r1_he": "הלכות איסורי המזבח א׳",
+    "r3_en": [
+      "Heave Offerings 10-12"
+    ],
+    "r3_he": [
+      "הלכות תרומות י׳-י״ב"
+    ]
+  },
+  {
+    "date": "2021-11-03",
+    "daf_en": "Rosh Hashanah 25",
+    "daf_he": "ראש השנה כ״ה",
+    "r1_en": "Sacrificial Procedure 8",
+    "r1_he": "הלכות מעשה הקרבנות ח׳",
+    "r3_en": [
+      "First Fruits and other Gifts to Priests Outside the Sanctuary 12",
+      "Sabbatical Year and the Jubilee 1-2"
+    ],
+    "r3_he": [
+      "הלכות ביכורים ושאר מתנות כהונה שבגבולין י״ב",
+      "הלכות שמיטה ויובל א׳-ב׳"
+    ]
+  },
+  {
+    "date": "2021-11-17",
+    "daf_en": "Taanit 5",
+    "daf_he": "תענית ה׳",
+    "r1_en": "Daily Offerings and Additional Offerings 3",
+    "r1_he": "הלכות תמידים ומוספין ג׳",
+    "r3_en": [
+      "Things Forbidden on the Altar 2-4"
+    ],
+    "r3_he": [
+      "הלכות איסורי המזבח ב׳-ד׳"
+    ]
+  },
+  {
+    "date": "2021-12-01",
+    "daf_en": "Taanit 19",
+    "daf_he": "תענית י״ט",
+    "r1_en": "Sacrifices Rendered Unfit 7",
+    "r1_he": "הלכות פסולי המוקדשין ז׳",
+    "r3_en": [
+      "Sacrifices Rendered Unfit 8-10"
+    ],
+    "r3_he": [
+      "הלכות פסולי המוקדשין ח׳-י׳"
+    ]
+  },
+  {
+    "date": "2021-12-15",
+    "daf_en": "Megillah 3",
+    "daf_he": "מגילה ג׳",
+    "r1_en": "Service on the Day of Atonement 2",
+    "r1_he": "הלכות עבודת יום הכפורים ב׳",
+    "r3_en": [
+      "Firstlings 5-7"
+    ],
+    "r3_he": [
+      "הלכות בכורות ה׳-ז׳"
+    ]
+  },
+  {
+    "date": "2021-12-29",
+    "daf_en": "Megillah 17",
+    "daf_he": "מגילה י״ז",
+    "r1_en": "Paschal Offering 3",
+    "r1_he": "הלכות קרבן פסח ג׳",
+    "r3_en": [
+      "Defilement by a Corpse 15-17"
+    ],
+    "r3_he": [
+      "הלכות טומאת מת ט״ו-י״ז"
+    ]
+  },
+  {
+    "date": "2022-01-12",
+    "daf_en": "Megillah 31",
+    "daf_he": "מגילה ל״א",
+    "r1_en": "Firstlings 4",
+    "r1_he": "הלכות בכורות ד׳",
+    "r3_en": [
+      "Those Who Defile Bed or Seat 1-3"
+    ],
+    "r3_he": [
+      "הלכות מטמאי משכב ומושב א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2022-01-26",
+    "daf_en": "Moed Katan 14",
+    "daf_he": "מועד קטן י״ד",
+    "r1_en": "Offerings for Unintentional Transgressions 10",
+    "r1_he": "הלכות שגגות י׳",
+    "r3_en": [
+      "Defilement of Foods 10-12"
+    ],
+    "r3_he": [
+      "הלכות טומאת אוכלים י׳-י״ב"
+    ]
+  },
+  {
+    "date": "2022-02-09",
+    "daf_en": "Moed Katan 28",
+    "daf_he": "מועד קטן כ״ח",
+    "r1_en": "Substitution 4",
+    "r1_he": "הלכות תמורה ד׳",
+    "r3_en": [
+      "Immersion Pools 8-10"
+    ],
+    "r3_he": [
+      "הלכות מקואות ח׳-י׳"
+    ]
+  },
+  {
+    "date": "2022-02-23",
+    "daf_en": "Chagigah 14",
+    "daf_he": "חגיגה י״ד",
+    "r1_en": "Defilement by a Corpse 14",
+    "r1_he": "הלכות טומאת מת י״ד",
+    "r3_en": [
+      "Robbery and Lost Property 16-18"
+    ],
+    "r3_he": [
+      "הלכות גזילה ואבידה ט״ז-י״ח"
+    ]
+  },
+  {
+    "date": "2022-03-09",
+    "daf_en": "Yevamot 2",
+    "daf_he": "יבמות ב׳",
+    "r1_en": "Red Heifer 3",
+    "r1_he": "הלכות פרה אדומה ג׳",
+    "r3_en": [
+      "Sales 19-21"
+    ],
+    "r3_he": [
+      "הלכות מכירה י״ט-כ״א"
+    ]
+  },
+  {
+    "date": "2022-03-23",
+    "daf_en": "Yevamot 16",
+    "daf_he": "יבמות ט״ז",
+    "r1_en": "Defilement by Leprosy 2",
+    "r1_he": "הלכות טומאת צרעת ב׳",
+    "r3_en": [
+      "Agents and Partners 5-7"
+    ],
+    "r3_he": [
+      "הלכות שלוחין ושותפין ה׳-ז׳"
+    ]
+  },
+  {
+    "date": "2022-04-06",
+    "daf_en": "Yevamot 30",
+    "daf_he": "יבמות ל׳",
+    "r1_en": "Defilement by Leprosy 16",
+    "r1_he": "הלכות טומאת צרעת ט״ז",
+    "r3_en": [
+      "Creditor and Debtor 7-9"
+    ],
+    "r3_he": [
+      "הלכות מלווה ולווה ז׳-ט׳"
+    ]
+  },
+  {
+    "date": "2022-04-20",
+    "daf_en": "Yevamot 44",
+    "daf_he": "יבמות מ״ד",
+    "r1_en": "Other Sources of Defilement 1",
+    "r1_he": "הלכות שאר אבות הטומאות א׳",
+    "r3_en": [
+      "Inheritances 6-8"
+    ],
+    "r3_he": [
+      "הלכות נחלות ו׳-ח׳"
+    ]
+  },
+  {
+    "date": "2022-05-04",
+    "daf_en": "Yevamot 58",
+    "daf_he": "יבמות נ״ח",
+    "r1_en": "Other Sources of Defilement 15",
+    "r1_he": "הלכות שאר אבות הטומאות ט״ו",
+    "r3_en": [
+      "Testimony 11-13"
+    ],
+    "r3_he": [
+      "הלכות עדות י״א-י״ג"
+    ]
+  },
+  {
+    "date": "2022-05-18",
+    "daf_en": "Yevamot 72",
+    "daf_he": "יבמות ע״ב",
+    "r1_en": "Defilement of Foods 9",
+    "r1_he": "הלכות טומאת אוכלים ט׳",
+    "r3_en": [
+      "Kings and Wars 10-12"
+    ],
+    "r3_he": [
+      "הלכות מלכים ומלחמות י׳-י״ב"
+    ]
+  },
+  {
+    "date": "2022-06-01",
+    "daf_en": "Yevamot 86",
+    "daf_he": "יבמות פ״ו",
+    "r1_en": "Vessels 7",
+    "r1_he": "הלכות כלים ז׳",
+    "r3_en": [
+      "Foreign Worship and Customs of the Nations 4-6"
+    ],
+    "r3_he": [
+      "הלכות עבודה זרה וחוקות הגויים ד׳-ו׳"
+    ]
+  },
+  {
+    "date": "2022-06-15",
+    "daf_en": "Yevamot 100",
+    "daf_he": "יבמות ק׳",
+    "r1_en": "Vessels 21",
+    "r1_he": "הלכות כלים כ״א",
+    "r3_en": [
+      "Tefillin, Mezuzah and the Torah Scroll 5-7"
+    ],
+    "r3_he": [
+      "הלכות תפילין ומזוזה וספר תורה ה׳-ז׳"
+    ]
+  },
+  {
+    "date": "2022-06-29",
+    "daf_en": "Yevamot 114",
+    "daf_he": "יבמות קי״ד",
+    "r1_en": "Immersion Pools 7",
+    "r1_he": "הלכות מקואות ז׳",
+    "r3_en": [
+      "Sabbath 15-17"
+    ],
+    "r3_he": [
+      "הלכות שבת ט״ו-י״ז"
+    ]
+  },
+  {
+    "date": "2022-07-13",
+    "daf_en": "Ketubot 7",
+    "daf_he": "כתובות ז׳",
+    "r1_en": "Damages to Property 10",
+    "r1_he": "הלכות נזקי ממון י׳",
+    "r3_en": [
+      "Leavened and Unleavened Bread 8-9",
+      "Shofar, Sukkah and Lulav 1-2"
+    ],
+    "r3_he": [
+      "הלכות חמץ ומצה ח׳-ט׳",
+      "הלכות שופר וסוכה ולולב א׳-ב׳"
+    ]
+  },
+  {
+    "date": "2022-07-27",
+    "daf_en": "Ketubot 21",
+    "daf_he": "כתובות כ״א",
+    "r1_en": "Robbery and Lost Property 1",
+    "r1_he": "הלכות גזילה ואבידה א׳",
+    "r3_en": [
+      "Marriage 2-4"
+    ],
+    "r3_he": [
+      "הלכות אישות ב׳-ד׳"
+    ]
+  },
+  {
+    "date": "2022-08-10",
+    "daf_en": "Ketubot 35",
+    "daf_he": "כתובות ל״ה",
+    "r1_en": "Robbery and Lost Property 15",
+    "r1_he": "הלכות גזילה ואבידה ט״ו",
+    "r3_en": [
+      "Levirate Marriage and Release 6-8"
+    ],
+    "r3_he": [
+      "הלכות יבום וחליצה ו׳-ח׳"
+    ]
+  },
+  {
+    "date": "2022-08-24",
+    "daf_en": "Ketubot 49",
+    "daf_he": "כתובות מ״ט",
+    "r1_en": "Murderer and the Preservation of Life 3",
+    "r1_he": "הלכות רוצח ושמירת נפש ג׳",
+    "r3_en": [
+      "Forbidden Foods 11-13"
+    ],
+    "r3_he": [
+      "הלכות מאכלות אסורות י״א-י״ג"
+    ]
+  },
+  {
+    "date": "2022-09-07",
+    "daf_en": "Ketubot 63",
+    "daf_he": "כתובות ס״ג",
+    "r1_en": "Sales 4",
+    "r1_he": "הלכות מכירה ד׳",
+    "r3_en": [
+      "Vows 10-12"
+    ],
+    "r3_he": [
+      "הלכות נדרים י׳-י״ב"
+    ]
+  },
+  {
+    "date": "2022-09-21",
+    "daf_en": "Ketubot 77",
+    "daf_he": "כתובות ע״ז",
+    "r1_en": "Sales 18",
+    "r1_he": "הלכות מכירה י״ח",
+    "r3_en": [
+      "Heave Offerings 1-3"
+    ],
+    "r3_he": [
+      "הלכות תרומות א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2022-10-05",
+    "daf_en": "Ketubot 91",
+    "daf_he": "כתובות צ״א",
+    "r1_en": "Ownerless Property and Gifts 2",
+    "r1_he": "הלכות זכייה ומתנה ב׳",
+    "r3_en": [
+      "First Fruits and other Gifts to Priests Outside the Sanctuary 3-5"
+    ],
+    "r3_he": [
+      "הלכות ביכורים ושאר מתנות כהונה שבגבולין ג׳-ה׳"
+    ]
+  },
+  {
+    "date": "2022-10-19",
+    "daf_en": "Ketubot 105",
+    "daf_he": "כתובות ק״ה",
+    "r1_en": "Neighbors 4",
+    "r1_he": "הלכות שכנים ד׳",
+    "r3_en": [
+      "Admission into the Sanctuary 2-4"
+    ],
+    "r3_he": [
+      "הלכות ביאת מקדש ב׳-ד׳"
+    ]
+  },
+  {
+    "date": "2022-11-02",
+    "daf_en": "Nedarim 8",
+    "daf_he": "נדרים ח׳",
+    "r1_en": "Agents and Partners 4",
+    "r1_he": "הלכות שלוחין ושותפין ד׳",
+    "r3_en": [
+      "Daily Offerings and Additional Offerings 9-10",
+      "Sacrifices Rendered Unfit 1"
+    ],
+    "r3_he": [
+      "הלכות תמידים ומוספין ט׳-י׳",
+      "הלכות פסולי המוקדשין א׳"
+    ]
+  },
+  {
+    "date": "2022-11-16",
+    "daf_en": "Nedarim 22",
+    "daf_he": "נדרים כ״ב",
+    "r1_en": "Slaves 8",
+    "r1_he": "הלכות עבדים ח׳",
+    "r3_en": [
+      "Paschal Offering 9-10",
+      "Festival Offering 1"
+    ],
+    "r3_he": [
+      "הלכות קרבן פסח ט׳-י׳",
+      "הלכות חגיגה א׳"
+    ]
+  },
+  {
+    "date": "2022-11-30",
+    "daf_en": "Nedarim 36",
+    "daf_he": "נדרים ל״ו",
+    "r1_en": "Hiring 13",
+    "r1_he": "הלכות שכירות י״ג",
+    "r3_en": [
+      "Defilement by a Corpse 6-8"
+    ],
+    "r3_he": [
+      "הלכות טומאת מת ו׳-ח׳"
+    ]
+  },
+  {
+    "date": "2022-12-14",
+    "daf_en": "Nedarim 50",
+    "daf_he": "נדרים נ׳",
+    "r1_en": "Creditor and Debtor 6",
+    "r1_he": "הלכות מלווה ולווה ו׳",
+    "r3_en": [
+      "Defilement by Leprosy 8-10"
+    ],
+    "r3_he": [
+      "הלכות טומאת צרעת ח׳-י׳"
+    ]
+  },
+  {
+    "date": "2022-12-28",
+    "daf_en": "Nedarim 64",
+    "daf_he": "נדרים ס״ד",
+    "r1_en": "Creditor and Debtor 20",
+    "r1_he": "הלכות מלווה ולווה כ׳",
+    "r3_en": [
+      "Defilement of Foods 1-3"
+    ],
+    "r3_he": [
+      "הלכות טומאת אוכלים א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2023-01-11",
+    "daf_en": "Nedarim 78",
+    "daf_he": "נדרים ע״ח",
+    "r1_en": "Plaintiff and Defendant 7",
+    "r1_he": "הלכות טוען ונטען ז׳",
+    "r3_en": [
+      "Vessels 27-28",
+      "Immersion Pools 1"
+    ],
+    "r3_he": [
+      "הלכות כלים כ״ז-כ״ח",
+      "הלכות מקואות א׳"
+    ]
+  },
+  {
+    "date": "2023-01-25",
+    "daf_en": "Nazir 2",
+    "daf_he": "נזיר ב׳",
+    "r1_en": "Inheritances 5",
+    "r1_he": "הלכות נחלות ה׳",
+    "r3_en": [
+      "Robbery and Lost Property 7-9"
+    ],
+    "r3_he": [
+      "הלכות גזילה ואבידה ז׳-ט׳"
+    ]
+  },
+  {
+    "date": "2023-02-08",
+    "daf_en": "Nazir 16",
+    "daf_he": "נזיר ט״ז",
+    "r1_en": "The Sanhedrin and the Penalties within Their Jurisdiction 8",
+    "r1_he": "הלכות סנהדרין והעונשין המסורין להם ח׳",
+    "r3_en": [
+      "Sales 10-12"
+    ],
+    "r3_he": [
+      "הלכות מכירה י׳-י״ב"
+    ]
+  },
+  {
+    "date": "2023-02-22",
+    "daf_en": "Nazir 30",
+    "daf_he": "נזיר ל׳",
+    "r1_en": "The Sanhedrin and the Penalties within Their Jurisdiction 22",
+    "r1_he": "הלכות סנהדרין והעונשין המסורין להם כ״ב",
+    "r3_en": [
+      "Neighbors 10-12"
+    ],
+    "r3_he": [
+      "הלכות שכנים י׳-י״ב"
+    ]
+  },
+  {
+    "date": "2023-03-08",
+    "daf_en": "Nazir 44",
+    "daf_he": "נזיר מ״ד",
+    "r1_en": "Testimony 10",
+    "r1_he": "הלכות עדות י׳",
+    "r3_en": [
+      "Borrowing and Deposit 6-8"
+    ],
+    "r3_he": [
+      "הלכות שאלה ופיקדון ו׳-ח׳"
+    ]
+  },
+  {
+    "date": "2023-03-22",
+    "daf_en": "Nazir 58",
+    "daf_he": "נזיר נ״ח",
+    "r1_en": "Rebels 2",
+    "r1_he": "הלכות ממרים ב׳",
+    "r3_en": [
+      "Plaintiff and Defendant 13-15"
+    ],
+    "r3_he": [
+      "הלכות טוען ונטען י״ג-ט״ו"
+    ]
+  },
+  {
+    "date": "2023-04-05",
+    "daf_en": "Sotah 7",
+    "daf_he": "סוטה ז׳",
+    "r1_en": "Mourning 9",
+    "r1_he": "הלכות אבל ט׳",
+    "r3_en": [
+      "Testimony 2-4"
+    ],
+    "r3_he": [
+      "הלכות עדות ב׳-ד׳"
+    ]
+  },
+  {
+    "date": "2023-04-19",
+    "daf_en": "Sotah 21",
+    "daf_he": "סוטה כ״א",
+    "r1_en": "Kings and Wars 9",
+    "r1_he": "הלכות מלכים ומלחמות ט׳",
+    "r3_en": [
+      "Kings and Wars 1-3"
+    ],
+    "r3_he": [
+      "הלכות מלכים ומלחמות א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2023-05-03",
+    "daf_en": "Sotah 35",
+    "daf_he": "סוטה ל״ה",
+    "r1_en": "Overview of Mishneh Torah Contents 5:1-9:9",
+    "r1_he": "תוכן החיבור ה׳:א׳-ט׳:ט׳",
+    "r3_en": [
+      "Torah Study 2-4"
+    ],
+    "r3_he": [
+      "הלכות תלמוד תורה ב׳-ד׳"
+    ]
+  },
+  {
+    "date": "2023-05-17",
+    "daf_en": "Sotah 49",
+    "daf_he": "סוטה מ״ט",
+    "r1_en": "Human Dispositions 3",
+    "r1_he": "הלכות דעות ג׳",
+    "r3_en": [
+      "Prayer and the Priestly Blessing 11-13"
+    ],
+    "r3_he": [
+      "הלכות תפילה וברכת כהנים י״א-י״ג"
+    ]
+  },
+  {
+    "date": "2023-05-31",
+    "daf_en": "Gittin 15",
+    "daf_he": "גיטין ט״ו",
+    "r1_en": "Foreign Worship and Customs of the Nations 3",
+    "r1_he": "הלכות עבודה זרה וחוקות הגויים ג׳",
+    "r3_en": [
+      "Sabbath 6-8"
+    ],
+    "r3_he": [
+      "הלכות שבת ו׳-ח׳"
+    ]
+  },
+  {
+    "date": "2023-06-14",
+    "daf_en": "Gittin 29",
+    "daf_he": "גיטין כ״ט",
+    "r1_en": "Repentance 5",
+    "r1_he": "הלכות תשובה ה׳",
+    "r3_en": [
+      "Rest on a Holiday 7-8",
+      "Leavened and Unleavened Bread 1"
+    ],
+    "r3_he": [
+      "הלכות שביתת יום טוב ז׳-ח׳",
+      "הלכות חמץ ומצה א׳"
+    ]
+  },
+  {
+    "date": "2023-06-28",
+    "daf_en": "Gittin 43",
+    "daf_he": "גיטין מ״ג",
+    "r1_en": "Prayer and the Priestly Blessing 5",
+    "r1_he": "הלכות תפילה וברכת כהנים ה׳",
+    "r3_en": [
+      "Fasts 2-4"
+    ],
+    "r3_he": [
+      "הלכות תעניות ב׳-ד׳"
+    ]
+  },
+  {
+    "date": "2023-07-12",
+    "daf_en": "Gittin 57",
+    "daf_he": "גיטין נ״ז",
+    "r1_en": "Tefillin, Mezuzah and the Torah Scroll 4",
+    "r1_he": "הלכות תפילין ומזוזה וספר תורה ד׳",
+    "r3_en": [
+      "Divorce 10-12"
+    ],
+    "r3_he": [
+      "הלכות גירושין י׳-י״ב"
+    ]
+  },
+  {
+    "date": "2023-07-26",
+    "daf_en": "Gittin 71",
+    "daf_he": "גיטין ע״א",
+    "r1_en": "Blessings 5",
+    "r1_he": "הלכות ברכות ה׳",
+    "r3_en": [
+      "Forbidden Foods 2-4"
+    ],
+    "r3_he": [
+      "הלכות מאכלות אסורות ב׳-ד׳"
+    ]
+  },
+  {
+    "date": "2023-08-09",
+    "daf_en": "Gittin 85",
+    "daf_he": "גיטין פ״ה",
+    "r1_en": "Sabbath 1",
+    "r1_he": "הלכות שבת א׳",
+    "r3_en": [
+      "Vows 1-3"
+    ],
+    "r3_he": [
+      "הלכות נדרים א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2023-08-23",
+    "daf_en": "Kiddushin 10",
+    "daf_he": "קידושין י׳",
+    "r1_en": "Sabbath 15",
+    "r1_he": "הלכות שבת ט״ו",
+    "r3_en": [
+      "Gifts to the Poor 2-4"
+    ],
+    "r3_he": [
+      "הלכות מתנות עניים ב׳-ד׳"
+    ]
+  },
+  {
+    "date": "2023-09-06",
+    "daf_en": "Kiddushin 24",
+    "daf_he": "קידושין כ״ד",
+    "r1_en": "Sabbath 29",
+    "r1_he": "הלכות שבת כ״ט",
+    "r3_en": [
+      "Second Tithes and Fourth Year's Fruit 5-7"
+    ],
+    "r3_he": [
+      "הלכות מעשר שני ונטע רבעי ה׳-ז׳"
+    ]
+  },
+  {
+    "date": "2023-09-20",
+    "daf_en": "Kiddushin 38",
+    "daf_he": "קידושין ל״ח",
+    "r1_en": "Rest on a Holiday 2",
+    "r1_he": "הלכות שביתת יום טוב ב׳",
+    "r3_en": [
+      "Vessels of the Sanctuary and Those Who Serve Therein 3-5"
+    ],
+    "r3_he": [
+      "הלכות כלי המקדש והעובדין בו ג׳-ה׳"
+    ]
+  },
+  {
+    "date": "2023-10-04",
+    "daf_en": "Kiddushin 52",
+    "daf_he": "קידושין נ״ב",
+    "r1_en": "Leavened and Unleavened Bread 8",
+    "r1_he": "הלכות חמץ ומצה ח׳",
+    "r3_en": [
+      "Sacrificial Procedure 19",
+      "Daily Offerings and Additional Offerings 1-2"
+    ],
+    "r3_he": [
+      "הלכות מעשה הקרבנות י״ט",
+      "הלכות תמידים ומוספין א׳-ב׳"
+    ]
+  },
+  {
+    "date": "2023-10-18",
+    "daf_en": "Kiddushin 66",
+    "daf_he": "קידושין ס״ו",
+    "r1_en": "Sanctification of the New Month 1",
+    "r1_he": "הלכות קידוש החודש א׳",
+    "r3_en": [
+      "Trespass 8",
+      "Paschal Offering 1-2"
+    ],
+    "r3_he": [
+      "הלכות מעילה ח׳",
+      "הלכות קרבן פסח א׳-ב׳"
+    ]
+  },
+  {
+    "date": "2023-11-01",
+    "daf_en": "Kiddushin 80",
+    "daf_he": "קידושין פ׳",
+    "r1_en": "Sanctification of the New Month 15",
+    "r1_he": "הלכות קידוש החודש ט״ו",
+    "r3_en": [
+      "Substitution 1-3"
+    ],
+    "r3_he": [
+      "הלכות תמורה א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2023-11-15",
+    "daf_en": "Bava Kamma 13",
+    "daf_he": "בבא קמא י״ג",
+    "r1_en": "Marriage 1",
+    "r1_he": "הלכות אישות א׳",
+    "r3_en": [
+      "Red Heifer 14-15",
+      "Defilement by Leprosy 1"
+    ],
+    "r3_he": [
+      "הלכות פרה אדומה י״ד-ט״ו",
+      "הלכות טומאת צרעת א׳"
+    ]
+  },
+  {
+    "date": "2023-11-29",
+    "daf_en": "Bava Kamma 27",
+    "daf_he": "בבא קמא כ״ז",
+    "r1_en": "Marriage 15",
+    "r1_he": "הלכות אישות ט״ו",
+    "r3_en": [
+      "Other Sources of Defilement 12-14"
+    ],
+    "r3_he": [
+      "הלכות שאר אבות הטומאות י״ב-י״ד"
+    ]
+  },
+  {
+    "date": "2023-12-13",
+    "daf_en": "Bava Kamma 41",
+    "daf_he": "בבא קמא מ״א",
+    "r1_en": "Divorce 4",
+    "r1_he": "הלכות גירושין ד׳",
+    "r3_en": [
+      "Vessels 18-20"
+    ],
+    "r3_he": [
+      "הלכות כלים י״ח-כ׳"
+    ]
+  },
+  {
+    "date": "2023-12-27",
+    "daf_en": "Bava Kamma 55",
+    "daf_he": "בבא קמא נ״ה",
+    "r1_en": "Levirate Marriage and Release 5",
+    "r1_he": "הלכות יבום וחליצה ה׳",
+    "r3_en": [
+      "Theft 7-9"
+    ],
+    "r3_he": [
+      "הלכות גניבה ז׳-ט׳"
+    ]
+  },
+  {
+    "date": "2024-01-10",
+    "daf_en": "Bava Kamma 69",
+    "daf_he": "בבא קמא ס״ט",
+    "r1_en": "Forbidden Intercourse 4",
+    "r1_he": "הלכות איסורי ביאה ד׳",
+    "r3_en": [
+      "Sales 1-3"
+    ],
+    "r3_he": [
+      "הלכות מכירה א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2024-01-24",
+    "daf_en": "Bava Kamma 83",
+    "daf_he": "בבא קמא פ״ג",
+    "r1_en": "Forbidden Intercourse 18",
+    "r1_he": "הלכות איסורי ביאה י״ח",
+    "r3_en": [
+      "Neighbors 1-3"
+    ],
+    "r3_he": [
+      "הלכות שכנים א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2024-02-07",
+    "daf_en": "Bava Kamma 97",
+    "daf_he": "בבא קמא צ״ז",
+    "r1_en": "Forbidden Foods 10",
+    "r1_he": "הלכות מאכלות אסורות י׳",
+    "r3_en": [
+      "Hiring 10-12"
+    ],
+    "r3_he": [
+      "הלכות שכירות י׳-י״ב"
+    ]
+  },
+  {
+    "date": "2024-02-21",
+    "daf_en": "Bava Kamma 111",
+    "daf_he": "בבא קמא קי״א",
+    "r1_en": "Ritual Slaughter 7",
+    "r1_he": "הלכות שחיטה ז׳",
+    "r3_en": [
+      "Plaintiff and Defendant 4-6"
+    ],
+    "r3_he": [
+      "הלכות טוען ונטען ד׳-ו׳"
+    ]
+  },
+  {
+    "date": "2024-03-06",
+    "daf_en": "Bava Metzia 7",
+    "daf_he": "בבא מציעא ז׳",
+    "r1_en": "Oaths 7",
+    "r1_he": "הלכות שבועות ז׳",
+    "r3_en": [
+      "The Sanhedrin and the Penalties within Their Jurisdiction 19-21"
+    ],
+    "r3_he": [
+      "הלכות סנהדרין והעונשין המסורין להם י״ט-כ״א"
+    ]
+  },
+  {
+    "date": "2024-03-20",
+    "daf_en": "Bava Metzia 21",
+    "daf_he": "בבא מציעא כ״א",
+    "r1_en": "Vows 9",
+    "r1_he": "הלכות נדרים ט׳",
+    "r3_en": [
+      "Mourning 6-8"
+    ],
+    "r3_he": [
+      "הלכות אבל ו׳-ח׳"
+    ]
+  },
+  {
+    "date": "2024-04-03",
+    "daf_en": "Bava Metzia 35",
+    "daf_he": "בבא מציעא ל״ה",
+    "r1_en": "Nazariteship 10",
+    "r1_he": "הלכות נזירות י׳",
+    "r3_en": [
+      "Foundations of the Torah 10",
+      "Human Dispositions 1-2"
+    ],
+    "r3_he": [
+      "הלכות יסודי התורה י׳",
+      "הלכות דעות א׳-ב׳"
+    ]
+  },
+  {
+    "date": "2024-04-17",
+    "daf_en": "Bava Metzia 49",
+    "daf_he": "בבא מציעא מ״ט",
+    "r1_en": "Diverse Species 6",
+    "r1_he": "הלכות כלאים ו׳",
+    "r3_en": [
+      "Prayer and the Priestly Blessing 2-4"
+    ],
+    "r3_he": [
+      "הלכות תפילה וברכת כהנים ב׳-ד׳"
+    ]
+  },
+  {
+    "date": "2024-05-01",
+    "daf_en": "Bava Metzia 63",
+    "daf_he": "בבא מציעא ס״ג",
+    "r1_en": "Gifts to the Poor 10",
+    "r1_he": "הלכות מתנות עניים י׳",
+    "r3_en": [
+      "The Order of Prayer 2-4"
+    ],
+    "r3_he": [
+      "סדר התפילה ב׳-ד׳"
+    ]
+  },
+  {
+    "date": "2024-05-15",
+    "daf_en": "Bava Metzia 77",
+    "daf_he": "בבא מציעא ע״ז",
+    "r1_en": "Heave Offerings 14",
+    "r1_he": "הלכות תרומות י״ד",
+    "r3_en": [
+      "Rest on the Tenth of Tishrei 1-3"
+    ],
+    "r3_he": [
+      "הלכות שביתת עשור א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2024-05-29",
+    "daf_en": "Bava Metzia 91",
+    "daf_he": "בבא מציעא צ״א",
+    "r1_en": "Tithes 13",
+    "r1_he": "הלכות מעשרות י״ג",
+    "r3_en": [
+      "Sanctification of the New Month 12-14"
+    ],
+    "r3_he": [
+      "הלכות קידוש החודש י״ב-י״ד"
+    ]
+  },
+  {
+    "date": "2024-06-12",
+    "daf_en": "Bava Metzia 105",
+    "daf_he": "בבא מציעא ק״ה",
+    "r1_en": "First Fruits and other Gifts to Priests Outside the Sanctuary 2",
+    "r1_he": "הלכות ביכורים ושאר מתנות כהונה שבגבולין ב׳",
+    "r3_en": [
+      "Divorce 1-3"
+    ],
+    "r3_he": [
+      "הלכות גירושין א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2024-06-26",
+    "daf_en": "Bava Metzia 119a",
+    "daf_he": "בבא מציעא קי״ט א",
+    "r1_en": "Sabbatical Year and the Jubilee 4",
+    "r1_he": "הלכות שמיטה ויובל ד׳",
+    "r3_en": [
+      "Forbidden Intercourse 15-17"
+    ],
+    "r3_he": [
+      "הלכות איסורי ביאה ט״ו-י״ז"
+    ]
+  },
+  {
+    "date": "2024-07-10",
+    "daf_en": "Bava Batra 15",
+    "daf_he": "בבא בתרא ט״ו",
+    "r1_en": "The Chosen Temple 5",
+    "r1_he": "הלכות בית הבחירה ה׳",
+    "r3_en": [
+      "Oaths 4-6"
+    ],
+    "r3_he": [
+      "הלכות שבועות ד׳-ו׳"
+    ]
+  },
+  {
+    "date": "2024-07-24",
+    "daf_en": "Bava Batra 29",
+    "daf_he": "בבא בתרא כ״ט",
+    "r1_en": "Admission into the Sanctuary 1",
+    "r1_he": "הלכות ביאת מקדש א׳",
+    "r3_en": [
+      "Diverse Species 3-5"
+    ],
+    "r3_he": [
+      "הלכות כלאים ג׳-ה׳"
+    ]
+  },
+  {
+    "date": "2024-08-07",
+    "daf_en": "Bava Batra 43",
+    "daf_he": "בבא בתרא מ״ג",
+    "r1_en": "Things Forbidden on the Altar 6",
+    "r1_he": "הלכות איסורי המזבח ו׳",
+    "r3_en": [
+      "Tithes 10-12"
+    ],
+    "r3_he": [
+      "הלכות מעשרות י׳-י״ב"
+    ]
+  },
+  {
+    "date": "2024-08-21",
+    "daf_en": "Bava Batra 57",
+    "daf_he": "בבא בתרא נ״ז",
+    "r1_en": "Sacrificial Procedure 13",
+    "r1_he": "הלכות מעשה הקרבנות י״ג",
+    "r3_en": [
+      "The Chosen Temple 2-4"
+    ],
+    "r3_he": [
+      "הלכות בית הבחירה ב׳-ד׳"
+    ]
+  },
+  {
+    "date": "2024-09-04",
+    "daf_en": "Bava Batra 71",
+    "daf_he": "בבא בתרא ע״א",
+    "r1_en": "Daily Offerings and Additional Offerings 8",
+    "r1_he": "הלכות תמידים ומוספין ח׳",
+    "r3_en": [
+      "Sacrificial Procedure 10-12"
+    ],
+    "r3_he": [
+      "הלכות מעשה הקרבנות י׳-י״ב"
+    ]
+  },
+  {
+    "date": "2024-09-18",
+    "daf_en": "Bava Batra 85",
+    "daf_he": "בבא בתרא פ״ה",
+    "r1_en": "Sacrifices Rendered Unfit 12",
+    "r1_he": "הלכות פסולי המוקדשין י״ב",
+    "r3_en": [
+      "Service on the Day of Atonement 4-5",
+      "Trespass 1"
+    ],
+    "r3_he": [
+      "הלכות עבודת יום הכפורים ד׳-ה׳",
+      "הלכות מעילה א׳"
+    ]
+  },
+  {
+    "date": "2024-10-02",
+    "daf_en": "Bava Batra 99",
+    "daf_he": "בבא בתרא צ״ט",
+    "r1_en": "Trespass 2",
+    "r1_he": "הלכות מעילה ב׳",
+    "r3_en": [
+      "Offerings for Unintentional Transgressions 12-14"
+    ],
+    "r3_he": [
+      "הלכות שגגות י״ב-י״ד"
+    ]
+  },
+  {
+    "date": "2024-10-16",
+    "daf_en": "Bava Batra 113",
+    "daf_he": "בבא בתרא קי״ג",
+    "r1_en": "Paschal Offering 8",
+    "r1_he": "הלכות קרבן פסח ח׳",
+    "r3_en": [
+      "Red Heifer 5-7"
+    ],
+    "r3_he": [
+      "הלכות פרה אדומה ה׳-ז׳"
+    ]
+  },
+  {
+    "date": "2024-10-30",
+    "daf_en": "Bava Batra 127",
+    "daf_he": "בבא בתרא קכ״ז",
+    "r1_en": "Offerings for Unintentional Transgressions 1",
+    "r1_he": "הלכות שגגות א׳",
+    "r3_en": [
+      "Other Sources of Defilement 3-5"
+    ],
+    "r3_he": [
+      "הלכות שאר אבות הטומאות ג׳-ה׳"
+    ]
+  },
+  {
+    "date": "2024-11-13",
+    "daf_en": "Bava Batra 141",
+    "daf_he": "בבא בתרא קמ״א",
+    "r1_en": "Offerings for Unintentional Transgressions 15",
+    "r1_he": "הלכות שגגות ט״ו",
+    "r3_en": [
+      "Vessels 9-11"
+    ],
+    "r3_he": [
+      "הלכות כלים ט׳-י״א"
+    ]
+  },
+  {
+    "date": "2024-11-27",
+    "daf_en": "Bava Batra 155",
+    "daf_he": "בבא בתרא קנ״ה",
+    "r1_en": "Defilement by a Corpse 5",
+    "r1_he": "הלכות טומאת מת ה׳",
+    "r3_en": [
+      "Damages to Property 12-14"
+    ],
+    "r3_he": [
+      "הלכות נזקי ממון י״ב-י״ד"
+    ]
+  },
+  {
+    "date": "2024-12-11",
+    "daf_en": "Bava Batra 169",
+    "daf_he": "בבא בתרא קס״ט",
+    "r1_en": "Defilement by a Corpse 19",
+    "r1_he": "הלכות טומאת מת י״ט",
+    "r3_en": [
+      "Murderer and the Preservation of Life 5-7"
+    ],
+    "r3_he": [
+      "הלכות רוצח ושמירת נפש ה׳-ז׳"
+    ]
+  },
+  {
+    "date": "2024-12-25",
+    "daf_en": "Sanhedrin 8",
+    "daf_he": "סנהדרין ח׳",
+    "r1_en": "Red Heifer 8",
+    "r1_he": "הלכות פרה אדומה ח׳",
+    "r3_en": [
+      "Ownerless Property and Gifts 4-6"
+    ],
+    "r3_he": [
+      "הלכות זכייה ומתנה ד׳-ו׳"
+    ]
+  },
+  {
+    "date": "2025-01-08",
+    "daf_en": "Sanhedrin 22",
+    "daf_he": "סנהדרין כ״ב",
+    "r1_en": "Defilement by Leprosy 7",
+    "r1_he": "הלכות טומאת צרעת ז׳",
+    "r3_en": [
+      "Hiring 1-3"
+    ],
+    "r3_he": [
+      "הלכות שכירות א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2025-01-22",
+    "daf_en": "Sanhedrin 36",
+    "daf_he": "סנהדרין ל״ו",
+    "r1_en": "Those Who Defile Bed or Seat 5",
+    "r1_he": "הלכות מטמאי משכב ומושב ה׳",
+    "r3_en": [
+      "Creditor and Debtor 22-24"
+    ],
+    "r3_he": [
+      "הלכות מלווה ולווה כ״ב-כ״ד"
+    ]
+  },
+  {
+    "date": "2025-02-05",
+    "daf_en": "Sanhedrin 50",
+    "daf_he": "סנהדרין נ׳",
+    "r1_en": "Other Sources of Defilement 6",
+    "r1_he": "הלכות שאר אבות הטומאות ו׳",
+    "r3_en": [
+      "The Sanhedrin and the Penalties within Their Jurisdiction 10-12"
+    ],
+    "r3_he": [
+      "הלכות סנהדרין והעונשין המסורין להם י׳-י״ב"
+    ]
+  },
+  {
+    "date": "2025-02-19",
+    "daf_en": "Sanhedrin 64",
+    "daf_he": "סנהדרין ס״ד",
+    "r1_en": "Other Sources of Defilement 20",
+    "r1_he": "הלכות שאר אבות הטומאות כ׳",
+    "r3_en": [
+      "Rebels 4-6"
+    ],
+    "r3_he": [
+      "הלכות ממרים ד׳-ו׳"
+    ]
+  },
+  {
+    "date": "2025-03-05",
+    "daf_en": "Sanhedrin 78",
+    "daf_he": "סנהדרין ע״ח",
+    "r1_en": "Defilement of Foods 14",
+    "r1_he": "הלכות טומאת אוכלים י״ד",
+    "r3_en": [
+      "Foundations of the Torah 1-3"
+    ],
+    "r3_he": [
+      "הלכות יסודי התורה א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2025-03-19",
+    "daf_en": "Sanhedrin 92",
+    "daf_he": "סנהדרין צ״ב",
+    "r1_en": "Vessels 12",
+    "r1_he": "הלכות כלים י״ב",
+    "r3_en": [
+      "Repentance 7-9"
+    ],
+    "r3_he": [
+      "הלכות תשובה ז׳-ט׳"
+    ]
+  },
+  {
+    "date": "2025-04-02",
+    "daf_en": "Sanhedrin 106",
+    "daf_he": "סנהדרין ק״ו",
+    "r1_en": "Vessels 26",
+    "r1_he": "הלכות כלים כ״ו",
+    "r3_en": [
+      "Blessings 7-9"
+    ],
+    "r3_he": [
+      "הלכות ברכות ז׳-ט׳"
+    ]
+  },
+  {
+    "date": "2025-04-16",
+    "daf_en": "Makkot 8",
+    "daf_he": "מכות ח׳",
+    "r1_en": "Damages to Property 1",
+    "r1_he": "הלכות נזקי ממון א׳",
+    "r3_en": [
+      "Sabbath 30",
+      "Eruvin 1-2"
+    ],
+    "r3_he": [
+      "הלכות שבת ל׳",
+      "הלכות עירובין א׳-ב׳"
+    ]
+  },
+  {
+    "date": "2025-04-30",
+    "daf_en": "Makkot 22",
+    "daf_he": "מכות כ״ב",
+    "r1_en": "Theft 1",
+    "r1_he": "הלכות גניבה א׳",
+    "r3_en": [
+      "Sanctification of the New Month 3-5"
+    ],
+    "r3_he": [
+      "הלכות קידוש החודש ג׳-ה׳"
+    ]
+  },
+  {
+    "date": "2025-05-14",
+    "daf_en": "Shevuot 13",
+    "daf_he": "שבועות י״ג",
+    "r1_en": "Robbery and Lost Property 6",
+    "r1_he": "הלכות גזילה ואבידה ו׳",
+    "r3_en": [
+      "Marriage 17-19"
+    ],
+    "r3_he": [
+      "הלכות אישות י״ז-י״ט"
+    ]
+  },
+  {
+    "date": "2025-05-28",
+    "daf_en": "Shevuot 27",
+    "daf_he": "שבועות כ״ז",
+    "r1_en": "One Who Injures a Person or Property 2",
+    "r1_he": "הלכות חובל ומזיק ב׳",
+    "r3_en": [
+      "Forbidden Intercourse 6-8"
+    ],
+    "r3_he": [
+      "הלכות איסורי ביאה ו׳-ח׳"
+    ]
+  },
+  {
+    "date": "2025-06-11",
+    "daf_en": "Shevuot 41",
+    "daf_he": "שבועות מ״א",
+    "r1_en": "Murderer and the Preservation of Life 8",
+    "r1_he": "הלכות רוצח ושמירת נפש ח׳",
+    "r3_en": [
+      "Ritual Slaughter 9-11"
+    ],
+    "r3_he": [
+      "הלכות שחיטה ט׳-י״א"
+    ]
+  },
+  {
+    "date": "2025-06-25",
+    "daf_en": "Avodah Zarah 7",
+    "daf_he": "עבודה זרה ז׳",
+    "r1_en": "Sales 9",
+    "r1_he": "הלכות מכירה ט׳",
+    "r3_en": [
+      "Appraisals and Devoted Property 2-4"
+    ],
+    "r3_he": [
+      "הלכות ערכים וחרמין ב׳-ד׳"
+    ]
+  },
+  {
+    "date": "2025-07-09",
+    "daf_en": "Avodah Zarah 21",
+    "daf_he": "עבודה זרה כ״א",
+    "r1_en": "Sales 23",
+    "r1_he": "הלכות מכירה כ״ג",
+    "r3_en": [
+      "Tithes 1-3"
+    ],
+    "r3_he": [
+      "הלכות מעשרות א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2025-07-23",
+    "daf_en": "Avodah Zarah 35",
+    "daf_he": "עבודה זרה ל״ה",
+    "r1_en": "Ownerless Property and Gifts 7",
+    "r1_he": "הלכות זכייה ומתנה ז׳",
+    "r3_en": [
+      "Sabbatical Year and the Jubilee 6-8"
+    ],
+    "r3_he": [
+      "הלכות שמיטה ויובל ו׳-ח׳"
+    ]
+  },
+  {
+    "date": "2025-08-06",
+    "daf_en": "Avodah Zarah 49",
+    "daf_he": "עבודה זרה מ״ט",
+    "r1_en": "Neighbors 9",
+    "r1_he": "הלכות שכנים ט׳",
+    "r3_en": [
+      "Sacrificial Procedure 1-3"
+    ],
+    "r3_he": [
+      "הלכות מעשה הקרבנות א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2025-08-20",
+    "daf_en": "Avodah Zarah 63",
+    "daf_he": "עבודה זרה ס״ג",
+    "r1_en": "Agents and Partners 9",
+    "r1_he": "הלכות שלוחין ושותפין ט׳",
+    "r3_en": [
+      "Sacrifices Rendered Unfit 14-16"
+    ],
+    "r3_he": [
+      "הלכות פסולי המוקדשין י״ד-ט״ז"
+    ]
+  },
+  {
+    "date": "2025-09-03",
+    "daf_en": "Horayot 2",
+    "daf_he": "הוריות ב׳",
+    "r1_en": "Hiring 4",
+    "r1_he": "הלכות שכירות ד׳",
+    "r3_en": [
+      "Offerings for Unintentional Transgressions 3-5"
+    ],
+    "r3_he": [
+      "הלכות שגגות ג׳-ה׳"
+    ]
+  },
+  {
+    "date": "2025-09-17",
+    "daf_en": "Zevachim 3",
+    "daf_he": "זבחים ג׳",
+    "r1_en": "Borrowing and Deposit 5",
+    "r1_he": "הלכות שאלה ופיקדון ה׳",
+    "r3_en": [
+      "Defilement by a Corpse 21-23"
+    ],
+    "r3_he": [
+      "הלכות טומאת מת כ״א-כ״ג"
+    ]
+  },
+  {
+    "date": "2025-10-01",
+    "daf_en": "Zevachim 17",
+    "daf_he": "זבחים י״ז",
+    "r1_en": "Creditor and Debtor 11",
+    "r1_he": "הלכות מלווה ולווה י״א",
+    "r3_en": [
+      "Those Who Defile Bed or Seat 7-9"
+    ],
+    "r3_he": [
+      "הלכות מטמאי משכב ומושב ז׳-ט׳"
+    ]
+  },
+  {
+    "date": "2025-10-15",
+    "daf_en": "Zevachim 31",
+    "daf_he": "זבחים ל״א",
+    "r1_en": "Creditor and Debtor 25",
+    "r1_he": "הלכות מלווה ולווה כ״ה",
+    "r3_en": [
+      "Defilement of Foods 16",
+      "Vessels 1-2"
+    ],
+    "r3_he": [
+      "הלכות טומאת אוכלים ט״ז",
+      "הלכות כלים א׳-ב׳"
+    ]
+  },
+  {
+    "date": "2025-10-29",
+    "daf_en": "Zevachim 45",
+    "daf_he": "זבחים מ״ה",
+    "r1_en": "Plaintiff and Defendant 12",
+    "r1_he": "הלכות טוען ונטען י״ב",
+    "r3_en": [
+      "Damages to Property 3-5"
+    ],
+    "r3_he": [
+      "הלכות נזקי ממון ג׳-ה׳"
+    ]
+  },
+  {
+    "date": "2025-11-12",
+    "daf_en": "Zevachim 59",
+    "daf_he": "זבחים נ״ט",
+    "r1_en": "Inheritances 10",
+    "r1_he": "הלכות נחלות י׳",
+    "r3_en": [
+      "One Who Injures a Person or Property 4-6"
+    ],
+    "r3_he": [
+      "הלכות חובל ומזיק ד׳-ו׳"
+    ]
+  },
+  {
+    "date": "2025-11-26",
+    "daf_en": "Zevachim 73",
+    "daf_he": "זבחים ע״ג",
+    "r1_en": "The Sanhedrin and the Penalties within Their Jurisdiction 13",
+    "r1_he": "הלכות סנהדרין והעונשין המסורין להם י״ג",
+    "r3_en": [
+      "Sales 25-27"
+    ],
+    "r3_he": [
+      "הלכות מכירה כ״ה-כ״ז"
+    ]
+  },
+  {
+    "date": "2025-12-10",
+    "daf_en": "Zevachim 87",
+    "daf_he": "זבחים פ״ז",
+    "r1_en": "Testimony 1",
+    "r1_he": "הלכות עדות א׳",
+    "r3_en": [
+      "Slaves 1-3"
+    ],
+    "r3_he": [
+      "הלכות עבדים א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2025-12-24",
+    "daf_en": "Zevachim 101",
+    "daf_he": "זבחים ק״א",
+    "r1_en": "Testimony 15",
+    "r1_he": "הלכות עדות ט״ו",
+    "r3_en": [
+      "Creditor and Debtor 13-15"
+    ],
+    "r3_he": [
+      "הלכות מלווה ולווה י״ג-ט״ו"
+    ]
+  },
+  {
+    "date": "2026-01-07",
+    "daf_en": "Zevachim 115",
+    "daf_he": "זבחים קט״ו",
+    "r1_en": "Rebels 7",
+    "r1_he": "הלכות ממרים ז׳",
+    "r3_en": [
+      "The Sanhedrin and the Penalties within Their Jurisdiction 1-3"
+    ],
+    "r3_he": [
+      "הלכות סנהדרין והעונשין המסורין להם א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2026-01-21",
+    "daf_en": "Menachot 10",
+    "daf_he": "מנחות י׳",
+    "r1_en": "Mourning 14",
+    "r1_he": "הלכות אבל י״ד",
+    "r3_en": [
+      "Testimony 17-19"
+    ],
+    "r3_he": [
+      "הלכות עדות י״ז-י״ט"
+    ]
+  },
+  {
+    "date": "2026-02-04",
+    "daf_en": "Menachot 24",
+    "daf_he": "מנחות כ״ד",
+    "r1_en": "Transmission of the Oral Law 22-33",
+    "r1_he": "מסירת תורה שבעל פה כ״ב-ל״ג",
+    "r3_en": [
+      "Positive Mitzvot 1-248"
+    ],
+    "r3_he": [
+      "מצוות עשה א׳-רמ״ח"
+    ]
+  },
+  {
+    "date": "2026-02-18",
+    "daf_en": "Menachot 38",
+    "daf_he": "מנחות ל״ח",
+    "r1_en": "Foundations of the Torah 4",
+    "r1_he": "הלכות יסודי התורה ד׳",
+    "r3_en": [
+      "Foreign Worship and Customs of the Nations 10-12"
+    ],
+    "r3_he": [
+      "הלכות עבודה זרה וחוקות הגויים י׳-י״ב"
+    ]
+  },
+  {
+    "date": "2026-03-04",
+    "daf_en": "Menachot 52",
+    "daf_he": "מנחות נ״ב",
+    "r1_en": "Torah Study 1",
+    "r1_he": "הלכות תלמוד תורה א׳",
+    "r3_en": [
+      "Fringes 1-3"
+    ],
+    "r3_he": [
+      "הלכות ציצית א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2026-03-18",
+    "daf_en": "Menachot 66",
+    "daf_he": "מנחות ס״ו",
+    "r1_en": "Foreign Worship and Customs of the Nations 8",
+    "r1_he": "הלכות עבודה זרה וחוקות הגויים ח׳",
+    "r3_en": [
+      "Sabbath 21-23"
+    ],
+    "r3_he": [
+      "הלכות שבת כ״א-כ״ג"
+    ]
+  },
+  {
+    "date": "2026-04-01",
+    "daf_en": "Menachot 80",
+    "daf_he": "מנחות פ׳",
+    "r1_en": "Repentance 10",
+    "r1_he": "הלכות תשובה י׳",
+    "r3_en": [
+      "Shofar, Sukkah and Lulav 6-8"
+    ],
+    "r3_he": [
+      "הלכות שופר וסוכה ולולב ו׳-ח׳"
+    ]
+  },
+  {
+    "date": "2026-04-15",
+    "daf_en": "Menachot 94",
+    "daf_he": "מנחות צ״ד",
+    "r1_en": "Prayer and the Priestly Blessing 10",
+    "r1_he": "הלכות תפילה וברכת כהנים י׳",
+    "r3_en": [
+      "Marriage 8-10"
+    ],
+    "r3_he": [
+      "הלכות אישות ח׳-י׳"
+    ]
+  },
+  {
+    "date": "2026-04-29",
+    "daf_en": "Menachot 108",
+    "daf_he": "מנחות ק״ח",
+    "r1_en": "Tefillin, Mezuzah and the Torah Scroll 9",
+    "r1_he": "הלכות תפילין ומזוזה וספר תורה ט׳",
+    "r3_en": [
+      "Woman Suspected of Infidelity 1-3"
+    ],
+    "r3_he": [
+      "הלכות סוטה א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2026-05-13",
+    "daf_en": "Chullin 13",
+    "daf_he": "חולין י״ג",
+    "r1_en": "Blessings 10",
+    "r1_he": "הלכות ברכות י׳",
+    "r3_en": [
+      "Forbidden Foods 17",
+      "Ritual Slaughter 1-2"
+    ],
+    "r3_he": [
+      "הלכות מאכלות אסורות י״ז",
+      "הלכות שחיטה א׳-ב׳"
+    ]
+  },
+  {
+    "date": "2026-05-27",
+    "daf_en": "Chullin 27",
+    "daf_he": "חולין כ״ז",
+    "r1_en": "Sabbath 6",
+    "r1_he": "הלכות שבת ו׳",
+    "r3_en": [
+      "Nazariteship 3-5"
+    ],
+    "r3_he": [
+      "הלכות נזירות ג׳-ה׳"
+    ]
+  },
+  {
+    "date": "2026-06-10",
+    "daf_en": "Chullin 41",
+    "daf_he": "חולין מ״א",
+    "r1_en": "Sabbath 20",
+    "r1_he": "הלכות שבת כ׳",
+    "r3_en": [
+      "Heave Offerings 7-9"
+    ],
+    "r3_he": [
+      "הלכות תרומות ז׳-ט׳"
+    ]
+  },
+  {
+    "date": "2026-06-24",
+    "daf_en": "Chullin 55",
+    "daf_he": "חולין נ״ה",
+    "r1_en": "Eruvin 4",
+    "r1_he": "הלכות עירובין ד׳",
+    "r3_en": [
+      "First Fruits and other Gifts to Priests Outside the Sanctuary 9-11"
+    ],
+    "r3_he": [
+      "הלכות ביכורים ושאר מתנות כהונה שבגבולין ט׳-י״א"
+    ]
+  },
+  {
+    "date": "2026-07-08",
+    "daf_en": "Chullin 69",
+    "daf_he": "חולין ס״ט",
+    "r1_en": "Rest on a Holiday 7",
+    "r1_he": "הלכות שביתת יום טוב ז׳",
+    "r3_en": [
+      "Admission into the Sanctuary 8-9",
+      "Things Forbidden on the Altar 1"
+    ],
+    "r3_he": [
+      "הלכות ביאת מקדש ח׳-ט׳",
+      "הלכות איסורי המזבח א׳"
+    ]
+  },
+  {
+    "date": "2026-07-22",
+    "daf_en": "Chullin 83",
+    "daf_he": "חולין פ״ג",
+    "r1_en": "Shofar, Sukkah and Lulav 4",
+    "r1_he": "הלכות שופר וסוכה ולולב ד׳",
+    "r3_en": [
+      "Sacrifices Rendered Unfit 5-7"
+    ],
+    "r3_he": [
+      "הלכות פסולי המוקדשין ה׳-ז׳"
+    ]
+  },
+  {
+    "date": "2026-08-05",
+    "daf_en": "Chullin 97",
+    "daf_he": "חולין צ״ז",
+    "r1_en": "Sanctification of the New Month 6",
+    "r1_he": "הלכות קידוש החודש ו׳",
+    "r3_en": [
+      "Firstlings 2-4"
+    ],
+    "r3_he": [
+      "הלכות בכורות ב׳-ד׳"
+    ]
+  },
+  {
+    "date": "2026-08-19",
+    "daf_en": "Chullin 111",
+    "daf_he": "חולין קי״א",
+    "r1_en": "Fasts 1",
+    "r1_he": "הלכות תעניות א׳",
+    "r3_en": [
+      "Defilement by a Corpse 12-14"
+    ],
+    "r3_he": [
+      "הלכות טומאת מת י״ב-י״ד"
+    ]
+  },
+  {
+    "date": "2026-09-02",
+    "daf_en": "Chullin 125",
+    "daf_he": "חולין קכ״ה",
+    "r1_en": "Marriage 6",
+    "r1_he": "הלכות אישות ו׳",
+    "r3_en": [
+      "Defilement by Leprosy 14-16"
+    ],
+    "r3_he": [
+      "הלכות טומאת צרעת י״ד-ט״ז"
+    ]
+  },
+  {
+    "date": "2026-09-16",
+    "daf_en": "Chullin 139",
+    "daf_he": "חולין קל״ט",
+    "r1_en": "Marriage 20",
+    "r1_he": "הלכות אישות כ׳",
+    "r3_en": [
+      "Defilement of Foods 7-9"
+    ],
+    "r3_he": [
+      "הלכות טומאת אוכלים ז׳-ט׳"
+    ]
+  },
+  {
+    "date": "2026-09-30",
+    "daf_en": "Bekhorot 12",
+    "daf_he": "בכורות י״ב",
+    "r1_en": "Divorce 9",
+    "r1_he": "הלכות גירושין ט׳",
+    "r3_en": [
+      "Immersion Pools 5-7"
+    ],
+    "r3_he": [
+      "הלכות מקואות ה׳-ז׳"
+    ]
+  },
+  {
+    "date": "2026-10-14",
+    "daf_en": "Bekhorot 26",
+    "daf_he": "בכורות כ״ו",
+    "r1_en": "Virgin Maiden 2",
+    "r1_he": "הלכות נערה בתולה ב׳",
+    "r3_en": [
+      "Robbery and Lost Property 13-15"
+    ],
+    "r3_he": [
+      "הלכות גזילה ואבידה י״ג-ט״ו"
+    ]
+  },
+  {
+    "date": "2026-10-28",
+    "daf_en": "Bekhorot 40",
+    "daf_he": "בכורות מ׳",
+    "r1_en": "Forbidden Intercourse 9",
+    "r1_he": "הלכות איסורי ביאה ט׳",
+    "r3_en": [
+      "Sales 16-18"
+    ],
+    "r3_he": [
+      "הלכות מכירה ט״ז-י״ח"
+    ]
+  },
+  {
+    "date": "2026-11-11",
+    "daf_en": "Bekhorot 54",
+    "daf_he": "בכורות נ״ד",
+    "r1_en": "Forbidden Foods 1",
+    "r1_he": "הלכות מאכלות אסורות א׳",
+    "r3_en": [
+      "Agents and Partners 2-4"
+    ],
+    "r3_he": [
+      "הלכות שלוחין ושותפין ב׳-ד׳"
+    ]
+  },
+  {
+    "date": "2026-11-25",
+    "daf_en": "Arakhin 8",
+    "daf_he": "ערכין ח׳",
+    "r1_en": "Forbidden Foods 15",
+    "r1_he": "הלכות מאכלות אסורות ט״ו",
+    "r3_en": [
+      "Creditor and Debtor 4-6"
+    ],
+    "r3_he": [
+      "הלכות מלווה ולווה ד׳-ו׳"
+    ]
+  },
+  {
+    "date": "2026-12-09",
+    "daf_en": "Arakhin 22",
+    "daf_he": "ערכין כ״ב",
+    "r1_en": "Ritual Slaughter 12",
+    "r1_he": "הלכות שחיטה י״ב",
+    "r3_en": [
+      "Inheritances 3-5"
+    ],
+    "r3_he": [
+      "הלכות נחלות ג׳-ה׳"
+    ]
+  },
+  {
+    "date": "2026-12-23",
+    "daf_en": "Temurah 3",
+    "daf_he": "תמורה ג׳",
+    "r1_en": "Oaths 12",
+    "r1_he": "הלכות שבועות י״ב",
+    "r3_en": [
+      "Testimony 8-10"
+    ],
+    "r3_he": [
+      "הלכות עדות ח׳-י׳"
+    ]
+  },
+  {
+    "date": "2027-01-06",
+    "daf_en": "Temurah 17",
+    "daf_he": "תמורה י״ז",
+    "r1_en": "Nazariteship 1",
+    "r1_he": "הלכות נזירות א׳",
+    "r3_en": [
+      "Kings and Wars 7-9"
+    ],
+    "r3_he": [
+      "הלכות מלכים ומלחמות ז׳-ט׳"
+    ]
+  },
+  {
+    "date": "2027-01-20",
+    "daf_en": "Temurah 31",
+    "daf_he": "תמורה ל״א",
+    "r1_en": "Appraisals and Devoted Property 5",
+    "r1_he": "הלכות ערכים וחרמין ה׳",
+    "r3_en": [
+      "Foreign Worship and Customs of the Nations 1-3"
+    ],
+    "r3_he": [
+      "הלכות עבודה זרה וחוקות הגויים א׳-ג׳"
+    ]
+  },
+  {
+    "date": "2027-02-03",
+    "daf_en": "Keritot 12",
+    "daf_he": "כריתות י״ב",
+    "r1_en": "Gifts to the Poor 1",
+    "r1_he": "הלכות מתנות עניים א׳",
+    "r3_en": [
+      "Tefillin, Mezuzah and the Torah Scroll 2-4"
+    ],
+    "r3_he": [
+      "הלכות תפילין ומזוזה וספר תורה ב׳-ד׳"
+    ]
+  },
+  {
+    "date": "2027-02-17",
+    "daf_en": "Keritot 26",
+    "daf_he": "כריתות כ״ו",
+    "r1_en": "Heave Offerings 5",
+    "r1_he": "הלכות תרומות ה׳",
+    "r3_en": [
+      "Sabbath 12-14"
+    ],
+    "r3_he": [
+      "הלכות שבת י״ב-י״ד"
+    ]
+  },
+  {
+    "date": "2027-03-03",
+    "daf_en": "Meilah 13",
+    "daf_he": "מעילה י״ג",
+    "r1_en": "Tithes 4",
+    "r1_he": "הלכות מעשרות ד׳",
+    "r3_en": [
+      "Leavened and Unleavened Bread 5-7"
+    ],
+    "r3_he": [
+      "הלכות חמץ ומצה ה׳-ז׳"
+    ]
+  },
+  {
+    "date": "2027-03-17",
+    "daf_en": "Tamid 27",
+    "daf_he": "תמיד כ״ז",
+    "r1_en": "Second Tithes and Fourth Year's Fruit 4",
+    "r1_he": "הלכות מעשר שני ונטע רבעי ד׳",
+    "r3_en": [
+      "Scroll of Esther and Hanukkah 3-4",
+      "Marriage 1"
+    ],
+    "r3_he": [
+      "הלכות מגילה וחנוכה ג׳-ד׳",
+      "הלכות אישות א׳"
+    ]
+  },
+  {
+    "date": "2027-03-31",
+    "daf_en": "Niddah 5",
+    "daf_he": "נדה ה׳",
+    "r1_en": "First Fruits and other Gifts to Priests Outside the Sanctuary 7",
+    "r1_he": "הלכות ביכורים ושאר מתנות כהונה שבגבולין ז׳",
+    "r3_en": [
+      "Levirate Marriage and Release 3-5"
+    ],
+    "r3_he": [
+      "הלכות יבום וחליצה ג׳-ה׳"
+    ]
+  },
+  {
+    "date": "2027-04-14",
+    "daf_en": "Niddah 19",
+    "daf_he": "נדה י״ט",
+    "r1_en": "Sabbatical Year and the Jubilee 9",
+    "r1_he": "הלכות שמיטה ויובל ט׳",
+    "r3_en": [
+      "Forbidden Foods 8-10"
+    ],
+    "r3_he": [
+      "הלכות מאכלות אסורות ח׳-י׳"
+    ]
+  },
+  {
+    "date": "2027-04-28",
+    "daf_en": "Niddah 33",
+    "daf_he": "נדה ל״ג",
+    "r1_en": "Vessels of the Sanctuary and Those Who Serve Therein 2",
+    "r1_he": "הלכות כלי המקדש והעובדין בו ב׳",
+    "r3_en": [
+      "Vows 7-9"
+    ],
+    "r3_he": [
+      "הלכות נדרים ז׳-ט׳"
+    ]
+  },
+  {
+    "date": "2027-05-12",
+    "daf_en": "Niddah 47",
+    "daf_he": "נדה מ״ז",
+    "r1_en": "Admission into the Sanctuary 6",
+    "r1_he": "הלכות ביאת מקדש ו׳",
+    "r3_en": [
+      "Gifts to the Poor 8-10"
+    ],
+    "r3_he": [
+      "הלכות מתנות עניים ח׳-י׳"
+    ]
+  },
+  {
+    "date": "2027-05-26",
+    "daf_en": "Niddah 61",
+    "daf_he": "נדה ס״א",
+    "r1_en": "Sacrificial Procedure 4",
+    "r1_he": "הלכות מעשה הקרבנות ד׳",
+    "r3_en": [
+      "Second Tithes and Fourth Year's Fruit 11",
+      "First Fruits and other Gifts to Priests Outside the Sanctuary 1-2"
+    ],
+    "r3_he": [
+      "הלכות מעשר שני ונטע רבעי י״א",
+      "הלכות ביכורים ושאר מתנות כהונה שבגבולין א׳-ב׳"
+    ]
+  },
+  {
+    "date": "2027-06-09",
+    "r1_en": "Sacrificial Procedure 18",
+    "r1_he": "הלכות מעשה הקרבנות י״ח",
+    "r3_en": [
+      "Vessels of the Sanctuary and Those Who Serve Therein 9-10",
+      "Admission into the Sanctuary 1"
+    ],
+    "r3_he": [
+      "הלכות כלי המקדש והעובדין בו ט׳-י׳",
+      "הלכות ביאת מקדש א׳"
+    ]
+  },
+  {
+    "date": "2027-06-23",
+    "r1_en": "Sacrifices Rendered Unfit 3",
+    "r1_he": "הלכות פסולי המוקדשין ג׳",
+    "r3_en": [
+      "Daily Offerings and Additional Offerings 6-8"
+    ],
+    "r3_he": [
+      "הלכות תמידים ומוספין ו׳-ח׳"
+    ]
+  }
+]
