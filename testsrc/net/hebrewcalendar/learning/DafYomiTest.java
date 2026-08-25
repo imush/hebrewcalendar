@@ -77,18 +77,6 @@ public class DafYomiTest {
         assertEquals("חולין קט״ו",  r.labelHe());
     }
 
-    @Test public void sefariaUrl_singleWordTractate() {
-        DafYomi.Result r = DafYomi.forDate(LocalDate.of(2026, 8, 23));
-        assertEquals("https://www.sefaria.org/Chullin.115a", r.sefariaUrl());
-    }
-
-    @Test public void sefariaUrl_multiWordTractate() {
-        // 2023-11-12 → Bava Kamma 10 (cycle 14). Ensures space→underscore substitution.
-        DafYomi.Result r = DafYomi.forDate(LocalDate.of(2023, 11, 12));
-        assertEquals("Bava Kamma", r.tractate());
-        assertEquals("https://www.sefaria.org/Bava_Kamma.10a", r.sefariaUrl());
-    }
-
     @Test public void hebrewLabel_matchesSefaria() throws Exception {
         // Bulk cross-check Hebrew labels against sefaria.org display values
         // captured in learning_refs_he.json.

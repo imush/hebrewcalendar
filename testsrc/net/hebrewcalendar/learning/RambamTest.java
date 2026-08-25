@@ -69,40 +69,6 @@ public class RambamTest {
         assertEquals(List.of("Sabbath 5-7"), Rambam.collapse(in));
     }
 
-    // ── Links ─────────────────────────────────────────────────────────────
-
-    @Test public void sefariaUrl_simpleChapter() {
-        Rambam.Reading r = new Rambam.Reading("Sabbath", "הלכות שבת", "5");
-        assertEquals("https://www.sefaria.org/Mishneh_Torah,_Sabbath.5", r.sefariaUrl());
-    }
-
-    @Test public void sefariaUrl_multiWordHalacha() {
-        Rambam.Reading r = new Rambam.Reading("Kings and Wars", "הלכות מלכים", "1");
-        assertEquals("https://www.sefaria.org/Mishneh_Torah,_Kings_and_Wars.1",
-                r.sefariaUrl());
-    }
-
-    @Test public void sefariaUrl_combinedChapters() {
-        Rambam.Reading r = new Rambam.Reading("The Order of Prayer", "סדר תפלה", "4-5");
-        assertEquals("https://www.sefaria.org/Mishneh_Torah,_The_Order_of_Prayer.4-5",
-                r.sefariaUrl());
-    }
-
-    @Test public void chabadUrl_oneChapter() {
-        assertEquals("https://www.chabad.org/dailystudy/rambam.asp?tdate=8/23/2026&rambamChapters=1",
-                Rambam.chabadUrl(LocalDate.of(2026, 8, 23), 1));
-    }
-
-    @Test public void chabadUrl_threeChapters() {
-        assertEquals("https://www.chabad.org/dailystudy/rambam.asp?tdate=8/23/2026&rambamChapters=3",
-                Rambam.chabadUrl(LocalDate.of(2026, 8, 23), 3));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void chabadUrl_invalidChapters() {
-        Rambam.chabadUrl(LocalDate.of(2026, 8, 23), 2);
-    }
-
     @Test public void collapseSplitsAtHalachaBoundary() {
         List<Rambam.Reading> in = List.of(
                 new Rambam.Reading("A", "א", "3"),

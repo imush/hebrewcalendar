@@ -75,34 +75,6 @@ public class TehillimTest {
         assertEquals("140-150", r.portion());
     }
 
-    // ── Links ─────────────────────────────────────────────────────────────
-
-    @Test public void sefariaUrl_chapterRange() {
-        assertEquals("https://www.sefaria.org/Psalms.1-9",
-                Tehillim.forDayOfMonth(1, 30).sefariaUrl());
-    }
-
-    @Test public void sefariaUrl_verseSplitOf119() {
-        assertEquals("https://www.sefaria.org/Psalms.119.1-96",
-                Tehillim.forDayOfMonth(25, 30).sefariaUrl());
-        assertEquals("https://www.sefaria.org/Psalms.119.97-176",
-                Tehillim.forDayOfMonth(26, 30).sefariaUrl());
-    }
-
-    @Test public void sefariaUrl_combinedOn29DayMonth() {
-        assertEquals("https://www.sefaria.org/Psalms.140-150",
-                Tehillim.forDayOfMonth(29, 29).sefariaUrl());
-    }
-
-    @Test public void chabadUrl_availableWhenBuiltFromDate() {
-        assertEquals("https://www.chabad.org/dailystudy/tehillim.asp?tdate=8/23/2026",
-                Tehillim.forDate(LocalDate.of(2026, 8, 23)).chabadUrl());
-    }
-
-    @Test public void chabadUrl_nullWhenBuiltFromDayOnly() {
-        assertNull(Tehillim.forDayOfMonth(1, 30).chabadUrl());
-    }
-
     @Test public void forDate_dayThirty_onLongMonth() {
         // 30 Tishrei 5787 = 2026-10-11 (Tishrei is always 30 days).
         Tehillim.Result r = Tehillim.forDate(LocalDate.of(2026, 10, 11));

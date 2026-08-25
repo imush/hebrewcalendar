@@ -45,11 +45,6 @@ public class TanyaTest {
         assertEquals("י׳ אדר-ב",   r.labelHe());
     }
 
-    @Test public void chabadUrl_availableWhenBuiltFromDate() {
-        assertEquals("https://www.chabad.org/dailystudy/tanya.asp?tdate=8/23/2026",
-                Tanya.forDate(LocalDate.of(2026, 8, 23)).chabadUrl());
-    }
-
     @Test public void gershaim_multiLetterDays() {
         // 21 Elul 5786 = 2026-09-03 → "כ״א" not "כא"
         Tanya.Result r = Tanya.forDate(LocalDate.of(2026, 9, 3));

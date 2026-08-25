@@ -132,11 +132,10 @@ public final class Tanya {
         private final String dateLabelHe;  // "י׳ אלול"
         private final Portion portion;     // may be null (Chag HaGeulah / yom tov)
         private final Portion secondary;   // combined-day 30 portion, or null
-        private final LocalDate date;
 
-        Result(String label, String labelHe, Portion p, Portion secondary, LocalDate date) {
+        Result(String label, String labelHe, Portion p, Portion secondary) {
             this.dateLabel = label; this.dateLabelHe = labelHe;
-            this.portion = p; this.secondary = secondary; this.date = date;
+            this.portion = p; this.secondary = secondary;
         }
 
         /** {@code true} if this date has an assigned daily portion; some
@@ -184,32 +183,15 @@ public final class Tanya {
             if (p.chapter > 0) perek += " " + Gematria.of(p.chapter);
             return perek + " — " + p.start + " ... " + p.end;
         }
-
-        /**
-         * chabad.org's daily Tanya page, which renders the passage assigned
-         * to this Hebrew date in Kehot's printed Tanya.
-         */
-        public String chabadUrl() { return chabadUrl("en"); }
-        /** Locale-aware: {@code lang} = "he" / "ru" / "fr" swaps the
-         *  chabad.org subdomain to the corresponding language site. */
-        public String chabadUrl(String lang) {
-            return date == null ? null : ChabadOrg.dailyStudyUrl("tanya.asp", date, null, lang);
-        }
     }
 
     public static Result forDate(LocalDate date) {
         IDate<JewishCalendar> jd = ICalendar.JEWISH.convert(
             ICalendar.GREGORIAN.fromYMD(date.getYear(), date.getMonthValue(), date.getDayOfMonth()));
-        return build(jd, date);
+        return forHebrewDate(jd);
     }
 
     public static Result forHebrewDate(IDate<JewishCalendar> jd) {
-        IDate<?> g = ICalendar.GREGORIAN.convert(jd);
-        LocalDate date = LocalDate.of(g.getYear(), g.getMonth(), g.getDay());
-        return build(jd, date);
-    }
-
-    private static Result build(IDate<JewishCalendar> jd, LocalDate date) {
         int day   = jd.getDay();
         int month = jd.getMonth();
         int year  = jd.getYear();
@@ -227,6 +209,6 @@ public final class Tanya {
                 && ICalendar.JEWISH.monthLength(year, month) == 29) {
             secondary = SCHEDULE.get(key(leap, month, 30));
         }
-        return new Result(dateLabel, dateLabelHe, p, secondary, date);
+        return new Result(dateLabel, dateLabelHe, p, secondary);
     }
 }

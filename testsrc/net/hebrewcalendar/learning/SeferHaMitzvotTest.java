@@ -128,33 +128,4 @@ public class SeferHaMitzvotTest {
         assertEquals(r.raw(), r.labelHe());
     }
 
-    // ── Links ─────────────────────────────────────────────────────────────
-
-    @Test public void chabadUrl_dateBased() {
-        SeferHaMitzvot.Result r = SeferHaMitzvot.forDate(LocalDate.of(2026, 8, 23));
-        assertEquals("https://www.chabad.org/dailystudy/seferHamitzvos.asp?tdate=8/23/2026",
-                r.chabadUrl());
-    }
-
-    @Test public void sefariaUrl_firstPositiveCommandment() {
-        // Day 5 = "P1, N1, P2" → first is P1.
-        SeferHaMitzvot.Result r = SeferHaMitzvot.forDate(
-                LocalDate.of(1984, 4, 29).plusDays(4));
-        assertEquals("https://www.sefaria.org/Sefer_HaMitzvot,_Positive_Commandments.1",
-                r.sefariaUrl());
-    }
-
-    @Test public void sefariaUrl_firstNegativeCommandment() {
-        // Day 100 = "N193, N153, N194, P146" → first is N193.
-        SeferHaMitzvot.Result r = SeferHaMitzvot.forDate(
-                LocalDate.of(1984, 4, 29).plusDays(99));
-        assertEquals("https://www.sefaria.org/Sefer_HaMitzvot,_Negative_Commandments.193",
-                r.sefariaUrl());
-    }
-
-    @Test public void sefariaUrl_nullForProseOnlyDay() {
-        // Day 1 = "Maimonides' Introduction..." — pure prose.
-        SeferHaMitzvot.Result r = SeferHaMitzvot.forDate(LocalDate.of(1984, 4, 29));
-        assertNull(r.sefariaUrl());
-    }
 }

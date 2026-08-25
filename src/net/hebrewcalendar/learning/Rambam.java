@@ -53,33 +53,6 @@ public final class Rambam {
         public String label()   { return name   + " " + perek; }
         /** Hebrew label, {@code "הלכות שבת ה׳"} style, matching sefaria.org. */
         public String labelHe() { return nameHe + " " + Gematria.verseRange(perek); }
-
-        /**
-         * Deep-link to sefaria.org for this reading, e.g.
-         * {@code https://www.sefaria.org/Mishneh_Torah,_Sabbath.5} or
-         * {@code https://www.sefaria.org/Mishneh_Torah,_The_Order_of_Prayer.4-5}.
-         */
-        public String sefariaUrl() {
-            return "https://www.sefaria.org/Mishneh_Torah,_"
-                    + name.replace(' ', '_') + "." + perek;
-        }
-    }
-
-    /**
-     * chabad.org's daily Rambam page, e.g.
-     * {@code https://www.chabad.org/dailystudy/rambam.asp?tdate=8/23/2026&rambamChapters=1}.
-     * @param date       Gregorian date
-     * @param chapters   {@code 1} for the 1-chapter cycle, {@code 3} for the 3-chapter cycle
-     */
-    public static String chabadUrl(LocalDate date, int chapters) {
-        return chabadUrl(date, chapters, "en");
-    }
-    /** Locale-aware: {@code lang} = "he" / "ru" / "fr" swaps the
-     *  chabad.org subdomain to the corresponding language site. */
-    public static String chabadUrl(LocalDate date, int chapters, String lang) {
-        if (chapters != 1 && chapters != 3)
-            throw new IllegalArgumentException("chapters must be 1 or 3: " + chapters);
-        return ChabadOrg.dailyStudyUrl("rambam.asp", date, "rambamChapters=" + chapters, lang);
     }
 
     /** {@link Reading} for the 1-chapter cycle, or {@code null} pre-1984-04-29. */

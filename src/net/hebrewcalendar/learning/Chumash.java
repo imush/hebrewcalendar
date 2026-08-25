@@ -184,49 +184,29 @@ public final class Chumash {
                     : ALIYAH_HE[firstAliyah - 1] + "-" + ALIYAH_HE[lastAliyah - 1];
         }
 
-        /**
-         * Deep-link to sefaria.org spanning the exact aliyah range of this
-         * portion, e.g. {@code https://www.sefaria.org/Genesis.1.1-2.3} for
-         * Bereishit's 1st aliyah, or
-         * {@code https://www.sefaria.org/Deuteronomy.33.18-33.29} for
-         * Vezot HaBracha aliyot 4-6.
-         */
-        public String sefariaUrl() {
+        /** Book name (Genesis / Exodus / Leviticus / Numbers / Deuteronomy)
+         *  containing this aliyah range. Callers use this to build deep links. */
+        public String book() { return BOOKS[aliyotEntry().book]; }
+        /** Start verse of the first aliyah in {@code "chapter:verse"} form. */
+        public String startRef() { return aliyotEntry().aliyot[firstAliyah - 1][0]; }
+        /** End verse of the last aliyah in {@code "chapter:verse"} form. */
+        public String endRef()   { return aliyotEntry().aliyot[lastAliyah  - 1][1]; }
+
+        private ParshaAliyot aliyotEntry() {
             String key = String.join("-", parshaNames);
             ParshaAliyot pa = ALIYOT.get(key);
             if (pa == null) throw new IllegalStateException("no aliyah table for " + key);
-            String[] start = pa.aliyot[firstAliyah - 1].clone();  // [startRef, endRef]
-            String[] last  = pa.aliyot[lastAliyah  - 1];
-            String[] s = start[0].split(":", 2);   // [startChap, startVerse]
-            String[] e = last [1].split(":", 2);   // [endChap,   endVerse  ]
-            String tail = s[0].equals(e[0])
-                    ? s[0] + "." + s[1] + "-" + e[1]                 // same chapter
-                    : s[0] + "." + s[1] + "-" + e[0] + "." + e[1];  // spans chapters
-            return "https://www.sefaria.org/" + BOOKS[pa.book] + "." + tail;
+            return pa;
         }
     }
 
     public static final class Result {
         private final List<Portion> portions;
-        private final LocalDate date;
-        Result(List<Portion> portions, LocalDate date) {
+        Result(List<Portion> portions) {
             this.portions = Collections.unmodifiableList(portions);
-            this.date = date;
         }
         public List<Portion> portions() { return portions; }
 
-        /**
-         * chabad.org's daily Torah Reading page for this date, which
-         * renders the day's aliyah using the Chabad minhag's verse
-         * boundaries. Same URL for both portions on Simchat Torah — the
-         * page shows the combined reading.
-         */
-        public String chabadUrl() { return chabadUrl("en"); }
-        /** Locale-aware: {@code lang} = "he" / "ru" / "fr" swaps the
-         *  chabad.org subdomain to the corresponding language site. */
-        public String chabadUrl(String lang) {
-            return ChabadOrg.dailyStudyUrl("torahreading.asp", date, null, lang);
-        }
         /** e.g. {@code "Bereishit — 3rd aliyah"} or on Simchat Torah
          *  {@code "Vezot HaBracha — aliyot 4-7; Bereishit — aliyot 1-4"}. */
         public String label() {
@@ -259,7 +239,6 @@ public final class Chumash {
     }
 
     public static Result forHebrewDate(IDate<JewishCalendar> jd, boolean inIsrael) {
-        LocalDate date = toGreg(jd);
         int dow = jd.getDayOfWeek();  // 1=Sun..7=Sat
 
         // Find the next Shabbat that has a regular parsha (skip yom-tov Shabbatot).
@@ -282,7 +261,7 @@ public final class Chumash {
             int cmp = compare(jd, simchatTorah);
             if (cmp < 0) {
                 // Before Simchat Torah — day-of-week aliyah of Vezot HaBracha.
-                return single(VEZOT_EN, VEZOT_HE, dow, date);
+                return single(VEZOT_EN, VEZOT_HE, dow);
             } else if (cmp == 0) {
                 // Simchat Torah itself — Vezot [dow..7] + Bereshit [1..dow].
                 List<Portion> ps = new ArrayList<>(2);
@@ -291,7 +270,7 @@ public final class Chumash {
                         List.of(Parsha.BEREISHIT.getEnglishName()),
                         List.of(Parsha.BEREISHIT.getHebrewName()),
                         1, dow));
-                return new Result(ps, date);
+                return new Result(ps);
             }
             // else: after Simchat Torah, fall through to normal case (Bereshit).
         }
@@ -302,16 +281,11 @@ public final class Chumash {
             en.add(p.getEnglishName());
             he.add(p.getHebrewName());
         }
-        return new Result(List.of(new Portion(en, he, dow, dow)), date);
+        return new Result(List.of(new Portion(en, he, dow, dow)));
     }
 
-    private static Result single(String en, String he, int aliyah, LocalDate date) {
-        return new Result(List.of(new Portion(List.of(en), List.of(he), aliyah, aliyah)), date);
-    }
-
-    private static LocalDate toGreg(IDate<JewishCalendar> jd) {
-        IDate<?> g = ICalendar.GREGORIAN.convert(jd);
-        return LocalDate.of(g.getYear(), g.getMonth(), g.getDay());
+    private static Result single(String en, String he, int aliyah) {
+        return new Result(List.of(new Portion(List.of(en), List.of(he), aliyah, aliyah)));
     }
 
     private static int compare(IDate<JewishCalendar> a, IDate<JewishCalendar> b) {

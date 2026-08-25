@@ -113,14 +113,6 @@ public final class DafYomi {
             String num = Gematria.of(daf);
             return amudA ? tractateHe + " " + num + " א" : tractateHe + " " + num;
         }
-        /**
-         * Deep-link to sefaria.org for this daf, e.g.
-         * {@code https://www.sefaria.org/Chullin.115a}. Always points to amud A
-         * — the start of the daf.
-         */
-        public String sefariaUrl() {
-            return "https://www.sefaria.org/" + tractate.replace(' ', '_') + "." + daf + "a";
-        }
     }
 
     /**

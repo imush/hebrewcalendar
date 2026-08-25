@@ -28,38 +28,12 @@ public final class SeferHaMitzvot {
     public static final class Result {
         private final int dayInCycle;
         private final String raw;
-        private final LocalDate date;
-        Result(int dayInCycle, String raw, LocalDate date) {
-            this.dayInCycle = dayInCycle; this.raw = raw; this.date = date;
+        Result(int dayInCycle, String raw) {
+            this.dayInCycle = dayInCycle; this.raw = raw;
         }
         public int    dayInCycle() { return dayInCycle; }
         /** Compact form as printed on chabad.org, e.g. {@code "N193, N153, N194, P146"}. */
         public String raw()        { return raw; }
-
-        /** chabad.org's Daily Mitzvah page for this date. Always non-null. */
-        public String chabadUrl() { return chabadUrl("en"); }
-        /** Locale-aware: {@code lang} = "he" / "ru" / "fr" swaps the
-         *  chabad.org subdomain to the corresponding language site. */
-        public String chabadUrl(String lang) {
-            return ChabadOrg.dailyStudyUrl("seferHamitzvos.asp", date, null, lang);
-        }
-        /**
-         * Deep-link to sefaria.org for the day's first Positive or Negative
-         * commandment. {@code null} for prose-only days (e.g.
-         * {@code "Nusach HaTefila"}, {@code "Text of the Haggadah"}), since
-         * those aren't individual commandments in Sefaria's index.
-         */
-        public String sefariaUrl() {
-            for (String p : raw.split(", ")) {
-                if (p.length() >= 2 && (p.charAt(0) == 'P' || p.charAt(0) == 'N')
-                        && p.charAt(1) >= '0' && p.charAt(1) <= '9') {
-                    String kind = p.charAt(0) == 'P' ? "Positive" : "Negative";
-                    return "https://www.sefaria.org/Sefer_HaMitzvot,_"
-                            + kind + "_Commandments." + p.substring(1);
-                }
-            }
-            return null;
-        }
         /**
          * Expanded English form, e.g.
          * {@code "Negative Commandments 193, 153, 194; Positive Commandment 146"}.
@@ -129,7 +103,7 @@ public final class SeferHaMitzvot {
         long abs = date.toEpochDay();
         if (abs < EPOCH) return null;
         int day = (int)((abs - EPOCH) % CYCLE) + 1;  // 1..339
-        return new Result(day, TABLE[day - 1], date);
+        return new Result(day, TABLE[day - 1]);
     }
 
     // Positions in TABLE are day-of-cycle − 1.  Data is verbatim from

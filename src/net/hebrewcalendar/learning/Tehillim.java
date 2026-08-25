@@ -34,9 +34,8 @@ public final class Tehillim {
         private final int day;
         private final String portion;
         private final String portionHe;
-        private final LocalDate date;  // null when built via forDayOfMonth(); links unavailable
-        Result(int day, String portion, String portionHe, LocalDate date) {
-            this.day = day; this.portion = portion; this.portionHe = portionHe; this.date = date;
+        Result(int day, String portion, String portionHe) {
+            this.day = day; this.portion = portion; this.portionHe = portionHe;
         }
         public int    day()       { return day; }
         public String portion()   { return portion; }
@@ -45,28 +44,6 @@ public final class Tehillim {
         public String label()   { return "Psalms " + portion; }
         /** Hebrew label, e.g. {@code "תהלים א׳-ט׳"}. */
         public String labelHe() { return "תהלים " + portionHe; }
-
-        /**
-         * Deep-link to sefaria.org for the day's psalms, e.g.
-         * {@code https://www.sefaria.org/Psalms.1-9} or
-         * {@code https://www.sefaria.org/Psalms.119.1-96} for the 119-split days.
-         */
-        public String sefariaUrl() {
-            // portion is one of: "1-9", "119:1-96", "140-150", etc.
-            return "https://www.sefaria.org/Psalms." + portion.replace(':', '.');
-        }
-
-        /**
-         * chabad.org's daily Tehillim page for this date, if built via
-         * {@link #forDate(LocalDate)}; {@code null} if built via
-         * {@link #forDayOfMonth(int, int)}.
-         */
-        public String chabadUrl() { return chabadUrl("en"); }
-        /** Locale-aware: {@code lang} = "he" / "ru" / "fr" swaps the
-         *  chabad.org subdomain to the corresponding language site. */
-        public String chabadUrl(String lang) {
-            return date == null ? null : ChabadOrg.dailyStudyUrl("tehillim.asp", date, null, lang);
-        }
     }
 
     /** Reading for the given Gregorian date. */
@@ -74,21 +51,18 @@ public final class Tehillim {
         IDate<JewishCalendar> jd = ICalendar.JEWISH.convert(
             ICalendar.GREGORIAN.fromYMD(date.getYear(), date.getMonthValue(), date.getDayOfMonth()));
         int mlen = ICalendar.JEWISH.monthLength(jd.getYear(), jd.getMonth());
-        return build(jd.getDay(), mlen, date);
+        return build(jd.getDay(), mlen);
     }
 
-    /** Reading for the given Hebrew date. Chabad link will be unavailable. */
+    /** Reading for the given Hebrew date. */
     public static Result forHebrewDate(IDate<JewishCalendar> jd) {
         int mlen = ICalendar.JEWISH.monthLength(jd.getYear(), jd.getMonth());
-        IDate<?> g = ICalendar.GREGORIAN.convert(jd);
-        LocalDate date = LocalDate.of(g.getYear(), g.getMonth(), g.getDay());
-        return build(jd.getDay(), mlen, date);
+        return build(jd.getDay(), mlen);
     }
 
-    /** Direct lookup for testing without constructing a full Hebrew date;
-     *  {@link Result#chabadUrl()} will be {@code null}. */
+    /** Direct lookup for testing without constructing a full Hebrew date. */
     public static Result forDayOfMonth(int day, int monthLength) {
-        return build(day, monthLength, null);
+        return build(day, monthLength);
     }
 
     /**
@@ -113,13 +87,13 @@ public final class Tehillim {
         return Gematria.of(start) + "-" + Gematria.of(end);
     }
 
-    private static Result build(int day, int monthLength, LocalDate date) {
+    private static Result build(int day, int monthLength) {
         if (day < 1 || day > monthLength)
             throw new IllegalArgumentException("day " + day + " out of range for month of " + monthLength);
         if (day == 29 && monthLength == 29) {
-            return new Result(29, COMBINED, Gematria.verseRange(COMBINED), date);
+            return new Result(29, COMBINED, Gematria.verseRange(COMBINED));
         }
         String p = PORTIONS[day - 1];
-        return new Result(day, p, Gematria.verseRange(p), date);
+        return new Result(day, p, Gematria.verseRange(p));
     }
 }
