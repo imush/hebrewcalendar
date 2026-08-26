@@ -57,29 +57,28 @@ public final class Tanya {
         public String startWords() { return portion == null ? null : portion.start; }
         public String endWords()   { return portion == null ? null : portion.end; }
 
-        public String fullLabelHe() {
-            if (portion == null) return dateLabelHe;
-            String part1 = portionHe(portion);
-            if (secondary == null) return part1;
-            return part1 + " · " + portionHe(secondary);
-        }
-        private static String portionHe(net.hebrewcalendar.data.Tanya.Portion p) {
-            String perek = p.section.he;
-            if (p.chapter > 0) perek += " " + Gematria.of(p.chapter);
-            return perek + " — " + p.start + " ... " + p.end;
-        }
+        public String fullLabelHe() { return fullLabel("he"); }
 
         /** English-side counterpart to {@link #fullLabelHe}. The start/end
          *  quotations remain Hebrew because they cite the Tanya text. */
-        public String fullLabel() {
-            if (portion == null) return dateLabel;
-            String part1 = portionEn(portion);
+        public String fullLabel() { return fullLabel("en"); }
+        public String fullLabel(String lang) {
+            if (portion == null) return "he".equals(lang) ? dateLabelHe : dateLabel;
+            String part1 = portionFor(portion, lang);
             if (secondary == null) return part1;
-            return part1 + " · " + portionEn(secondary);
+            return part1 + " · " + portionFor(secondary, lang);
         }
-        private static String portionEn(net.hebrewcalendar.data.Tanya.Portion p) {
-            String perek = p.section.en;
-            if (p.chapter > 0) perek += " " + p.chapter;
+        private static String portionFor(net.hebrewcalendar.data.Tanya.Portion p, String lang) {
+            String perek;
+            switch (lang) {
+                case "he": perek = p.section.he; break;
+                case "ru": perek = p.section.ru; break;
+                case "fr": perek = p.section.fr; break;
+                default:   perek = p.section.en;
+            }
+            if (p.chapter > 0) {
+                perek += " " + ("he".equals(lang) ? Gematria.of(p.chapter) : Integer.toString(p.chapter));
+            }
             return perek + " — " + p.start + " ... " + p.end;
         }
     }

@@ -37,6 +37,16 @@ public final class SefirahSotah {
         public String labelHe() { return TRACTATE_HE + " " + dafHe(); }
         /** English label, e.g. {@code "Sotah 2"}. */
         public String label()   { return "Sotah " + daf; }
+        public String labelRu() { return "Сота " + daf; }
+        public String labelFr() { return "Sota " + daf; }
+        public String label(String lang) {
+            switch (lang) {
+                case "he": return labelHe();
+                case "ru": return labelRu();
+                case "fr": return labelFr();
+                default:   return label();
+            }
+        }
     }
 
     /**

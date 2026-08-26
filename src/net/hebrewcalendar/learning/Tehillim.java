@@ -44,6 +44,16 @@ public final class Tehillim {
         public String label()   { return "Psalms " + portion; }
         /** Hebrew label, e.g. {@code "תהלים א׳-ט׳"}. */
         public String labelHe() { return "תהלים " + portionHe; }
+        public String labelRu() { return "Псалмы " + portion; }
+        public String labelFr() { return "Psaumes " + portion; }
+        public String label(String lang) {
+            switch (lang) {
+                case "he": return labelHe();
+                case "ru": return labelRu();
+                case "fr": return labelFr();
+                default:   return label();
+            }
+        }
     }
 
     /** Reading for the given Gregorian date. */

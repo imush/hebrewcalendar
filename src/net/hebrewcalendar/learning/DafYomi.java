@@ -21,17 +21,20 @@ public final class DafYomi {
 
     /** Immutable result: tractate name + daf number + cycle number. */
     public static final class Result {
-        private final String tractate;
-        private final String tractateHe;
+        private final String tractate, tractateHe, tractateRu, tractateFr;
         private final int daf;
         private final int cycle;
         private final boolean amudA;
-        Result(String tractate, String tractateHe, int daf, int cycle, boolean amudA) {
+        Result(String tractate, String tractateHe, String tractateRu, String tractateFr,
+               int daf, int cycle, boolean amudA) {
             this.tractate = tractate; this.tractateHe = tractateHe;
+            this.tractateRu = tractateRu; this.tractateFr = tractateFr;
             this.daf = daf; this.cycle = cycle; this.amudA = amudA;
         }
         public String tractate()   { return tractate; }
         public String tractateHe() { return tractateHe; }
+        public String tractateRu() { return tractateRu; }
+        public String tractateFr() { return tractateFr; }
         public int    daf()        { return daf; }
         public int    cycle()      { return cycle; }
         public boolean amudA()     { return amudA; }
@@ -43,6 +46,20 @@ public final class DafYomi {
         public String labelHe() {
             String num = Gematria.of(daf);
             return amudA ? tractateHe + " " + num + " א" : tractateHe + " " + num;
+        }
+        public String labelRu() {
+            return amudA ? tractateRu + " " + daf + "а" : tractateRu + " " + daf;
+        }
+        public String labelFr() {
+            return amudA ? tractateFr + " " + daf + "a" : tractateFr + " " + daf;
+        }
+        public String label(String lang) {
+            switch (lang) {
+                case "he": return labelHe();
+                case "ru": return labelRu();
+                case "fr": return labelFr();
+                default:   return label();
+            }
         }
     }
 
@@ -80,7 +97,7 @@ public final class DafYomi {
                 int daf = lastDaf + 1 - (daysSoFar - dayInCycle) + t.dafOffset;
                 boolean amudA = (daf == lastDaf + t.dafOffset)
                               && LAST_AMUD_A_ONLY.contains(t.en);
-                return new Result(t.en, t.he, daf, cycle, amudA);
+                return new Result(t.en, t.he, t.ru, t.fr, daf, cycle, amudA);
             }
         }
         throw new IllegalStateException("Daf Yomi lengths sum inconsistent");

@@ -63,17 +63,17 @@ public class RambamTest {
 
     @Test public void collapseGroupsAdjacent() {
         List<Rambam.Reading> in = List.of(
-                new Rambam.Reading("Sabbath", "הלכות שבת", "5"),
-                new Rambam.Reading("Sabbath", "הלכות שבת", "6"),
-                new Rambam.Reading("Sabbath", "הלכות שבת", "7"));
+                new Rambam.Reading("Sabbath", "הלכות שבת", "", "", "5"),
+                new Rambam.Reading("Sabbath", "הלכות שבת", "", "", "6"),
+                new Rambam.Reading("Sabbath", "הלכות שבת", "", "", "7"));
         assertEquals(List.of("Sabbath 5-7"), Rambam.collapse(in));
     }
 
     @Test public void collapseSplitsAtHalachaBoundary() {
         List<Rambam.Reading> in = List.of(
-                new Rambam.Reading("A", "א", "3"),
-                new Rambam.Reading("A", "א", "4"),
-                new Rambam.Reading("B", "ב", "1"));
+                new Rambam.Reading("A", "א", "", "", "3"),
+                new Rambam.Reading("A", "א", "", "", "4"),
+                new Rambam.Reading("B", "ב", "", "", "1"));
         assertEquals(List.of("A 3-4", "B 1"), Rambam.collapse(in));
     }
 

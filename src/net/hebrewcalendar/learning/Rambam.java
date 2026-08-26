@@ -17,17 +17,30 @@ public final class Rambam {
 
     /** One chapter (or introductory verse range) of the Mishneh Torah. */
     public static final class Reading {
-        private final String name;
-        private final String nameHe;
-        private final String perek;
-        Reading(String name, String nameHe, String perek) {
-            this.name = name; this.nameHe = nameHe; this.perek = perek;
+        private final String name, nameHe, nameRu, nameFr, perek;
+        Reading(String name, String nameHe, String nameRu, String nameFr, String perek) {
+            this.name = name; this.nameHe = nameHe;
+            this.nameRu = nameRu; this.nameFr = nameFr;
+            this.perek = perek;
         }
         public String name()   { return name; }
         public String nameHe() { return nameHe; }
+        public String nameRu() { return nameRu; }
+        public String nameFr() { return nameFr; }
         public String perek()  { return perek; }
         public String label()   { return name   + " " + perek; }
         public String labelHe() { return nameHe + " " + Gematria.verseRange(perek); }
+        public String labelRu() { return nameRu + " " + perek; }
+        public String labelFr() { return nameFr + " " + perek; }
+        /** Locale dispatch: "he"/"ru"/"fr" → labelHe/labelRu/labelFr; anything else → English. */
+        public String label(String lang) {
+            switch (lang) {
+                case "he": return labelHe();
+                case "ru": return labelRu();
+                case "fr": return labelFr();
+                default:   return label();
+            }
+        }
     }
 
     /** {@link Reading} for the 1-chapter cycle, or {@code null} pre-1984-04-29. */
@@ -38,7 +51,7 @@ public final class Rambam {
         int day = (int)((abs - epoch) % RambamHalacha.ONE_CHAPTER_CYCLE_DAYS);
         Reading r = chapAt(day, false);
         if (r.name.equals(RambamHalacha.THE_ORDER_OF_PRAYER.en) && "4".equals(r.perek)) {
-            r = new Reading(r.name, r.nameHe, "4-5");
+            r = new Reading(r.name, r.nameHe, r.nameRu, r.nameFr, "4-5");
         }
         return r;
     }
@@ -52,7 +65,7 @@ public final class Rambam {
         int base = day * 3;
         Reading r1 = chapAt(base,     true);
         if (r1.name.equals(RambamHalacha.LEAVENED_AND_UNLEAVENED_BREAD.en) && "8".equals(r1.perek)) {
-            r1 = new Reading(r1.name, r1.nameHe, "8-9");
+            r1 = new Reading(r1.name, r1.nameHe, r1.nameRu, r1.nameFr, "8-9");
         }
         Reading r2 = chapAt(base + 1, true);
         Reading r3 = chapAt(base + 2, true);
@@ -70,36 +83,51 @@ public final class Rambam {
                 int chapNum = rem + 1;
                 String perek = i < 4 ? RambamHalacha.FIRST_FOUR_VERSES[i][chapNum - 1]
                                      : Integer.toString(chapNum);
-                return new Reading(h.en, h.he, perek);
+                return new Reading(h.en, h.he, h.ru, h.fr, perek);
             }
             rem -= chapters;
         }
         throw new IllegalStateException("Mishneh Torah chapter table inconsistent");
     }
 
-    /** Collapse adjacent readings that share a name into range labels. */
+    /** Collapse adjacent readings that share a name into range labels (English). */
     public static List<String> collapse(List<Reading> readings) {
-        return collapseImpl(readings, false);
+        return collapseImpl(readings, "en");
     }
 
     /** Hebrew-side analogue of {@link #collapse}. */
     public static List<String> collapseHe(List<Reading> readings) {
-        return collapseImpl(readings, true);
+        return collapseImpl(readings, "he");
     }
 
-    private static List<String> collapseImpl(List<Reading> readings, boolean he) {
+    /** Locale-aware collapse: "he"/"ru"/"fr" → Hebrew/Russian/French; anything else → English. */
+    public static List<String> collapse(List<Reading> readings, String lang) {
+        return collapseImpl(readings, lang);
+    }
+
+    private static String nameFor(Reading r, String lang) {
+        switch (lang) {
+            case "he": return r.nameHe;
+            case "ru": return r.nameRu;
+            case "fr": return r.nameFr;
+            default:   return r.name;
+        }
+    }
+
+    private static List<String> collapseImpl(List<Reading> readings, String lang) {
+        boolean he = "he".equals(lang);
         java.util.List<String> out = new java.util.ArrayList<>();
         int i = 0;
         while (i < readings.size()) {
             Reading start = readings.get(i);
-            String startName = he ? start.nameHe : start.name;
+            String startName = nameFor(start, lang);
             int j = i;
             while (j + 1 < readings.size()
-                    && (he ? readings.get(j + 1).nameHe : readings.get(j + 1).name).equals(startName)) {
+                    && nameFor(readings.get(j + 1), lang).equals(startName)) {
                 j++;
             }
             if (j == i) {
-                out.add(he ? start.labelHe() : start.label());
+                out.add(start.label(lang));
             } else {
                 String first = firstToken(start.perek);
                 String last  = lastToken(readings.get(j).perek);
