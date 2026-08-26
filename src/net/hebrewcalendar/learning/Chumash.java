@@ -24,9 +24,6 @@ public final class Chumash {
 
     private Chumash() {}
 
-    /** Vezot HaBracha — the 54th parsha, read only on Simchat Torah. */
-    private static final String VEZOT_ID = "VEZOT_HABRACHA";
-
     private static final String[] ALIYAH_EN = {
         "1st aliyah", "2nd aliyah", "3rd aliyah", "4th aliyah",
         "5th aliyah", "6th aliyah", "7th aliyah",
@@ -35,7 +32,7 @@ public final class Chumash {
         "ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שביעי",
     };
 
-    /** One row of the display: a reading (single, double, or Vezot HaBracha) plus an aliyah range. */
+    /** One row of the display: a reading (single or double parsha) plus an aliyah range. */
     public static final class Portion {
         private final String readingId;
         private final int firstAliyah;
@@ -46,19 +43,17 @@ public final class Chumash {
             this.lastAliyah  = last;
         }
 
-        /** Reading id (single parsha key, doubled JOINED_KEY, or VEZOT_HABRACHA). */
+        /** Reading id (single parsha key, or doubled JOINED_KEY). */
         public String readingId() { return readingId; }
 
         public List<String> parshaNames() {
             ChumashAliyot.Reading r = reading();
-            if (r.displayEn != null) return List.of(r.displayEn);
             List<String> out = new ArrayList<>(r.parshiyot.size());
             for (String k : r.parshiyot) out.add(Parsha.valueOf(k).en);
             return Collections.unmodifiableList(out);
         }
         public List<String> parshaNamesHe() {
             ChumashAliyot.Reading r = reading();
-            if (r.displayHe != null) return List.of(r.displayHe);
             List<String> out = new ArrayList<>(r.parshiyot.size());
             for (String k : r.parshiyot) out.add(Parsha.valueOf(k).he);
             return Collections.unmodifiableList(out);
@@ -146,11 +141,11 @@ public final class Chumash {
                 ICalendar.JEWISH.fromYMD(nextShabbat.getYear(), 7, simchatTorahDay);
             int cmp = compare(jd, simchatTorah);
             if (cmp < 0) {
-                return new Result(List.of(new Portion(VEZOT_ID, dow, dow)));
+                return new Result(List.of(new Portion(Parsha.VEZOT_HABRACHA.key, dow, dow)));
             } else if (cmp == 0) {
                 // Simchat Torah itself — Vezot [dow..7] + Bereshit [1..dow].
                 List<Portion> ps = new ArrayList<>(2);
-                ps.add(new Portion(VEZOT_ID, dow, 7));
+                ps.add(new Portion(Parsha.VEZOT_HABRACHA.key, dow, 7));
                 ps.add(new Portion(Parsha.BEREISHIT.key, 1, dow));
                 return new Result(ps);
             }

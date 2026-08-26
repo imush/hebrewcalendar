@@ -267,9 +267,12 @@ public class ParshiotTest {
     @Test
     public void allParshotAppearInEveryYearType() {
         // VAYEILECH is legitimately absent from year types whose schedule starts with HAAZINU —
-        // it was read the prior year combined with NITZAVIM. All other 52 parshiyot must appear.
+        // it was read the prior year combined with NITZAVIM. VEZOT_HABRACHA is read on Simchat
+        // Torah and never on a normal Shabbat, so it's not part of any weekly schedule.
+        // All other 52 parshiyot must appear.
         EnumSet<Parsha> mandatory = EnumSet.allOf(Parsha.class);
         mandatory.remove(Parsha.VAYEILECH);
+        mandatory.remove(Parsha.VEZOT_HABRACHA);
 
         for (ParshiotYearType type : ParshiotYearType.values()) {
             for (boolean inIsrael : new boolean[]{false, true}) {
