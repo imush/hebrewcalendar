@@ -4,7 +4,7 @@ import net.hebrewcalendar.ICalendar;
 import net.hebrewcalendar.CalendarType;
 import net.hebrewcalendar.IDate;
 import net.hebrewcalendar.JewishCalendar;
-import net.hebrewcalendar.JewishMonth;
+import net.hebrewcalendar.data.JewishMonth;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -126,9 +126,9 @@ public class JewishCalendarImplTest
     @Test
     public void stringRepresentation()
     {
-        assertEquals("0001-01-01H", hc.fromYMD(1, JewishMonth.NISAN.getOrdinalNumber(), 1).toString());
-        assertEquals("5777-07-09H", hc.fromYMD(5777, JewishMonth.TISHREI.getOrdinalNumber(), 9).toString());
-        assertEquals("5711-11-10H", hc.fromYMD(5711, JewishMonth.SHVAT.getOrdinalNumber(), 10).toString());
+        assertEquals("0001-01-01H", hc.fromYMD(1, JewishMonth.NISAN.ordinal() + 1, 1).toString());
+        assertEquals("5777-07-09H", hc.fromYMD(5777, JewishMonth.TISHREI.ordinal() + 1, 9).toString());
+        assertEquals("5711-11-10H", hc.fromYMD(5711, JewishMonth.SHVAT.ordinal() + 1, 10).toString());
     }
 
     @Test

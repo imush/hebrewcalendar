@@ -22,7 +22,7 @@
  *         hDate.getYear());                            // 5786
  *
  * // 1 Sivan 5786 → Gregorian
- * IDate hDate2 = hebrew.fromYMD(5786, JewishMonth.SIVAN.getNum(), 1);
+ * IDate hDate2 = hebrew.fromYMD(5786, JewishMonth.SIVAN.ordinal() + 1, 1);
  * IDate gDate2 = greg.convert(hDate2);
  * System.out.printf("%d/%d/%d%n",
  *         gDate2.getYear(), gDate2.getMonth(), gDate2.getDay()); // 2026/5/17
@@ -68,7 +68,7 @@
  * JewishCalendar hebrew = ICalendar.JEWISH;
  *
  * // Molad of Sivan 5786
- * JewishMoment molad = hebrew.moladOfMonth(5786, JewishMonth.SIVAN.getNum());
+ * JewishMoment molad = hebrew.moladOfMonth(5786, JewishMonth.SIVAN.ordinal() + 1);
  * IDate hDate   = hebrew.fromMoment(molad);
  * int civilHour = (molad.getHour() + 18) % 24;  // library hour 0 = 18:00 civil
  * int minutes   = molad.getPart() / 18;           // chalakim / 18 = minutes
@@ -84,7 +84,7 @@
  * JewishCalendar hebrew = ICalendar.JEWISH;
  *
  * // Search forward from 1 Tishrei 5786
- * IDate startOfYear = hebrew.fromYMD(5786, JewishMonth.TISHREI.getNum(), 1);
+ * IDate startOfYear = hebrew.fromYMD(5786, JewishMonth.TISHREI.ordinal() + 1, 1);
  * IDate sukkot = JewishSpecialDay.FIRST_DAY_SUKKOT
  *         .getNextOccurrence(startOfYear, false);   // false = include startOfYear itself
  *

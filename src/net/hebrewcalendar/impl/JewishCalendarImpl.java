@@ -9,7 +9,7 @@ import net.hebrewcalendar.data.Parsha;
 import net.hebrewcalendar.JewishCalendar.Season;
 import java.util.List;
 
-import net.hebrewcalendar.JewishMonth;
+import net.hebrewcalendar.data.JewishMonth;
 
 /**
  * Implementation of the Hebrew (Jewish) calendar.
@@ -49,23 +49,26 @@ public class JewishCalendarImpl
     @Override
     public final int monthLength(final int year, final int month)
     {
-        switch(JewishMonth.get(month)) {
+        JewishMonth m = JewishMonth.forMonth(month, isLeap(year));
+        if (m == null) throw new IllegalArgumentException("invalid month " + month);
+        switch(m) {
             case NISAN:
             case SIVAN:
             case AV:
             case TISHREI:
             case SHVAT:
+            case ADAR_I:
                 return 30;
 
-            case TEVETH:
+            case TEVET:
             case IYAR:
             case TAMUZ:
             case ELUL:
-            case ADAR_2:
+            case ADAR_II:
                 return 29;
 
             case ADAR:
-                return isLeap(year) ? 30 : 29;
+                return 29;
             case CHESHVAN:
                 return getYearType(year) == YearCheshvanKislevType.FULL ? 30 : 29;
             case KISLEV:
@@ -305,8 +308,8 @@ public class JewishCalendarImpl
         // - It existed: observe on the 30th when the target year has it; otherwise 1st of next month
         //   (falls through to the standard try/catch below — same as anniversaryFor).
         // - It did not: always the last day of that month in the target year (29 or 30).
-        if (day == 30 && (month == JewishMonth.CHESHVAN.getOrdinalNumber()
-                       || month == JewishMonth.KISLEV.getOrdinalNumber())) {
+        if (day == 30 && (month == JewishMonth.CHESHVAN.ordinal() + 1
+                       || month == JewishMonth.KISLEV.ordinal() + 1)) {
             final int firstYear = deathDate.getYear() + 1;
             if (monthLength(firstYear, month) != 30) {
                 return fromYMD(year, month, monthLength(year, month));
