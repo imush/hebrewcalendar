@@ -1,4 +1,5 @@
 package net.hebrewcalendar;
+import net.hebrewcalendar.data.Parsha;
 
 import net.hebrewcalendar.impl.NoSuchHolidayException;
 import net.hebrewcalendar.impl.holiday.*;

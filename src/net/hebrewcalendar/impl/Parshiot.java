@@ -2,7 +2,7 @@ package net.hebrewcalendar.impl;
 
 import net.hebrewcalendar.ICalendar;
 import net.hebrewcalendar.IDate;
-import net.hebrewcalendar.Parsha;
+import net.hebrewcalendar.data.Parsha;
 
 
 import java.time.DayOfWeek;

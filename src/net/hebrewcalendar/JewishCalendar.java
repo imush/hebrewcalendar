@@ -1,4 +1,5 @@
 package net.hebrewcalendar;
+import net.hebrewcalendar.data.Parsha;
 
 import java.util.ArrayList;
 import java.util.List;

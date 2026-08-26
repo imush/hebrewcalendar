@@ -3,7 +3,7 @@ package net.hebrewcalendar.impl.holiday;
 import net.hebrewcalendar.ICalendar;
 import net.hebrewcalendar.IDate;
 import net.hebrewcalendar.JewishCalendar;
-import net.hebrewcalendar.Parsha;
+import net.hebrewcalendar.data.Parsha;
 
 import java.util.List;
 

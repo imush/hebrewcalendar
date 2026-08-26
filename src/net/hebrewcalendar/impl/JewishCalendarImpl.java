@@ -5,7 +5,7 @@ import net.hebrewcalendar.IDate;
 import net.hebrewcalendar.JewishCalendar;
 import net.hebrewcalendar.JewishMoment;
 import net.hebrewcalendar.JewishSpecialDay;
-import net.hebrewcalendar.Parsha;
+import net.hebrewcalendar.data.Parsha;
 import net.hebrewcalendar.JewishCalendar.Season;
 import java.util.List;
 

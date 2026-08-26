@@ -3,7 +3,7 @@ package net.hebrewcalendar.learning;
 import net.hebrewcalendar.ICalendar;
 import net.hebrewcalendar.IDate;
 import net.hebrewcalendar.JewishCalendar;
-import net.hebrewcalendar.Parsha;
+import net.hebrewcalendar.data.Parsha;
 import net.hebrewcalendar.impl.Parshiot;
 
 import java.time.LocalDate;
@@ -267,8 +267,8 @@ public final class Chumash {
                 List<Portion> ps = new ArrayList<>(2);
                 ps.add(new Portion(List.of(VEZOT_EN), List.of(VEZOT_HE), dow, 7));
                 ps.add(new Portion(
-                        List.of(Parsha.BEREISHIT.getEnglishName()),
-                        List.of(Parsha.BEREISHIT.getHebrewName()),
+                        List.of(Parsha.BEREISHIT.en),
+                        List.of(Parsha.BEREISHIT.he),
                         1, dow));
                 return new Result(ps);
             }
@@ -278,8 +278,8 @@ public final class Chumash {
         List<String> en = new ArrayList<>(nextParsha.size());
         List<String> he = new ArrayList<>(nextParsha.size());
         for (Parsha p : nextParsha) {
-            en.add(p.getEnglishName());
-            he.add(p.getHebrewName());
+            en.add(p.en);
+            he.add(p.he);
         }
         return new Result(List.of(new Portion(en, he, dow, dow)));
     }

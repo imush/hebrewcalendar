@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-import net.hebrewcalendar.Parsha;
-import static net.hebrewcalendar.Parsha.*;
+import net.hebrewcalendar.data.Parsha;
+import static net.hebrewcalendar.data.Parsha.*;
 import static net.hebrewcalendar.impl.YearCheshvanKislevType.*;
 
 /**

@@ -4,7 +4,7 @@ import net.hebrewcalendar.ICalendar;
 import net.hebrewcalendar.IDate;
 import net.hebrewcalendar.JewishCalendar;
 import net.hebrewcalendar.JewishSpecialDay;
-import net.hebrewcalendar.Parsha;
+import net.hebrewcalendar.data.Parsha;
 import org.junit.Test;
 
 import java.time.DayOfWeek;
