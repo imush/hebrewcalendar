@@ -1,5 +1,8 @@
 package net.hebrewcalendar.impl;
 
+import net.hebrewcalendar.data.YearCheshvanKislevType;
+import net.hebrewcalendar.data.ParshiotYearType;
+
 import net.hebrewcalendar.ICalendar;
 import net.hebrewcalendar.IDate;
 import net.hebrewcalendar.data.Parsha;

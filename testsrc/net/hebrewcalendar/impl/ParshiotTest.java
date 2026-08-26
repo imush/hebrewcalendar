@@ -1,5 +1,8 @@
 package net.hebrewcalendar.impl;
 
+import net.hebrewcalendar.data.YearCheshvanKislevType;
+import net.hebrewcalendar.data.ParshiotYearType;
+
 import net.hebrewcalendar.ICalendar;
 import net.hebrewcalendar.IDate;
 import net.hebrewcalendar.JewishCalendar;
@@ -236,9 +239,10 @@ public class ParshiotTest {
     @Test
     public void traditionalPairsAlwaysSplitInLeapYears() {
         EnumSet<ParshiotYearType> leapTypes = EnumSet.of(
-            ParshiotYearType.F27, ParshiotYearType.S25, ParshiotYearType.N37,
-            ParshiotYearType.F53, ParshiotYearType.S51,
-            ParshiotYearType.F75, ParshiotYearType.S73);
+            ParshiotYearType.LEAP_MON_FULL_SAT,  ParshiotYearType.LEAP_MON_SHORT_THU,
+            ParshiotYearType.LEAP_TUE_NORMAL_SAT,
+            ParshiotYearType.LEAP_THU_FULL_TUE,  ParshiotYearType.LEAP_THU_SHORT_SUN,
+            ParshiotYearType.LEAP_SAT_FULL_THU,  ParshiotYearType.LEAP_SAT_SHORT_TUE);
 
         for (ParshiotYearType type : leapTypes) {
             for (boolean inIsrael : new boolean[]{false, true}) {
