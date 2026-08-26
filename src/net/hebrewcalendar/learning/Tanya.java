@@ -68,6 +68,20 @@ public final class Tanya {
             if (p.chapter > 0) perek += " " + Gematria.of(p.chapter);
             return perek + " — " + p.start + " ... " + p.end;
         }
+
+        /** English-side counterpart to {@link #fullLabelHe}. The start/end
+         *  quotations remain Hebrew because they cite the Tanya text. */
+        public String fullLabel() {
+            if (portion == null) return dateLabel;
+            String part1 = portionEn(portion);
+            if (secondary == null) return part1;
+            return part1 + " · " + portionEn(secondary);
+        }
+        private static String portionEn(net.hebrewcalendar.data.Tanya.Portion p) {
+            String perek = p.section.en;
+            if (p.chapter > 0) perek += " " + p.chapter;
+            return perek + " — " + p.start + " ... " + p.end;
+        }
     }
 
     public static Result forDate(LocalDate date) {
