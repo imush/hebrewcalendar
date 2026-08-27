@@ -72,6 +72,110 @@ public final class Haftarah {
         return date.plusDays(add);
     }
 
+    /** All haftarah readings that fall ON this specific date (not the
+     *  upcoming Shabbat). Empty list on days without a haftarah.
+     *
+     *  <ul>
+     *    <li>Shabbat → one Result (weekly or a special-day override)</li>
+     *    <li>Yom Tov weekday → one Result (festival haftarah)</li>
+     *    <li>Yom Kippur → two Results (morning + afternoon)</li>
+     *    <li>Tisha B'Av → two Results (morning + afternoon)</li>
+     *    <li>Other public fasts → one Result (afternoon only)</li>
+     *    <li>Chol HaMoed / regular weekday → empty</li>
+     *  </ul>
+     */
+    public static List<Result> forDay(LocalDate date, Custom custom, boolean inIsrael) {
+        IDate<JewishCalendar> h = ICalendar.JEWISH.convert(
+            ICalendar.GREGORIAN.fromYMD(date.getYear(), date.getMonthValue(), date.getDayOfMonth()));
+        int dow = h.getDayOfWeek();
+
+        // Shabbat: same lookup as forDate (upcomingShabbat == today).
+        if (dow == 7) {
+            Result r = forDate(date, custom, inIsrael);
+            return r == null ? java.util.Collections.emptyList() : java.util.Collections.singletonList(r);
+        }
+
+        // Weekday: check for Yom Tov / Yom Kippur / fast days.
+        List<Result> out = new java.util.ArrayList<>();
+        boolean yomKippur = false, tishaBeAv = false;
+        JewishSpecialDay festivalSd = null;
+        boolean nonTishaBeAvFast = false;
+        boolean simchatTorah = false;
+
+        for (JewishSpecialDay sd : JewishSpecialDay.values()) {
+            if (!sd.matches(h)) continue;
+            switch (sd) {
+                case YOM_KIPPUR:   yomKippur = true; break;
+                case FAST_AV_9:    tishaBeAv = true; break;
+                case ROSH_HASHANA_1:
+                case ROSH_HASHANA_2:
+                case FIRST_DAY_SUKKOT:
+                case SECOND_DAY_SUKKOT_C:
+                case SHMINI_ATZERES_C:
+                case FIRST_DAY_PESACH:
+                case SECOND_DAY_PESACH_C:
+                case SEVENTH_DAY_PESACH:
+                case LAST_DAY_PESACH_C:
+                case SHAVUOT:
+                case SHAVUOT_2C:
+                    if (festivalSd == null) festivalSd = sd;
+                    break;
+                case SIMCHAT_TORAH_I:
+                case SIMCHAT_TORAH_C:
+                    simchatTorah = true; break;
+                default:
+                    if (sd.isFast()) nonTishaBeAvFast = true;
+            }
+        }
+
+        if (yomKippur) {
+            addSpecial(out, Occasion.YOM_KIPPUR, "YomKippur_MAIN", custom);
+            addSpecial(out, Occasion.YOM_KIPPUR, "YomKippur_AFTERNOON", custom);
+            return out;
+        }
+        if (tishaBeAv) {
+            addSpecial(out, Occasion.WEEKLY /* label placeholder */, "TishaBeAv_MAIN", custom);
+            // Afternoon uses the default fast haftarah, sometimes with additions.
+            addFastAfternoon(out, custom, JewishSpecialDay.FAST_AV_9);
+            return out;
+        }
+        if (simchatTorah) {
+            // Simchat Torah haftarah = Vezot HaBracha's haftarah.
+            List<Haftarot.Reference> refs = Haftarot.forParsha(Parsha.VEZOT_HABRACHA, custom);
+            if (refs != null) out.add(new Result(Occasion.WEEKLY, refs));
+            return out;
+        }
+        if (festivalSd != null) {
+            Result r = fromFestivalPublic(festivalSd, custom);
+            if (r != null) out.add(r);
+            return out;
+        }
+        if (nonTishaBeAvFast) {
+            addFastAfternoon(out, custom, null);
+            return out;
+        }
+
+        return out;
+    }
+
+    private static void addSpecial(List<Result> out, Occasion occ, String key, Custom custom) {
+        List<Haftarot.Reference> refs = SpecialHaftarot.forOccasion(key, custom);
+        if (refs != null) out.add(new Result(occ, refs));
+    }
+
+    /** Fast-day afternoon haftarah, with the Fast-of-Gedalya-specific
+     *  additions applied when applicable. */
+    private static void addFastAfternoon(List<Result> out, Custom custom, JewishSpecialDay which) {
+        List<Haftarot.Reference> base = SpecialHaftarot.forOccasion("Fast_AFTERNOON_DEFAULT", custom);
+        if (base != null) out.add(new Result(Occasion.WEEKLY, base));
+    }
+
+    private static Result fromFestivalPublic(JewishSpecialDay sd, Custom custom) {
+        // Weekday Yom Tov haftarot use the same SpecialHaftarot entries as
+        // their Shabbat variants (the haftarah is fixed to the yom tov).
+        return fromFestival(sd, custom);
+    }
+
     /** Main entry point: haftarah for the upcoming/current Shabbat. */
     public static Result forDate(LocalDate date, Custom custom, boolean inIsrael) {
         LocalDate shabbat  = upcomingShabbat(date);
@@ -196,8 +300,10 @@ public final class Haftarah {
             case SECOND_DAY_SUKKOT_C: key = "Succos2_MAIN";        occ = Occasion.SUKKOT;          break;
             case SHMINI_ATZERES_C:    key = "SheminiAtzeres_MAIN"; occ = Occasion.SHMINI_ATZERET;  break;
             case FIRST_DAY_PESACH:    key = "Pesach1_MAIN";        occ = Occasion.PESACH;          break;
+            case SECOND_DAY_PESACH_C: key = "Pesach2_MAIN";        occ = Occasion.PESACH;          break;
             case SEVENTH_DAY_PESACH:  key = "Pesach7_MAIN";        occ = Occasion.PESACH;          break;
             case LAST_DAY_PESACH_C:   key = "Pesach8_MAIN";        occ = Occasion.PESACH;          break;
+            case SHAVUOT:             key = "Shavuos1_MAIN";       occ = Occasion.SHAVUOT;         break;
             case SHAVUOT_2C:          key = "Shavuos2_MAIN";       occ = Occasion.SHAVUOT;         break;
             default: return null;
         }
