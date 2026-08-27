@@ -205,14 +205,21 @@ public class HaftarahTest {
                   Haftarah.Occasion.SHMINI_ATZERET, "I Kings", 8, 54, 8, 66);
     }
 
-    @Test public void tzomGedalia_moroccoHasItsOwnAfternoonHaftarah() {
+    @Test public void tzomGedalia_marrakeshHasItsOwnAfternoonHaftarah() {
+        // opentorah hangs this exception on Morocco, so Fes inherits it;
+        // hebrewcalendar-data narrows it to Marrakesh, which is the custom
+        // that actually keeps Hosea + Joel. Morocco and Fes read the default.
         LocalDate gedalia = LocalDate.of(2026, 9, 14);
         assertDay(gedalia, Custom.ASHKENAZ, false,
                   Haftarah.Occasion.FAST_AFTERNOON, "Isaiah", 55, 6, 56, 8);
         assertDay(gedalia, Custom.MOROCCO, false,
+                  Haftarah.Occasion.FAST_AFTERNOON, "Isaiah", 55, 6, 56, 8);
+        assertDay(gedalia, Custom.FES, false,
+                  Haftarah.Occasion.FAST_AFTERNOON, "Isaiah", 55, 6, 56, 8);
+        assertDay(gedalia, Custom.MARRAKESH, false,
                   Haftarah.Occasion.FAST_AFTERNOON, "Hosea", 14, 2, 14, 10);
-        // On 17 Tammuz Morocco is back on the default.
-        assertDay(LocalDate.of(2026, 7, 2), Custom.MOROCCO, false,
+        // On 17 Tammuz Marrakesh is back on the default.
+        assertDay(LocalDate.of(2026, 7, 2), Custom.MARRAKESH, false,
                   Haftarah.Occasion.FAST_AFTERNOON, "Isaiah", 55, 6, 56, 8);
     }
 
