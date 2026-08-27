@@ -131,7 +131,10 @@ public final class Rambam {
             } else {
                 String first = firstToken(start.perek);
                 String last  = lastToken(readings.get(j).perek);
-                if (he) {
+                // The first four halachot (Transmission / Positive Mitzvot /
+                // Negative Mitzvot / Overview) use verse-range "pereks" like
+                // "1:1" or "10-14"; Gematria only makes sense for a bare int.
+                if (he && isSmallInt(first) && isSmallInt(last)) {
                     out.add(startName + " " + Gematria.of(Integer.parseInt(first))
                             + "-" + Gematria.of(Integer.parseInt(last)));
                 } else {
@@ -146,6 +149,15 @@ public final class Rambam {
     private static String firstToken(String perek) {
         int dash = perek.indexOf('-');
         return dash < 0 ? perek : perek.substring(0, dash);
+    }
+
+    private static boolean isSmallInt(String s) {
+        if (s == null || s.isEmpty()) return false;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c < '0' || c > '9') return false;
+        }
+        return true;
     }
     private static String lastToken(String perek) {
         int dash = perek.lastIndexOf('-');

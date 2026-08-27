@@ -4,6 +4,7 @@ import net.hebrewcalendar.ICalendar;
 import net.hebrewcalendar.IDate;
 import net.hebrewcalendar.JewishCalendar;
 import net.hebrewcalendar.data.ChumashAliyot;
+import net.hebrewcalendar.data.Custom;
 import net.hebrewcalendar.data.Parsha;
 import net.hebrewcalendar.impl.Parshiot;
 
@@ -45,10 +46,12 @@ public final class Chumash {
         private final String readingId;
         private final int firstAliyah;
         private final int lastAliyah;
-        Portion(String readingId, int first, int last) {
+        private final Custom custom;
+        Portion(String readingId, int first, int last, Custom custom) {
             this.readingId = readingId;
             this.firstAliyah = first;
             this.lastAliyah  = last;
+            this.custom = custom;
         }
 
         /** Reading id (single parsha key, or doubled JOINED_KEY). */
@@ -100,8 +103,8 @@ public final class Chumash {
 
         /** Book name (Genesis / Exodus / …) containing this aliyah range. */
         public String book() { return ChumashAliyot.BOOKS[reading().book]; }
-        public String startRef() { return reading().aliyot[firstAliyah - 1].split("-", 2)[0]; }
-        public String endRef()   { return reading().aliyot[lastAliyah  - 1].split("-", 2)[1]; }
+        public String startRef() { return reading().aliyotFor(custom)[firstAliyah - 1].split("-", 2)[0]; }
+        public String endRef()   { return reading().aliyotFor(custom)[lastAliyah  - 1].split("-", 2)[1]; }
 
         private ChumashAliyot.Reading reading() {
             ChumashAliyot.Reading r = ChumashAliyot.READINGS.get(readingId);
@@ -130,16 +133,24 @@ public final class Chumash {
     }
 
     public static Result forDate(LocalDate date) {
-        return forDate(date, false);
+        return forDate(date, false, Custom.CHABAD);
     }
 
     public static Result forDate(LocalDate date, boolean inIsrael) {
+        return forDate(date, inIsrael, Custom.CHABAD);
+    }
+
+    public static Result forDate(LocalDate date, boolean inIsrael, Custom custom) {
         IDate<JewishCalendar> jd = ICalendar.JEWISH.convert(
             ICalendar.GREGORIAN.fromYMD(date.getYear(), date.getMonthValue(), date.getDayOfMonth()));
-        return forHebrewDate(jd, inIsrael);
+        return forHebrewDate(jd, inIsrael, custom);
     }
 
     public static Result forHebrewDate(IDate<JewishCalendar> jd, boolean inIsrael) {
+        return forHebrewDate(jd, inIsrael, Custom.CHABAD);
+    }
+
+    public static Result forHebrewDate(IDate<JewishCalendar> jd, boolean inIsrael, Custom custom) {
         int dow = jd.getDayOfWeek();  // 1=Sun..7=Sat
 
         IDate<JewishCalendar> nextShabbat = jd;
@@ -158,12 +169,12 @@ public final class Chumash {
                 ICalendar.JEWISH.fromYMD(nextShabbat.getYear(), 7, simchatTorahDay);
             int cmp = compare(jd, simchatTorah);
             if (cmp < 0) {
-                return new Result(List.of(new Portion(Parsha.VEZOT_HABRACHA.key, dow, dow)));
+                return new Result(List.of(new Portion(Parsha.VEZOT_HABRACHA.key, dow, dow, custom)));
             } else if (cmp == 0) {
                 // Simchat Torah itself — Vezot [dow..7] + Bereshit [1..dow].
                 List<Portion> ps = new ArrayList<>(2);
-                ps.add(new Portion(Parsha.VEZOT_HABRACHA.key, dow, 7));
-                ps.add(new Portion(Parsha.BEREISHIT.key, 1, dow));
+                ps.add(new Portion(Parsha.VEZOT_HABRACHA.key, dow, 7, custom));
+                ps.add(new Portion(Parsha.BEREISHIT.key, 1, dow, custom));
                 return new Result(ps);
             }
         }
@@ -171,7 +182,7 @@ public final class Chumash {
         String readingId = nextParsha.size() == 1
                 ? nextParsha.get(0).key
                 : nextParsha.get(0).key + "_" + nextParsha.get(1).key;
-        return new Result(List.of(new Portion(readingId, dow, dow)));
+        return new Result(List.of(new Portion(readingId, dow, dow, custom)));
     }
 
     private static int compare(IDate<JewishCalendar> a, IDate<JewishCalendar> b) {
