@@ -22,10 +22,15 @@ import java.util.List;
  *   Machar Chodesh  &gt;  weekly parsha.
  * </pre>
  *
- * This first pass covers the most common overrides. Chabad-specific
- * fine points (RC in Elul, Shabbos Hagadol vs Erev Pesach, etc.) fall
- * through to the weekly haftarah in a few corner cases; consumers can
- * refine later without changing the public API.
+ * The C library carries an independent port of these same rules
+ * ({@code hc_haftarah.c}) for the Flutter app; the two are kept in step
+ * deliberately rather than one calling the other. If you change the
+ * precedence here, change it there too.
+ *
+ * Known gap in both: opentorah's {@code shabbosAdditionalHaftarah} — the
+ * extra verses Chabad and Fes append when a Rosh Chodesh or Machar
+ * Chodesh haftarah is displaced by a higher-precedence reading — is not
+ * applied.
  */
 public final class Haftarah {
 
@@ -50,7 +55,12 @@ public final class Haftarah {
         PESACH,
         SHAVUOT,
         CHOL_HAMOED_PESACH,
-        CHOL_HAMOED_SUKKOT
+        CHOL_HAMOED_SUKKOT,
+        SIMCHAT_TORAH,
+        YOM_KIPPUR_AFTERNOON,
+        TISHA_BAV,
+        TISHA_BAV_AFTERNOON,
+        FAST_AFTERNOON
     }
 
     /** Result: the occasion driving this haftarah + one or more references. */
@@ -100,10 +110,14 @@ public final class Haftarah {
         boolean yomKippur = false, tishaBeAv = false;
         JewishSpecialDay festivalSd = null;
         boolean nonTishaBeAvFast = false;
+        boolean tzomGedalia = false;
         boolean simchatTorah = false;
 
         for (JewishSpecialDay sd : JewishSpecialDay.values()) {
-            if (!sd.matches(h)) continue;
+            // applies() is what keeps Israel-only days (Simchat Torah on 22
+            // Tishrei) out of the Diaspora schedule and Diaspora-only second
+            // days out of Israel's — matches() alone ignores location.
+            if (!sd.matches(h) || !sd.applies(inIsrael)) continue;
             switch (sd) {
                 case YOM_KIPPUR:   yomKippur = true; break;
                 case FAST_AV_9:    tishaBeAv = true; break;
@@ -123,6 +137,8 @@ public final class Haftarah {
                 case SIMCHAT_TORAH_I:
                 case SIMCHAT_TORAH_C:
                     simchatTorah = true; break;
+                case TZOM_GEDALIA:
+                    tzomGedalia = true; nonTishaBeAvFast = true; break;
                 default:
                     if (sd.isFast()) nonTishaBeAvFast = true;
             }
@@ -130,19 +146,19 @@ public final class Haftarah {
 
         if (yomKippur) {
             addSpecial(out, Occasion.YOM_KIPPUR, "YomKippur_MAIN", custom);
-            addSpecial(out, Occasion.YOM_KIPPUR, "YomKippur_AFTERNOON", custom);
+            addSpecial(out, Occasion.YOM_KIPPUR_AFTERNOON, "YomKippur_AFTERNOON", custom);
             return out;
         }
         if (tishaBeAv) {
-            addSpecial(out, Occasion.WEEKLY /* label placeholder */, "TishaBeAv_MAIN", custom);
+            addSpecial(out, Occasion.TISHA_BAV, "TishaBeAv_MAIN", custom);
             // Afternoon uses the default fast haftarah, sometimes with additions.
-            addFastAfternoon(out, custom, JewishSpecialDay.FAST_AV_9);
+            addFastAfternoon(out, custom, JewishSpecialDay.FAST_AV_9, Occasion.TISHA_BAV_AFTERNOON);
             return out;
         }
         if (simchatTorah) {
             // Simchat Torah haftarah = Vezot HaBracha's haftarah.
             List<Haftarot.Reference> refs = Haftarot.forParsha(Parsha.VEZOT_HABRACHA, custom);
-            if (refs != null) out.add(new Result(Occasion.WEEKLY, refs));
+            if (refs != null) out.add(new Result(Occasion.SIMCHAT_TORAH, refs));
             return out;
         }
         if (festivalSd != null) {
@@ -151,7 +167,8 @@ public final class Haftarah {
             return out;
         }
         if (nonTishaBeAvFast) {
-            addFastAfternoon(out, custom, null);
+            addFastAfternoon(out, custom, tzomGedalia ? JewishSpecialDay.TZOM_GEDALIA : null,
+                             Occasion.FAST_AFTERNOON);
             return out;
         }
 
@@ -163,11 +180,23 @@ public final class Haftarah {
         if (refs != null) out.add(new Result(occ, refs));
     }
 
-    /** Fast-day afternoon haftarah, with the Fast-of-Gedalya-specific
-     *  additions applied when applicable. */
-    private static void addFastAfternoon(List<Result> out, Custom custom, JewishSpecialDay which) {
+    /** Fast-day afternoon haftarah.
+     *
+     *  Tzom Gedalya overrides the default for Morocco and Fes (opentorah:
+     *  {@code FastOfGedalia.afternoonHaftarahExceptions}), so the exception
+     *  table is consulted first.
+     *
+     *  Some customs (Sefard, Teiman and their descendants) have no fast-day
+     *  haftarah at all in opentorah's data — for those nothing is added. */
+    private static void addFastAfternoon(List<Result> out, Custom custom,
+                                         JewishSpecialDay which, Occasion occ) {
+        if (which == JewishSpecialDay.TZOM_GEDALIA) {
+            List<Haftarot.Reference> exc =
+                SpecialHaftarot.forOccasion("FastOfGedalia_AFTERNOON_EXCEPTIONS", custom);
+            if (exc != null) { out.add(new Result(occ, exc)); return; }
+        }
         List<Haftarot.Reference> base = SpecialHaftarot.forOccasion("Fast_AFTERNOON_DEFAULT", custom);
-        if (base != null) out.add(new Result(Occasion.WEEKLY, base));
+        if (base != null) out.add(new Result(occ, base));
     }
 
     private static Result fromFestivalPublic(JewishSpecialDay sd, Custom custom) {
@@ -191,9 +220,13 @@ public final class Haftarah {
         boolean shabbatHagadol = false, erevPesach = false;
         JewishSpecialDay festivalSd = null;
         boolean cholHamoedPesach = false, cholHamoedSukkot = false;
+        boolean simchatTorah = false;
 
         for (JewishSpecialDay sd : JewishSpecialDay.values()) {
-            if (!sd.matches(h)) continue;
+            // applies() is what keeps Israel-only days (Simchat Torah on 22
+            // Tishrei) out of the Diaspora schedule and Diaspora-only second
+            // days out of Israel's — matches() alone ignores location.
+            if (!sd.matches(h) || !sd.applies(inIsrael)) continue;
             switch (sd) {
                 case SHABBAT_SHEKALIM:  shabbatShekalim  = true; break;
                 case SHABBAT_ZACHOR:    shabbatZachor    = true; break;
@@ -201,6 +234,9 @@ public final class Haftarah {
                 case SHABBAT_HACHODESH: shabbatHachodesh = true; break;
                 case SHABBAT_HAGADOL:   shabbatHagadol   = true; break;
                 case EREV_PESACH:       erevPesach       = true; break;
+                case SIMCHAT_TORAH_I:
+                case SIMCHAT_TORAH_C:
+                    simchatTorah = true; break;
                 case ROSH_HASHANA_1:
                 case ROSH_HASHANA_2:
                 case YOM_KIPPUR:
@@ -208,8 +244,10 @@ public final class Haftarah {
                 case SECOND_DAY_SUKKOT_C:
                 case SHMINI_ATZERES_C:
                 case FIRST_DAY_PESACH:
+                case SECOND_DAY_PESACH_C:
                 case SEVENTH_DAY_PESACH:
                 case LAST_DAY_PESACH_C:
+                case SHAVUOT:
                 case SHAVUOT_2C:
                     if (festivalSd == null) festivalSd = sd;
                     break;
@@ -224,6 +262,12 @@ public final class Haftarah {
         }
 
         // ── Yom Tov Shabbat ──────────────────────────────────────────
+        // Simchat Torah reads Vezot HaBracha, so it takes that haftarah
+        // rather than a SpecialHaftarot entry.
+        if (simchatTorah) {
+            List<Haftarot.Reference> refs = Haftarot.forParsha(Parsha.VEZOT_HABRACHA, custom);
+            if (refs != null) return new Result(Occasion.SIMCHAT_TORAH, refs);
+        }
         if (festivalSd != null) {
             Result r = fromFestival(festivalSd, custom);
             if (r != null) return r;
@@ -249,10 +293,12 @@ public final class Haftarah {
         }
 
         // ── Chanukah Shabbat ─────────────────────────────────────────
+        // opentorah splits on the day number, not the parsha:
+        //   `if dayNumber < 8 then shabbos1Haftarah else shabbos2Haftarah`.
+        // The eighth day is only ever a Shabbat when 25 Kislev was itself a
+        // Shabbat — exactly the years that have two Chanukah Shabbatot.
         if (chanukah) {
-            java.util.List<Parsha> parshas = ICalendar.JEWISH.getParsha(h, inIsrael);
-            boolean isSecondShabbat = false;
-            for (Parsha p : parshas) if (p == Parsha.MIKETZ) { isSecondShabbat = true; break; }
+            boolean isSecondShabbat = JewishSpecialDay.EIGHTH_DAY_CHANUKAH.matches(h);
             Occasion occ = isSecondShabbat ? Occasion.CHANUKAH_SHABBAT_2 : Occasion.CHANUKAH_SHABBAT_1;
             String key = isSecondShabbat ? "Chanukah_SHABBAT_2" : "Chanukah_SHABBAT_1";
             return special(occ, key, custom);
