@@ -261,78 +261,125 @@ public final class Haftarah {
             }
         }
 
-        // ── Yom Tov Shabbat ──────────────────────────────────────────
+        // opentorah's SpecialShabbos: the four parshiyot plus Shabbos
+        // Hagadol. This is a property of the *day*, not of which branch
+        // below fires — Chabad keeps the weekly haftarah on Shabbos Hagadol,
+        // but the day is still a special Shabbat for the Rosh Chodesh rules.
+        boolean isSpecialShabbos = shabbatShekalim || shabbatZachor || shabbatParah
+                                || shabbatHachodesh || shabbatHagadol;
+
+        // ── Base reading ─────────────────────────────────────────────
+        Result result = null;
+
         // Simchat Torah reads Vezot HaBracha, so it takes that haftarah
         // rather than a SpecialHaftarot entry.
         if (simchatTorah) {
             List<Haftarot.Reference> refs = Haftarot.forParsha(Parsha.VEZOT_HABRACHA, custom);
-            if (refs != null) return new Result(Occasion.SIMCHAT_TORAH, refs);
+            if (refs != null) result = new Result(Occasion.SIMCHAT_TORAH, refs);
         }
-        if (festivalSd != null) {
-            Result r = fromFestival(festivalSd, custom);
-            if (r != null) return r;
-        }
-        if (cholHamoedPesach) {
-            List<Haftarot.Reference> refs = SpecialHaftarot.forOccasion("PesachIntermediate_SHABBAT", custom);
-            if (refs != null) return new Result(Occasion.CHOL_HAMOED_PESACH, refs);
-        }
-        if (cholHamoedSukkot) {
-            List<Haftarot.Reference> refs = SpecialHaftarot.forOccasion("SuccosIntermediate_SHABBAT", custom);
-            if (refs != null) return new Result(Occasion.CHOL_HAMOED_SUKKOT, refs);
-        }
+        if (result == null && festivalSd != null)   result = fromFestival(festivalSd, custom);
+        if (result == null && cholHamoedPesach)
+            result = special(Occasion.CHOL_HAMOED_PESACH, "PesachIntermediate_SHABBAT", custom);
+        if (result == null && cholHamoedSukkot)
+            result = special(Occasion.CHOL_HAMOED_SUKKOT, "SuccosIntermediate_SHABBAT", custom);
 
-        // ── Special Parshiot ─────────────────────────────────────────
-        if (shabbatShekalim)  return special(Occasion.PARSHAT_SHEKALIM,  "ParshasShekalim_MAIN",  custom);
-        if (shabbatZachor)    return special(Occasion.PARSHAT_ZACHOR,    "ParshasZachor_MAIN",    custom);
-        if (shabbatParah)     return special(Occasion.PARSHAT_PARAH,     "ParshasParah_MAIN",     custom);
-        if (shabbatHachodesh) return special(Occasion.PARSHAT_HACHODESH, "ParshasHachodesh_MAIN", custom);
+        // Special Parshiot
+        if (result == null && shabbatShekalim)
+            result = special(Occasion.PARSHAT_SHEKALIM,  "ParshasShekalim_MAIN",  custom);
+        if (result == null && shabbatZachor)
+            result = special(Occasion.PARSHAT_ZACHOR,    "ParshasZachor_MAIN",    custom);
+        if (result == null && shabbatParah)
+            result = special(Occasion.PARSHAT_PARAH,     "ParshasParah_MAIN",     custom);
+        if (result == null && shabbatHachodesh)
+            result = special(Occasion.PARSHAT_HACHODESH, "ParshasHachodesh_MAIN", custom);
 
-        // ── Shabbos Hagadol (Chabad keeps weekly unless it IS erev Pesach) ─
-        if (shabbatHagadol && (custom != Custom.CHABAD || erevPesach)) {
-            return special(Occasion.SHABBAT_HAGADOL, "ShabbosHagodol_MAIN", custom);
-        }
+        // Shabbos Hagadol (Chabad keeps weekly unless it IS erev Pesach)
+        if (result == null && shabbatHagadol && (custom != Custom.CHABAD || erevPesach))
+            result = special(Occasion.SHABBAT_HAGADOL, "ShabbosHagodol_MAIN", custom);
 
-        // ── Chanukah Shabbat ─────────────────────────────────────────
-        // opentorah splits on the day number, not the parsha:
+        // Chanukah. opentorah splits on the day number, not the parsha:
         //   `if dayNumber < 8 then shabbos1Haftarah else shabbos2Haftarah`.
         // The eighth day is only ever a Shabbat when 25 Kislev was itself a
         // Shabbat — exactly the years that have two Chanukah Shabbatot.
-        if (chanukah) {
-            boolean isSecondShabbat = JewishSpecialDay.EIGHTH_DAY_CHANUKAH.matches(h);
-            Occasion occ = isSecondShabbat ? Occasion.CHANUKAH_SHABBAT_2 : Occasion.CHANUKAH_SHABBAT_1;
-            String key = isSecondShabbat ? "Chanukah_SHABBAT_2" : "Chanukah_SHABBAT_1";
-            return special(occ, key, custom);
+        if (result == null && chanukah) {
+            boolean second = JewishSpecialDay.EIGHTH_DAY_CHANUKAH.matches(h);
+            result = special(second ? Occasion.CHANUKAH_SHABBAT_2 : Occasion.CHANUKAH_SHABBAT_1,
+                             second ? "Chanukah_SHABBAT_2" : "Chanukah_SHABBAT_1", custom);
         }
 
-        // ── Rosh Chodesh Shabbat (skip Nisan/Av/Tishrei — handled above) ─
-        int roshChodeshMonth = -1;
-        if (h.getDay() == 1) roshChodeshMonth = h.getMonth();
-        else if (h.getDay() == 30) roshChodeshMonth = h.getMonth() + 1;
-        if (roshChodeshMonth > 0 && !isSkippedRoshChodeshMonth(roshChodeshMonth)) {
-            return special(Occasion.ROSH_CHODESH, "RoshChodesh_SHABBAT", custom);
+        // Weekly parsha; a combined week follows the second parsha.
+        if (result == null) {
+            java.util.List<Parsha> parshas = ICalendar.JEWISH.getParsha(h, inIsrael);
+            if (parshas.isEmpty()) return null;
+            Parsha target = parshas.size() >= 2 ? parshas.get(1) : parshas.get(0);
+            List<Haftarot.Reference> refs = Haftarot.forParsha(target, custom);
+            if (refs != null) result = new Result(Occasion.WEEKLY, refs);
+        }
+        if (result == null) return null;
+
+        // ── Rosh Chodesh / Machar Chodesh corrections ────────────────
+        // Post-corrections on whatever was resolved above, mirroring
+        // opentorah's RoshChodesh.correct / ErevRoshChodesh.correct. Each is
+        // a replace-or-add decision: where the Rosh Chodesh haftarah may
+        // displace the base reading it replaces it outright; where it may
+        // not, Chabad (and Fes, for Machar Chodesh) still append a few of
+        // its verses to whatever is read instead.
+        int rc = roshChodeshOf(h);
+        int mc = roshChodeshOf(hNext);
+
+        // Rosh Chodesh Tishrei is Rosh Hashana — never mentioned as Rosh Chodesh.
+        if (rc > 0 && rc != TISHREI) {
+            // Teves is always Chanukah and Av is always the Three Weeks, so in
+            // both the day's own haftarah outranks Rosh Chodesh.
+            boolean allowReplace = !isSpecialShabbos && rc != TEVES && rc != AV;
+            // In Elul the Shiva d'Nechemta hold their ground — except for
+            // Chabad, who read the Rosh Chodesh haftarah.
+            if (allowReplace && (rc != ELUL || custom == Custom.CHABAD)) {
+                Result r = special(Occasion.ROSH_CHODESH, "RoshChodesh_SHABBAT", custom);
+                if (r != null) result = r;
+            } else {
+                result = append(result, "RoshChodesh_SHABBAT_ADDITION", custom);
+            }
         }
 
-        // ── Machar Chodesh Shabbat (tomorrow is Rosh Chodesh) ────────
-        int nextMonth = -1;
-        if (hNext.getDay() == 1) nextMonth = hNext.getMonth();
-        else if (hNext.getDay() == 30) nextMonth = hNext.getMonth() + 1;
-        if (nextMonth > 0 && !isSkippedRoshChodeshMonth(nextMonth)) {
-            return special(Occasion.MACHAR_CHODESH, "ErevRoshChodesh_SHABBAT", custom);
+        if (mc > 0 && mc != TISHREI) {
+            // A Shabbat that is itself Rosh Chodesh reads the Rosh Chodesh
+            // haftarah, not Machar Chodesh.
+            boolean allowReplace = !isSpecialShabbos && rc <= 0
+                                && mc != TEVES && mc != AV && mc != ELUL;
+            // Fes never replaces — it always takes the addition instead.
+            if (allowReplace && custom != Custom.FES) {
+                Result r = special(Occasion.MACHAR_CHODESH, "ErevRoshChodesh_SHABBAT", custom);
+                if (r != null) result = r;
+            } else {
+                result = append(result, "ErevRoshChodesh_SHABBAT_ADDITION", custom);
+            }
         }
 
-        // ── Weekly parsha ────────────────────────────────────────────
-        java.util.List<Parsha> parshas = ICalendar.JEWISH.getParsha(h, inIsrael);
-        if (parshas.isEmpty()) return null;
-        // Combined week: follow the second parsha's haftarah.
-        Parsha target = parshas.size() >= 2 ? parshas.get(1) : parshas.get(0);
-        List<Haftarot.Reference> refs = Haftarot.forParsha(target, custom);
-        return refs == null ? null : new Result(Occasion.WEEKLY, refs);
+        return result;
     }
 
-    private static boolean isSkippedRoshChodeshMonth(int m) {
-        // Nisan (1) — Pesach 1 haftarah trumps; Av (5) — Chazon/Nachamu rules
-        // handled elsewhere; Tishrei (7) — Rosh Hashana.
-        return m == 1 || m == 5 || m == 7;
+    // Hebrew month numbers used by the Rosh Chodesh rules.
+    private static final int AV = 5, ELUL = 6, TISHREI = 7, TEVES = 10;
+
+    /** Month whose Rosh Chodesh falls on this Hebrew date, or -1. Day 30 is
+     *  the first of a two-day Rosh Chodesh and belongs to the next month;
+     *  month+1 is always in range because Elul and both Adars are 29 days. */
+    private static int roshChodeshOf(IDate<JewishCalendar> h) {
+        if (h.getDay() == 1)  return h.getMonth();
+        if (h.getDay() == 30) return h.getMonth() + 1;
+        return -1;
+    }
+
+    /** Append an "addition" entry, leaving the occasion alone — the extra
+     *  verses don't change what the reading is. Most customs have no
+     *  addition defined, in which case the reading is returned unchanged. */
+    private static Result append(Result base, String key, Custom custom) {
+        List<Haftarot.Reference> extra = SpecialHaftarot.forOccasion(key, custom);
+        if (extra == null || extra.isEmpty()) return base;
+        List<Haftarot.Reference> combined = new java.util.ArrayList<>(base.refs);
+        combined.addAll(extra);
+        return new Result(base.occasion, java.util.Collections.unmodifiableList(combined));
     }
 
     private static Result fromFestival(JewishSpecialDay sd, Custom custom) {

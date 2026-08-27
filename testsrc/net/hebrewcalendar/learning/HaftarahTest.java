@@ -90,6 +90,68 @@ public class HaftarahTest {
                   Haftarah.Occasion.PARSHAT_HACHODESH, "Ezekiel", 45, 16, 46, 18);
     }
 
+    // ── Rosh Chodesh / Machar Chodesh replace-vs-add ─────────────────
+
+    /** Render a whole reading as "Book c:v-c:v;..." for exact comparison. */
+    private static String render(LocalDate d, Custom c, boolean inIsrael) {
+        Haftarah.Result r = Haftarah.forDate(d, c, inIsrael);
+        if (r == null) return "";
+        StringBuilder sb = new StringBuilder();
+        for (Haftarot.Reference ref : r.refs)
+            sb.append(ref.book).append(' ').append(ref.fromCh).append(':').append(ref.fromV)
+              .append('-').append(ref.toCh).append(':').append(ref.toV).append(';');
+        return sb.toString();
+    }
+
+    @Test public void roshChodeshElul_nechemtaHoldsExceptChabad() {
+        // 2015-08-15 is Rosh Chodesh Elul (30 Av) on parshat Re'eh, and
+        // 1 Elul falls the next day, so the Machar Chodesh addition applies too.
+        LocalDate d = LocalDate.of(2015, 8, 15);
+        assertEquals("Isaiah 54:11-55:5;", render(d, Custom.ASHKENAZ, false));
+        assertEquals("Isaiah 66:1-66:24;Isaiah 66:23-66:23;"
+                   + "I Samuel 20:18-20:18;I Samuel 20:42-20:42;",
+                     render(d, Custom.CHABAD, false));
+        // Fes never replaces for Machar Chodesh — it only ever appends.
+        assertEquals("Isaiah 54:11-55:5;I Samuel 20:18-20:18;I Samuel 20:42-20:42;",
+                     render(d, Custom.FES, false));
+    }
+
+    @Test public void specialShabbos_blocksReplace_chabadAppendsInstead() {
+        // 2015-03-21 is Parshat Hachodesh falling on 1 Nisan.
+        LocalDate d = LocalDate.of(2015, 3, 21);
+        assertEquals("Ezekiel 45:16-46:18;", render(d, Custom.ASHKENAZ, false));
+        assertEquals("Ezekiel 45:18-46:15;Isaiah 66:1-66:1;"
+                   + "Isaiah 66:23-66:24;Isaiah 66:23-66:23;",
+                     render(d, Custom.CHABAD, false));
+    }
+
+    @Test public void bothAdditionsCanApplyAtOnce() {
+        // 30 Kislev 5776 (2015-12-12) is Shabbat Chanukah, Rosh Chodesh Teves
+        // and Erev Rosh Chodesh at once. Chanukah owns the reading; Teves
+        // blocks the Rosh Chodesh replace and being Rosh Chodesh blocks the
+        // Machar Chodesh one, so Chabad appends both additions.
+        LocalDate d = LocalDate.of(2015, 12, 12);
+        assertEquals("Zechariah 2:14-4:7;"
+                   + "Isaiah 66:1-66:1;Isaiah 66:23-66:24;Isaiah 66:23-66:23;"
+                   + "I Samuel 20:18-20:18;I Samuel 20:42-20:42;",
+                     render(d, Custom.CHABAD, false));
+        assertEquals("Zechariah 2:14-4:7;", render(d, Custom.ASHKENAZ, false));
+    }
+
+    @Test public void macharChodeshElul_isSuppressed() {
+        LocalDate d = LocalDate.of(2021, 8, 7);   // 29 Av
+        assertEquals("Isaiah 54:11-55:5;", render(d, Custom.ASHKENAZ, false));
+        assertEquals("Isaiah 54:11-55:5;I Samuel 20:18-20:18;I Samuel 20:42-20:42;",
+                     render(d, Custom.CHABAD, false));
+    }
+
+    @Test public void roshChodeshTishrei_isRoshHashana_noAddition() {
+        Haftarah.Result r = Haftarah.forDate(LocalDate.of(2026, 9, 12), Custom.CHABAD, false);
+        assertNotNull(r);
+        assertEquals(Haftarah.Occasion.ROSH_HASHANA, r.occasion);
+        assertEquals(1, r.refs.size());
+    }
+
     // ── Chanukah ─────────────────────────────────────────────────────
 
     @Test public void chanukah_singleShabbat_isFirst() {
