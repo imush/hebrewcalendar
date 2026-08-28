@@ -38,6 +38,8 @@ public final class Haftarah {
 
     /** Occasion labels that mirror opentorah's SpecialReadings objects. */
     public enum Occasion {
+        // Kept in the same order as the C hc_haftarah_occasion enum so the two
+        // can be compared by ordinal as well as by reading.
         WEEKLY,
         PARSHAT_SHEKALIM,
         PARSHAT_ZACHOR,
@@ -50,17 +52,19 @@ public final class Haftarah {
         MACHAR_CHODESH,
         ROSH_HASHANA,
         YOM_KIPPUR,
+        YOM_KIPPUR_AFTERNOON,
         SUKKOT,
         SHMINI_ATZERET,
+        SIMCHAT_TORAH,
         PESACH,
         SHAVUOT,
         CHOL_HAMOED_PESACH,
         CHOL_HAMOED_SUKKOT,
-        SIMCHAT_TORAH,
-        YOM_KIPPUR_AFTERNOON,
         TISHA_BAV,
         TISHA_BAV_AFTERNOON,
-        FAST_AFTERNOON
+        FAST_AFTERNOON,
+        SHABBAT_SHUVAH,
+        SHABBAT_BEFORE_ROSH_HASHANA
     }
 
     /** Result: the occasion driving this haftarah + one or more references. */
@@ -217,7 +221,7 @@ public final class Haftarah {
         // Which JewishSpecialDays land on this Shabbat?
         boolean chanukah = false;
         boolean shabbatShekalim = false, shabbatZachor = false, shabbatParah = false, shabbatHachodesh = false;
-        boolean shabbatHagadol = false, erevPesach = false;
+        boolean shabbatHagadol = false, shabbatShuvah = false, erevPesach = false;
         JewishSpecialDay festivalSd = null;
         boolean cholHamoedPesach = false, cholHamoedSukkot = false;
         boolean simchatTorah = false;
@@ -233,6 +237,7 @@ public final class Haftarah {
                 case SHABBAT_PARA:      shabbatParah     = true; break;
                 case SHABBAT_HACHODESH: shabbatHachodesh = true; break;
                 case SHABBAT_HAGADOL:   shabbatHagadol   = true; break;
+                case SHABBAT_SHUVAH:    shabbatShuvah    = true; break;
                 case EREV_PESACH:       erevPesach       = true; break;
                 case SIMCHAT_TORAH_I:
                 case SIMCHAT_TORAH_C:
@@ -307,9 +312,32 @@ public final class Haftarah {
                              second ? "Chanukah_SHABBAT_2" : "Chanukah_SHABBAT_1", custom);
         }
 
+        // ── Shabbat Shuvah and the Shabbat before Rosh Hashanah ──────
+        //
+        // upstream stores the Shabbat Shuvah haftarah in Vayeilech's weekly
+        // slot, with only an XML comment to say so. That holds only when
+        // Vayeilech falls on Shabbat Shuvah; in the other ~60% of years it is
+        // folded into Nitzavim-Vayeilech and read *before* Rosh Hashanah, so
+        // the reading lands a week early and Shabbat Shuvah falls through to
+        // Haazinu's own haftarah — which belongs to it only when Haazinu
+        // falls after Yom Kippur. Both weeks are named explicitly here; the
+        // readings are unchanged, only which Shabbat they attach to.
+        java.util.List<Parsha> parshas = ICalendar.JEWISH.getParsha(h, inIsrael);
+
+        if (result == null && shabbatShuvah) {
+            List<Haftarot.Reference> refs = Haftarot.forParsha(Parsha.VAYEILECH, custom);
+            if (refs != null) result = new Result(Occasion.SHABBAT_SHUVAH, refs);
+        }
+        // Nitzavim is always the Shabbat before Rosh Hashanah, alone or paired
+        // with Vayeilech. The combined-week rule below would take Vayeilech's
+        // (i.e. Shabbat Shuvah's) haftarah, so name this week explicitly.
+        if (result == null && parshas.contains(Parsha.NITZAVIM)) {
+            List<Haftarot.Reference> refs = Haftarot.forParsha(Parsha.NITZAVIM, custom);
+            if (refs != null) result = new Result(Occasion.SHABBAT_BEFORE_ROSH_HASHANA, refs);
+        }
+
         // Weekly parsha; a combined week follows the second parsha.
         if (result == null) {
-            java.util.List<Parsha> parshas = ICalendar.JEWISH.getParsha(h, inIsrael);
             if (parshas.isEmpty()) return null;
             Parsha target = parshas.size() >= 2 ? parshas.get(1) : parshas.get(0);
             List<Haftarot.Reference> refs = Haftarot.forParsha(target, custom);
