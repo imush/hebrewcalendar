@@ -110,6 +110,64 @@ public class ReadingsAgainstOpentorahTest {
      * and maftir rows of the fixture have nothing to compare against yet. What
      * this reports is the list of special readings that are wrong.
      */
+    private static boolean isAfternoon(Haftarah.Occasion o) {
+        return o == Haftarah.Occasion.FAST_AFTERNOON
+            || o == Haftarah.Occasion.TISHA_BAV_AFTERNOON
+            || o == Haftarah.Occasion.YOM_KIPPUR_AFTERNOON;
+    }
+
+    /**
+     * Weekdays and afternoons, which forDate cannot answer: it reports what is
+     * read on the coming Shabbos, so on a Tuesday it describes Saturday. forDay
+     * gives the day's own readings, tagged by occasion, so morning and
+     * afternoon can be told apart.
+     */
+    @Test
+    public void weekdayAndAfternoonHaftarotMatchOpentorah() throws Exception {
+        Map<String, String> bySituation = new TreeMap<>();
+        int checked = 0, wrong = 0;
+
+        for (Row row : load()) {
+            if (!"haftarah".equals(row.kind())) continue;
+            boolean afternoon = row.situation().endsWith("|afternoon");
+            boolean shabbos = row.situation().contains("|shabbos|");
+            if (shabbos && !afternoon) continue;   // covered by the other test
+            boolean inIsrael = row.situation().startsWith("EY|");
+            LocalDate date = gregorian(row.date());
+
+            for (Custom custom : customsOf(row.customs())) {
+                checked++;
+                String got = "-";
+                try {
+                    for (Haftarah.Result r : Haftarah.forDay(date, custom, inIsrael)) {
+                        if (isAfternoon(r.occasion) == afternoon) { got = render(r.refs); break; }
+                    }
+                } catch (RuntimeException e) {
+                    got = "threw " + e.getClass().getSimpleName();
+                }
+                if (!got.equals(normalizeBooks(row.value()))) {
+                    wrong++;
+                    String prior = bySituation.get(row.situation());
+                    String line = "      " + custom + ": expected "
+                            + normalizeBooks(row.value()) + ", got " + got;
+                    bySituation.put(row.situation(), prior == null ? line : prior + "\n" + line);
+                }
+            }
+        }
+
+        if (!bySituation.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(bySituation.size()).append(" weekday/afternoon situations disagree (")
+              .append(wrong).append(" of ").append(checked).append("):\n");
+            int shown = 0;
+            for (Map.Entry<String, String> e : bySituation.entrySet()) {
+                if (shown++ == 25) { sb.append("  ... and ").append(bySituation.size() - 25).append(" more\n"); break; }
+                sb.append("  ").append(e.getKey()).append('\n').append(e.getValue()).append('\n');
+            }
+            fail(sb.toString());
+        }
+    }
+
     @Test
     public void haftarotMatchOpentorah() throws Exception {
         Map<String, String> bySituation = new TreeMap<>();  // situation -> first mismatch

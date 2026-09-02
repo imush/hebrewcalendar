@@ -103,10 +103,18 @@ public final class Haftarah {
             ICalendar.GREGORIAN.fromYMD(date.getYear(), date.getMonthValue(), date.getDayOfMonth()));
         int dow = h.getDayOfWeek();
 
-        // Shabbat: same lookup as forDate (upcomingShabbat == today).
+        // Shabbat: same lookup as forDate (upcomingShabbat == today) — but that
+        // answers for the morning only, and Yom Kippur is read again at Mincha
+        // whichever day it falls on. Tisha BeAv needs no such case: when it
+        // falls on Shabbos it is deferred to Sunday.
         if (dow == 7) {
+            List<Result> shabbos = new java.util.ArrayList<>();
             Result r = forDate(date, custom, inIsrael);
-            return r == null ? java.util.Collections.emptyList() : java.util.Collections.singletonList(r);
+            if (r != null) shabbos.add(r);
+            if (JewishSpecialDay.YOM_KIPPUR.matches(h)) {
+                addSpecial(shabbos, Occasion.YOM_KIPPUR_AFTERNOON, "YomKippur_AFTERNOON", custom);
+            }
+            return java.util.Collections.unmodifiableList(shabbos);
         }
 
         // Weekday: check for Yom Tov / Yom Kippur / fast days.
@@ -194,6 +202,16 @@ public final class Haftarah {
      *  haftarah at all in opentorah's data — for those nothing is added. */
     private static void addFastAfternoon(List<Result> out, Custom custom,
                                          JewishSpecialDay which, Occasion occ) {
+        // Tisha BeAv Mincha is its own table, not the one the other fasts
+        // share: there Teiman and most of Sefard read nothing, and here
+        // everyone reads. Falling through to the shared table left more than
+        // half the tree with no haftarah.
+        if (which == JewishSpecialDay.FAST_AV_9) {
+            List<Haftarot.Reference> own =
+                SpecialHaftarot.forOccasion("TishaBeAv_AFTERNOON", custom);
+            if (own != null) out.add(new Result(occ, own));
+            return;
+        }
         if (which == JewishSpecialDay.TZOM_GEDALIA) {
             List<Haftarot.Reference> exc =
                 SpecialHaftarot.forOccasion("FastOfGedalia_AFTERNOON_EXCEPTIONS", custom);
