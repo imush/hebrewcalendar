@@ -206,9 +206,10 @@ public class HaftarahTest {
     }
 
     @Test public void tzomGedalia_marrakeshHasItsOwnAfternoonHaftarah() {
-        // opentorah hangs this exception on Morocco, so Fes inherits it;
-        // hebrewcalendar-data narrows it to Marrakesh, which is the custom
-        // that actually keeps Hosea + Joel. Morocco and Fes read the default.
+        // Marrakesh is upstream now, and R. Asulin settles what it reads: Shuva
+        // on the Fast of Gedalia, where the rest of Morocco reads Dirshu, and
+        // Shuva with Micah on the other fasts, where most of Morocco reads
+        // nothing at all. The local narrowing this test was written for is gone.
         LocalDate gedalia = LocalDate.of(2026, 9, 14);
         assertDay(gedalia, Custom.ASHKENAZ, false,
                   Haftarah.Occasion.FAST_AFTERNOON, "Isaiah", 55, 6, 56, 8);
@@ -218,9 +219,11 @@ public class HaftarahTest {
                   Haftarah.Occasion.FAST_AFTERNOON, "Isaiah", 55, 6, 56, 8);
         assertDay(gedalia, Custom.MARRAKESH, false,
                   Haftarah.Occasion.FAST_AFTERNOON, "Hosea", 14, 2, 14, 10);
-        // On 17 Tammuz Marrakesh is back on the default.
+        // On the other fasts Marrakesh reads Shuva with the Micah ending, and
+        // Morocco reads nothing.
         assertDay(LocalDate.of(2026, 7, 2), Custom.MARRAKESH, false,
-                  Haftarah.Occasion.FAST_AFTERNOON, "Isaiah", 55, 6, 56, 8);
+                  Haftarah.Occasion.FAST_AFTERNOON, "Hosea", 14, 2, 14, 10);
+        assertTrue(Haftarah.forDay(LocalDate.of(2026, 7, 2), Custom.MOROCCO, false).isEmpty());
     }
 
     @Test public void fastDay_someCustomsHaveNoHaftarah() {

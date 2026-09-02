@@ -25,6 +25,7 @@
                 <directory>testsrc</directory>
                 <includes>
                     <include>**/*.json</include>
+                    <include>**/*.tsv</include>
                 </includes>
             </testResource>
         </testResources>

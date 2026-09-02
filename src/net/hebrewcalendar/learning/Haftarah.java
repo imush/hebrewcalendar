@@ -210,6 +210,13 @@ public final class Haftarah {
     }
 
     /** Main entry point: haftarah for the upcoming/current Shabbat. */
+    /** Is this day on or after 17 Tammuz, so inside the three weeks? */
+    private static boolean afterSeventeenTammuz(IDate<JewishCalendar> h) {
+        int month = h.getMonth(), day = h.getDay();
+        // Tammuz is month 4 counting from Nisan, Av is 5
+        return (month == 4 && day >= 17) || month == 5;
+    }
+
     public static Result forDate(LocalDate date, Custom custom, boolean inIsrael) {
         LocalDate shabbat  = upcomingShabbat(date);
         IDate<JewishCalendar> h = ICalendar.JEWISH.convert(
@@ -238,6 +245,10 @@ public final class Haftarah {
                 case SHABBAT_HACHODESH: shabbatHachodesh = true; break;
                 case SHABBAT_HAGADOL:   shabbatHagadol   = true; break;
                 case SHABBAT_SHUVAH:    shabbatShuvah    = true; break;
+                // Purim Meshulash: when Shushan Purim falls on Shabbat, that
+                // Shabbat takes Parshas Zachor's maftir and haftarah. hamichlol
+                // keys the two together — "שבת זכור ופורים משולש".
+                case SHUSHAN_PURIM:     shabbatZachor    = true; break;
                 case EREV_PESACH:       erevPesach       = true; break;
                 case SIMCHAT_TORAH_I:
                 case SIMCHAT_TORAH_C:
@@ -336,10 +347,28 @@ public final class Haftarah {
             if (refs != null) result = new Result(Occasion.SHABBAT_BEFORE_ROSH_HASHANA, refs);
         }
 
-        // Weekly parsha; a combined week follows the second parsha.
+        // Pinchas read after 17 Tammuz is inside the three weeks, and takes the
+        // first haftarah of rebuke — which is Mattos's — instead of its own.
+        // opentorah calls this correctPinchas. In a year where Mattos and Masei
+        // combine, Pinchas falls before the fast and keeps its own.
+        if (result == null && parshas.size() == 1 && parshas.get(0) == Parsha.PINCHAS
+                && afterSeventeenTammuz(h)) {
+            List<Haftarot.Reference> refs = Haftarot.forParsha(Parsha.MATOT, custom);
+            if (refs != null) result = new Result(Occasion.WEEKLY, refs);
+        }
+
+        // Weekly parsha. A combined week follows its second parsha, except for
+        // the customs the first parsha claims back — Chabad reads Acharei's
+        // haftarah when Acharei and Kedoshim combine, and Nitzavim claims every
+        // custom against Vayeilech. opentorah says so with
+        // precedenceWhenCombined; Haftarot carries it.
         if (result == null) {
             if (parshas.isEmpty()) return null;
-            Parsha target = parshas.size() >= 2 ? parshas.get(1) : parshas.get(0);
+            Parsha target = parshas.get(0);
+            if (parshas.size() >= 2
+                    && !Haftarot.takesPrecedenceWhenCombined(parshas.get(0), custom)) {
+                target = parshas.get(1);
+            }
             List<Haftarot.Reference> refs = Haftarot.forParsha(target, custom);
             if (refs != null) result = new Result(Occasion.WEEKLY, refs);
         }
