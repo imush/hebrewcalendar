@@ -110,6 +110,11 @@ public class ReadingsAgainstOpentorahTest {
      * and maftir rows of the fixture have nothing to compare against yet. What
      * this reports is the list of special readings that are wrong.
      */
+    /** Days whose only "special" name is the Omer count read as an ordinary
+     *  Shabbos: the Omer changes nothing about what is read. */
+    private static final java.util.regex.Pattern ONLY_OMER =
+            java.util.regex.Pattern.compile("Omer\\(\\d+\\)");
+
     private static boolean isAfternoon(Haftarah.Occasion o) {
         return o == Haftarah.Occasion.FAST_AFTERNOON
             || o == Haftarah.Occasion.TISHA_BAV_AFTERNOON
@@ -162,6 +167,78 @@ public class ReadingsAgainstOpentorahTest {
             int shown = 0;
             for (Map.Entry<String, String> e : bySituation.entrySet()) {
                 if (shown++ == 25) { sb.append("  ... and ").append(bySituation.size() - 25).append(" more\n"); break; }
+                sb.append("  ").append(e.getKey()).append('\n').append(e.getValue()).append('\n');
+            }
+            fail(sb.toString());
+        }
+    }
+
+    private static String renderTorah(TorahReading.Result r) {
+        if (r == null) return "-";
+        StringBuilder sb = new StringBuilder();
+        int n = 1;
+        for (TorahReading.Span s : r.aliyot) {
+            if (sb.length() > 0) sb.append(' ');
+            sb.append(n++).append(':').append(s.book).append(':').append(s.fromCh)
+              .append(':').append(s.fromV).append(':').append(s.toCh).append(':').append(s.toV);
+        }
+        return sb.length() == 0 ? "-" : sb.toString();
+    }
+
+    private static String renderMaftir(TorahReading.Result r) {
+        if (r == null || r.maftir == null) return "-";
+        TorahReading.Span s = r.maftir;
+        return s.book + ":" + s.fromCh + ":" + s.fromV + ":" + s.toCh + ":" + s.toV;
+    }
+
+    /**
+     * The Torah readings. Only the ordinary Shabbos is implemented so far, so
+     * this counts how far that gets rather than demanding everything: a day
+     * with any special reading is skipped, and the count says how much of the
+     * year is covered.
+     */
+    @Test
+    public void ordinaryShabbosTorahMatchesOpentorah() throws Exception {
+        Map<String, String> bySituation = new TreeMap<>();
+        int checked = 0, wrong = 0;
+
+        for (Row row : load()) {
+            boolean torah = "torah".equals(row.kind()), maftir = "maftir".equals(row.kind());
+            if (!torah && !maftir) continue;
+            if (!row.situation().contains("|shabbos|")) continue;
+            if (!row.situation().endsWith("|morning")) continue;
+            String[] parts = row.situation().split("\\|");
+            if ("-".equals(parts[2])) continue;   // no parsha: a festival weekday
+            // everything with a parsha, special days included
+            boolean inIsrael = row.situation().startsWith("EY|");
+            LocalDate date = gregorian(row.date());
+
+            for (Custom custom : customsOf(row.customs())) {
+                checked++;
+                String got;
+                try {
+                    TorahReading.Result r = TorahReading.forDate(date, custom, inIsrael);
+                    got = torah ? renderTorah(r) : renderMaftir(r);
+                } catch (RuntimeException e) {
+                    got = "threw " + e.getClass().getSimpleName() + ": " + e.getMessage();
+                }
+                if (!got.equals(row.value())) {
+                    wrong++;
+                    String prior = bySituation.get(row.situation() + " " + row.kind());
+                    String line = "      " + custom + ": expected " + row.value() + ", got " + got;
+                    bySituation.put(row.situation() + " " + row.kind(),
+                            prior == null ? line : prior + "\n" + line);
+                }
+            }
+        }
+
+        if (!bySituation.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(bySituation.size()).append(" ordinary-Shabbos torah situations disagree (")
+              .append(wrong).append(" of ").append(checked).append("):\n");
+            int shown = 0;
+            for (Map.Entry<String, String> e : bySituation.entrySet()) {
+                if (shown++ == 8) { sb.append("  ... and ").append(bySituation.size() - 8).append(" more\n"); break; }
                 sb.append("  ").append(e.getKey()).append('\n').append(e.getValue()).append('\n');
             }
             fail(sb.toString());
