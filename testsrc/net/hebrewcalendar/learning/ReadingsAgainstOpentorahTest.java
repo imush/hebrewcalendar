@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
@@ -192,10 +193,8 @@ public class ReadingsAgainstOpentorahTest {
     }
 
     /**
-     * The Torah readings. Only the ordinary Shabbos is implemented so far, so
-     * this counts how far that gets rather than demanding everything: a day
-     * with any special reading is skipped, and the count says how much of the
-     * year is covered.
+     * The Torah readings of every Shabbos that has a parsha, special days
+     * included: the seven aliyot and the maftir.
      */
     @Test
     public void ordinaryShabbosTorahMatchesOpentorah() throws Exception {
@@ -292,5 +291,81 @@ public class ReadingsAgainstOpentorahTest {
             }
             fail(sb.toString());
         }
+    }
+
+    /**
+     * The three aliyot of a Monday, a Thursday, and Shabbos Mincha, on the
+     * ordinary days: no festival, no fast, nothing else claiming the reading.
+     * All three read the same thing -- the opening of the parsha of the
+     * Shabbos ahead -- so all three are checked here together.
+     */
+    @Test
+    public void weekdayAndMinchaTorahMatchesOpentorah() throws Exception {
+        Map<String, String> bySituation = new TreeMap<>();
+        int checked = 0, wrong = 0;
+
+        for (Row row : load()) {
+            if (!"torah".equals(row.kind())) continue;
+            String[] parts = row.situation().split("\\|");
+            String dayOfWeek = parts[1], parsha = parts[2], special = parts[3], slot = parts[4];
+            if ("-".equals(parsha)) continue;
+            boolean shabbosMincha = "shabbos".equals(dayOfWeek) && "afternoon".equals(slot);
+            boolean weekdayMorning = ("Monday".equals(dayOfWeek) || "Thursday".equals(dayOfWeek))
+                    && "morning".equals(slot);
+            if (!shabbosMincha && !weekdayMorning) continue;
+            // The days that read something else of their own are the next
+            // piece of work. Counting the Omer and being the eve of Rosh
+            // Chodesh change nothing about the Torah, so those still count --
+            // but every name has to be one of them, not just the first.
+            if (!allHarmless(special)) continue;
+            boolean inIsrael = row.situation().startsWith("EY|");
+            LocalDate date = gregorian(row.date());
+            TorahReading.Slot want = shabbosMincha
+                    ? TorahReading.Slot.AFTERNOON : TorahReading.Slot.MORNING;
+
+            for (Custom custom : customsOf(row.customs())) {
+                checked++;
+                String got;
+                try {
+                    TorahReading.Result found = null;
+                    for (TorahReading.Result r : TorahReading.forDay(date, custom, inIsrael))
+                        if (r.slot == want) found = r;
+                    got = renderTorah(found);
+                } catch (RuntimeException e) {
+                    got = "threw " + e.getClass().getSimpleName() + ": " + e.getMessage();
+                }
+                if (!got.equals(row.value())) {
+                    wrong++;
+                    String prior = bySituation.get(row.situation());
+                    String line = "      " + custom + ": expected " + row.value() + ", got " + got;
+                    bySituation.put(row.situation(), prior == null ? line : prior + "\n" + line);
+                }
+            }
+        }
+
+        assertTrue("no weekday or Mincha torah rows were checked", checked > 0);
+        if (!bySituation.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(bySituation.size()).append(" weekday/Mincha torah situations disagree (")
+              .append(wrong).append(" of ").append(checked).append("):\n");
+            int shown = 0;
+            for (Map.Entry<String, String> e : bySituation.entrySet()) {
+                if (shown++ == 8) { sb.append("  ... and ").append(bySituation.size() - 8).append(" more\n"); break; }
+                sb.append("  ").append(e.getKey()).append('\n').append(e.getValue()).append('\n');
+            }
+            fail(sb.toString());
+        }
+    }
+
+    /**
+     * Whether nothing in this situation changes the Torah reading. The Omer
+     * count and the eve of Rosh Chodesh do not: the first is a count and the
+     * second only adds a haftarah.
+     */
+    private static boolean allHarmless(String special) {
+        if ("-".equals(special)) return true;
+        for (String name : special.split("\\+"))
+            if (!name.startsWith("Omer(") && !name.equals("ErevRoshChodesh")) return false;
+        return true;
     }
 }

@@ -44,12 +44,17 @@ public final class TorahReading {
         }
     }
 
+    /** When in the day a reading is read. */
+    public enum Slot { MORNING, AFTERNOON }
+
     /** The day's reading: its aliyot in order, and the maftir if there is one. */
     public static final class Result {
+        public final Slot slot;
         public final List<Span> aliyot;
         public final Span maftir;
 
-        Result(List<Span> aliyot, Span maftir) {
+        Result(Slot slot, List<Span> aliyot, Span maftir) {
+            this.slot = slot;
             this.aliyot = Collections.unmodifiableList(aliyot);
             this.maftir = maftir;
         }
@@ -67,20 +72,70 @@ public final class TorahReading {
     }
 
     /**
-     * The Torah reading for this day, or null if there is none.
+     * The Shabbos morning Torah reading for this date, or null if the date is
+     * not a Shabbos with a weekly parsha.
      *
-     * <p>The Shabbos of a weekly parsha: its seven aliyot, with the maftir at
-     * its tail, and the special days that displace one or both. A day whose
-     * reading replaces the parsha outright -- a festival falling on Shabbos,
-     * or any weekday -- is not handled here yet and returns null.
+     * <p>Its seven aliyot, with the maftir at its tail, and the special days
+     * that displace one or both. A Shabbos whose reading replaces the parsha
+     * outright -- a festival falling on Shabbos -- is not handled yet.
      */
     public static Result forDate(LocalDate date, Custom custom, boolean inIsrael) {
+        for (Result result : forDay(date, custom, inIsrael))
+            if (result.slot == Slot.MORNING) return result;
+        return null;
+    }
+
+    /**
+     * Every Torah reading that falls on this date, in the order they are read.
+     *
+     * <ul>
+     *   <li>Shabbos morning -- the week's parsha in seven aliyot and a maftir
+     *   <li>Shabbos Mincha, and Monday and Thursday morning -- the first three
+     *       aliyot of the parsha of the Shabbos ahead
+     * </ul>
+     *
+     * <p>The days whose reading is not the parsha's -- the festivals, the
+     * fasts, Purim, the weekdays of Chanukah and of Rosh Chodesh -- are not
+     * handled yet and contribute nothing.
+     */
+    public static List<Result> forDay(LocalDate date, Custom custom, boolean inIsrael) {
         IDate<JewishCalendar> h = ICalendar.JEWISH.convert(
                 ICalendar.GREGORIAN.fromYMD(date.getYear(), date.getMonthValue(),
                                             date.getDayOfMonth()));
-        if (h.getDayOfWeek() != 7) return null;
+        int dayOfWeek = h.getDayOfWeek();   // 1..7, Sunday..Shabbos
+        List<Result> out = new ArrayList<>();
 
-        List<Parsha> parshas = ICalendar.JEWISH.getParsha(h, inIsrael);
+        if (dayOfWeek == 7) {
+            ChumashAliyot.Reading reading = readingOn(h, inIsrael);
+            if (reading != null) {
+                String book = ChumashAliyot.BOOKS[reading.book];
+                List<Span> aliyot = new ArrayList<>();
+                for (String range : reading.aliyotFor(custom)) aliyot.add(parse(book, range));
+                Span maftir = reading.maftir == null ? null : parse(book, reading.maftir);
+                out.add(withSpecialDays(h, aliyot, maftir));
+            }
+        }
+
+        // Monday and Thursday morning, and Shabbos Mincha, all read the same
+        // three aliyot: the opening of the parsha of the Shabbos ahead. On
+        // Shabbos that is the week after this one, on a weekday this week's.
+        if (dayOfWeek == 2 || dayOfWeek == 5 || dayOfWeek == 7) {
+            ChumashAliyot.Reading next = nextWeeklyReading(h, inIsrael);
+            if (next != null) {
+                String book = ChumashAliyot.BOOKS[next.book];
+                List<Span> aliyot = new ArrayList<>();
+                for (String range : next.aliyotWeekday) aliyot.add(parse(book, range));
+                out.add(new Result(dayOfWeek == 7 ? Slot.AFTERNOON : Slot.MORNING,
+                                   aliyot, null));
+            }
+        }
+
+        return out;
+    }
+
+    /** The weekly reading of this Shabbos, or null if it has none. */
+    private static ChumashAliyot.Reading readingOn(IDate<JewishCalendar> shabbos, boolean inIsrael) {
+        List<Parsha> parshas = ICalendar.JEWISH.getParsha(shabbos, inIsrael);
         if (parshas.isEmpty()) return null;
 
         // A combined week is read as one: the first parsha's aliyot run into
@@ -89,18 +144,26 @@ public final class TorahReading {
                 ? parshas.get(0).name() + "_" + parshas.get(1).name()
                 : parshas.get(0).name();
         ChumashAliyot.Reading reading = ChumashAliyot.READINGS.get(id);
-        if (reading == null && parshas.size() >= 2) {
-            id = parshas.get(1).name();
-            reading = ChumashAliyot.READINGS.get(id);
+        if (reading == null && parshas.size() >= 2)
+            reading = ChumashAliyot.READINGS.get(parshas.get(1).name());
+        return reading;
+    }
+
+    /**
+     * The next weekly reading after this day: the coming Shabbos's, or the
+     * Shabbos after that when this day is itself Shabbos. A Shabbos taken by a
+     * festival has no weekly reading, so the search steps over it.
+     */
+    private static ChumashAliyot.Reading nextWeeklyReading(IDate<JewishCalendar> day, boolean inIsrael) {
+        int daysToShabbos = 7 - day.getDayOfWeek();   // 0 when the day is Shabbos
+        IDate<JewishCalendar> shabbos = ICalendar.JEWISH.addDays(day, daysToShabbos == 0 ? 7 : daysToShabbos);
+        // a year is enough: no run of festival Shabbosos comes close to it
+        for (int week = 0; week < 54; week++) {
+            ChumashAliyot.Reading reading = readingOn(shabbos, inIsrael);
+            if (reading != null) return reading;
+            shabbos = ICalendar.JEWISH.addDays(shabbos, 7);
         }
-        if (reading == null) return null;
-
-        String book = ChumashAliyot.BOOKS[reading.book];
-        List<Span> aliyot = new ArrayList<>();
-        for (String range : reading.aliyotFor(custom)) aliyot.add(parse(book, range));
-        Span maftir = reading.maftir == null ? null : parse(book, reading.maftir);
-
-        return withSpecialDays(h, aliyot, maftir);
+        return null;
     }
 
     /**
@@ -159,7 +222,7 @@ public final class TorahReading {
             aliyot.set(n - 1, roshChodeshSpan());
         }
 
-        return new Result(aliyot, maftir);
+        return new Result(Slot.MORNING, aliyot, maftir);
     }
 
     /** Numbers 28:9-15 -- the Shabbos of Rosh Chodesh, its last two fragments. */
