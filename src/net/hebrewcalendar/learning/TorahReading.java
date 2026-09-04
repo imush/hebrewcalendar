@@ -83,6 +83,14 @@ public final class TorahReading {
          */
         public final List<Integer> aliyotSefer;
         public final int maftirSefer;
+        /**
+         * The custom whose division of the parsha into aliyot this reading
+         * follows, where that is not the common one -- Chabad on Vayigash,
+         * Naso and Devarim, Ashkenaz on Masei -- and null otherwise. Only a
+         * handful of weeks divide differently at all, and a caller naming the
+         * division needs to know which weeks those are.
+         */
+        public Custom division;
 
         Result(Slot slot, List<Span> aliyot, Span maftir, List<Parsha> parshiyot) {
             this(slot, aliyot, maftir, parshiyot, null);
@@ -184,10 +192,14 @@ public final class TorahReading {
             ChumashAliyot.Reading reading = readingOn(h, inIsrael);
             if (reading != null) {
                 String book = ChumashAliyot.BOOKS[reading.book];
+                String[] chosen = reading.aliyotFor(custom);
                 List<Span> aliyot = new ArrayList<>();
-                for (String range : reading.aliyotFor(custom)) aliyot.add(parse(book, range));
+                for (String range : chosen) aliyot.add(parse(book, range));
                 Span maftir = reading.maftir == null ? null : parse(book, reading.maftir);
                 morning = withSpecialDays(occasion, aliyot, maftir, parshiyotOf(reading));
+                // which of the divisions aliyotFor settled on, by identity
+                if (chosen == reading.aliyotChabad) morning.division = Custom.CHABAD;
+                else if (chosen == reading.aliyotAshkenaz) morning.division = Custom.ASHKENAZ;
             }
         } else if (morning == null && occasion.roshChodesh) {
             morning = roshChodeshWeekday(custom);
