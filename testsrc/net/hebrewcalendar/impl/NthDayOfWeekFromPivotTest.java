@@ -12,15 +12,15 @@ import static org.junit.Assert.*;
 public class NthDayOfWeekFromPivotTest
 {
     private static final SpecialDay pesach = new MonthDaySpecialDay(ICalendar.JEWISH, "Pesach", 1, 15);
-    private static final SpecialDay shabbosHagodol = new NthDayOfWeekFromPivot(ICalendar.JEWISH,
+    private static final SpecialDay shabbatHagadol = new NthDayOfWeekFromPivot(ICalendar.JEWISH,
             "Shabbos Hagodol", pesach, 7, -1, false);
 
 
     private static final SpecialDay ninthAv = new MonthDaySpecialDay(ICalendar.JEWISH,
             "9 Av", 5, 9);
-    private static final SpecialDay shabbosChazon = new NthDayOfWeekFromPivot(ICalendar.JEWISH,
+    private static final SpecialDay shabbatChazon = new NthDayOfWeekFromPivot(ICalendar.JEWISH,
             "Shabbos Chazon", ninthAv, 7, -1, false);
-    private static final SpecialDay shabbosNachamu = new NthDayOfWeekFromPivot(ICalendar.JEWISH,
+    private static final SpecialDay shabbatNachamu = new NthDayOfWeekFromPivot(ICalendar.JEWISH,
             "Shabbos Nachamu", ninthAv, 7, 1, false);
 
 
@@ -31,17 +31,17 @@ public class NthDayOfWeekFromPivotTest
         IDate d0 = ICalendar.JEWISH.fromYMD(5777, 1, 1);
         IDate d1 = ICalendar.JEWISH.fromYMD(5777, 1, 12);
         IDate d2 = ICalendar.JEWISH.fromYMD(5778, 1, 8);
-        assertEquals(d1, shabbosHagodol.getNextOccurrence(d0, false));
-        assertEquals(d1, shabbosHagodol.getNextOccurrence(d0, true));
-        assertEquals(d1, shabbosHagodol.getNextOccurrence(d1, false));
-        assertEquals(d2, shabbosHagodol.getNextOccurrence(d1.addDays(1), false));
+        assertEquals(d1, shabbatHagadol.getNextOccurrence(d0, false));
+        assertEquals(d1, shabbatHagadol.getNextOccurrence(d0, true));
+        assertEquals(d1, shabbatHagadol.getNextOccurrence(d1, false));
+        assertEquals(d2, shabbatHagadol.getNextOccurrence(d1.addDays(1), false));
 
         IDate d3 = ICalendar.JEWISH.fromYMD(5777, 5, 6);
         IDate d4 = ICalendar.JEWISH.fromYMD(5777, 5, 13);
-        assertEquals(d3, shabbosChazon.getNextOccurrence(d0, false));
-        assertEquals(d4, shabbosNachamu.getNextOccurrence(d0, false));
-        assertEquals(d4, shabbosNachamu.getNextOccurrence(d3, false));
-        assertEquals(d4, shabbosNachamu.getNextOccurrence(d4, false));
+        assertEquals(d3, shabbatChazon.getNextOccurrence(d0, false));
+        assertEquals(d4, shabbatNachamu.getNextOccurrence(d0, false));
+        assertEquals(d4, shabbatNachamu.getNextOccurrence(d3, false));
+        assertEquals(d4, shabbatNachamu.getNextOccurrence(d4, false));
     }
 
     @Test
@@ -50,31 +50,31 @@ public class NthDayOfWeekFromPivotTest
     {
         IDate d1 = ICalendar.JEWISH.fromYMD(5777, 1, 12);
         IDate d2 = ICalendar.JEWISH.fromYMD(5778, 1, 8);
-        assertTrue(shabbosHagodol.matches(d1));
-        assertTrue(shabbosHagodol.matches(d2));
+        assertTrue(shabbatHagadol.matches(d1));
+        assertTrue(shabbatHagadol.matches(d2));
 
         IDate d3 = ICalendar.JEWISH.fromYMD(5777, 5, 6);
         IDate d4 = ICalendar.JEWISH.fromYMD(5777, 5, 13);
-        assertTrue(shabbosChazon.matches(d3));
-        assertTrue(shabbosNachamu.matches(d4));
+        assertTrue(shabbatChazon.matches(d3));
+        assertTrue(shabbatNachamu.matches(d4));
 
         IDate d0 = ICalendar.JEWISH.fromYMD(5777, 1, 1);
-        assertFalse(shabbosNachamu.matches(d0));
-        assertFalse(shabbosChazon.matches(d0));
-        assertFalse(shabbosHagodol.matches(d0));
+        assertFalse(shabbatNachamu.matches(d0));
+        assertFalse(shabbatChazon.matches(d0));
+        assertFalse(shabbatHagadol.matches(d0));
     }
 
     @Test
     public void getName()
             throws Exception
     {
-        assertEquals("Shabbos Chazon", shabbosChazon.getName());
+        assertEquals("Shabbos Chazon", shabbatChazon.getName());
     }
 
     @Test
     public void getCalendar()
             throws Exception
     {
-        assertEquals(ICalendar.JEWISH, shabbosChazon.getCalendar());
+        assertEquals(ICalendar.JEWISH, shabbatChazon.getCalendar());
     }
 }

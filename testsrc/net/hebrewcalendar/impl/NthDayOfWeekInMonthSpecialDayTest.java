@@ -14,7 +14,7 @@ public class NthDayOfWeekInMonthSpecialDayTest
             new NthDayOfWeekInMonthSpecialDay(ICalendar.GREGORIAN, "Memorial Day", 5, 2, -1);
     private static final NthDayOfWeekInMonthSpecialDay laborDay =
             new NthDayOfWeekInMonthSpecialDay(ICalendar.GREGORIAN, "Labor Day", 9, 2, 1);
-    private static final NthDayOfWeekInMonthSpecialDay firstShabbos =
+    private static final NthDayOfWeekInMonthSpecialDay firstShabbat =
             new NthDayOfWeekInMonthSpecialDay(ICalendar.JEWISH, "First Shabbos of month", 0, 7, 1);
 
     @Test
@@ -66,7 +66,7 @@ public class NthDayOfWeekInMonthSpecialDayTest
         assertEquals(ICalendar.GREGORIAN.fromYMD(2017, 11,23),
                 thanksgiving.getNextOccurrence(ICalendar.GREGORIAN.fromYMD(2016, 12,2), false));
         assertEquals(ICalendar.GREGORIAN.convert(ICalendar.JEWISH.fromYMD(5777 ,1,5)),
-                ICalendar.GREGORIAN.convert(firstShabbos.getNextOccurrence(ICalendar.JEWISH.fromYMD(5777, 1, 1), false)));
+                ICalendar.GREGORIAN.convert(firstShabbat.getNextOccurrence(ICalendar.JEWISH.fromYMD(5777, 1, 1), false)));
     }
 
     @Test

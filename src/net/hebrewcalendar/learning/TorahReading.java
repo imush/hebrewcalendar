@@ -295,7 +295,7 @@ public final class TorahReading {
                 case SHABBAT_HACHODESH: o.parshaMaftir = "ParshasHachodesh"; break;
 
                 case YOM_KIPPUR:        o.yomKippur = true; o.festival = sd; break;
-                case TZOM_GEDALIA: case TENTH_TEVES: case TAANIT_ESTHER:
+                case TZOM_GEDALIA: case TENTH_TEVET: case TAANIT_ESTHER:
                 case FAST_TAMUZ_17: case FAST_AV_9:
                     o.fast = true; o.festival = sd; break;
 
@@ -396,7 +396,7 @@ public final class TorahReading {
                 return shabbat ? null : new Result(Slot.MORNING, torah("Purim_torah"), null);
             case FAST_AV_9:
                 return new Result(Slot.MORNING, torah("TishaBeAv_torah"), null);
-            case TZOM_GEDALIA: case TENTH_TEVES: case TAANIT_ESTHER: case FAST_TAMUZ_17:
+            case TZOM_GEDALIA: case TENTH_TEVET: case TAANIT_ESTHER: case FAST_TAMUZ_17:
                 return new Result(Slot.MORNING, fastTorah(), null);
             default:
                 return null;

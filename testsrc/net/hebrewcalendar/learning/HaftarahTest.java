@@ -116,7 +116,7 @@ public class HaftarahTest {
                      render(d, Custom.FES, false));
     }
 
-    @Test public void specialShabbos_blocksReplace_chabadAppendsInstead() {
+    @Test public void specialShabbat_blocksReplace_chabadAppendsInstead() {
         // 2015-03-21 is Parshat Hachodesh falling on 1 Nisan.
         LocalDate d = LocalDate.of(2015, 3, 21);
         assertEquals("Ezekiel 45:16-46:18;", render(d, Custom.ASHKENAZ, false));
@@ -126,8 +126,8 @@ public class HaftarahTest {
     }
 
     @Test public void bothAdditionsCanApplyAtOnce() {
-        // 30 Kislev 5776 (2015-12-12) is Shabbat Chanukah, Rosh Chodesh Teves
-        // and Erev Rosh Chodesh at once. Chanukah owns the reading; Teves
+        // 30 Kislev 5776 (2015-12-12) is Shabbat Chanukah, Rosh Chodesh Tevet
+        // and Erev Rosh Chodesh at once. Chanukah owns the reading; Tevet
         // blocks the Rosh Chodesh replace and being Rosh Chodesh blocks the
         // Machar Chodesh one, so Chabad appends both additions.
         LocalDate d = LocalDate.of(2015, 12, 12);

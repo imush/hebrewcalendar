@@ -44,7 +44,7 @@ public enum JewishSpecialDay
     TAMUZ_12(new MonthDaySpecialDay<>(ICalendar.JEWISH, "12 Tamuz", 4, 12), JewishSpecialDayKey.TAMUZ_12),
     TAMUZ_13(new MonthDaySpecialDay<>(ICalendar.JEWISH, "13 Tamuz", 4, 13), JewishSpecialDayKey.TAMUZ_13),
     FAST_TAMUZ_17(new UnionSpecialDay<>("Fast of 17 Tamuz",
-            // not Shabbos
+            // not Shabbat
             new ConjunctionSpecialDay<>("17 Tamuz no Shabbos",
                     new MonthDaySpecialDay<>(ICalendar.JEWISH, "17th day of Tamuz", 4, 17),
                     new NegationSpecialDay<>(new NthDayOfWeek<>(ICalendar.JEWISH, 7))),
@@ -55,7 +55,7 @@ public enum JewishSpecialDay
     ), JewishSpecialDayKey.FAST_17_TAMUZ),
 
     FAST_AV_9(new UnionSpecialDay<>("Fast of 9th Av",
-            // not Shabbos
+            // not Shabbat
             new ConjunctionSpecialDay<>("9 Av no Shabbos",
                     new MonthDaySpecialDay<>(ICalendar.JEWISH, "Fast of 9th day of Av", 5, 9),
                     new NegationSpecialDay<>(new NthDayOfWeek<>(ICalendar.JEWISH, 7))),
@@ -107,7 +107,7 @@ public enum JewishSpecialDay
     SIXTH_DAY_CHANUKAH(new ShiftedDateSpecialDay<>(   "6th day Chanukah", FIRST_DAY_CHANUKAH, 5), JewishSpecialDayKey.CHANUKAH),
     SEVENTH_DAY_CHANUKAH(new ShiftedDateSpecialDay<>( "7th day Chanukah", FIRST_DAY_CHANUKAH, 6), JewishSpecialDayKey.CHANUKAH),
     EIGHTH_DAY_CHANUKAH(new ShiftedDateSpecialDay<>(  "8th day Chanukah", FIRST_DAY_CHANUKAH, 7), JewishSpecialDayKey.CHANUKAH),
-    TENTH_TEVES(new MonthDaySpecialDay<>(ICalendar.JEWISH, "10 Tevet", 10, 10), JewishSpecialDayKey.TENTH_TEVET),
+    TENTH_TEVET(new MonthDaySpecialDay<>(ICalendar.JEWISH, "10 Tevet", 10, 10), JewishSpecialDayKey.TENTH_TEVET),
     YUD_SHVAT(new MonthDaySpecialDay<>(ICalendar.JEWISH, "10 Shvat", 11, 10), JewishSpecialDayKey.YUD_SHVAT),
     TU_BESHVAT(new MonthDaySpecialDay<>(ICalendar.JEWISH, "Tu Bishvat", 11, 15), JewishSpecialDayKey.TU_BESHVAT),
     SHABBAT_SHIRAH(new ParshaSpecialDay("Shabbat Shirah", Parsha.BESHALACH), JewishSpecialDayKey.SHABBAT_SHIRAH),
@@ -198,7 +198,7 @@ public enum JewishSpecialDay
 
     private static final Set<JewishSpecialDay> FAST_DAYS = createCollection(
             new JewishSpecialDay[]{
-                    TAANIT_ESTHER, TZOM_GEDALIA, TENTH_TEVES, FAST_TAMUZ_17, FAST_AV_9
+                    TAANIT_ESTHER, TZOM_GEDALIA, TENTH_TEVET, FAST_TAMUZ_17, FAST_AV_9
             });
 
     private static final Set<JewishSpecialDay> YOM_TOV_DAYS = createCollection(

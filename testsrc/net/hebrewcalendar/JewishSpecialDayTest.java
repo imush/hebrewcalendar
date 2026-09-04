@@ -189,7 +189,7 @@ public class JewishSpecialDayTest
     }
 
     @Test
-    public void testShavuos() {
+    public void testShavuot() {
         try {
             assertEquals(ICalendar.GREGORIAN.fromYMD(2018, 5, 20),
                     greg(JewishSpecialDay.SHAVUOT.getNextOccurrence(H20171231, true)));

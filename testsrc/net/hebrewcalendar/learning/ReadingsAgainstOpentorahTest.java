@@ -112,7 +112,7 @@ public class ReadingsAgainstOpentorahTest {
      * this reports is the list of special readings that are wrong.
      */
     /** Days whose only "special" name is the Omer count read as an ordinary
-     *  Shabbos: the Omer changes nothing about what is read. */
+     *  Shabbat: the Omer changes nothing about what is read. */
     private static final java.util.regex.Pattern ONLY_OMER =
             java.util.regex.Pattern.compile("Omer\\(\\d+\\)");
 
@@ -124,7 +124,7 @@ public class ReadingsAgainstOpentorahTest {
 
     /**
      * Weekdays and afternoons, which forDate cannot answer: it reports what is
-     * read on the coming Shabbos, so on a Tuesday it describes Saturday. forDay
+     * read on the coming Shabbat, so on a Tuesday it describes Saturday. forDay
      * gives the day's own readings, tagged by occasion, so morning and
      * afternoon can be told apart.
      */
@@ -136,8 +136,8 @@ public class ReadingsAgainstOpentorahTest {
         for (Row row : load()) {
             if (!"haftarah".equals(row.kind())) continue;
             boolean afternoon = row.situation().endsWith("|afternoon");
-            boolean shabbos = row.situation().contains("|shabbos|");
-            if (shabbos && !afternoon) continue;   // covered by the other test
+            boolean shabbat = row.situation().contains("|shabbos|");
+            if (shabbat && !afternoon) continue;   // covered by the other test
             boolean inIsrael = row.situation().startsWith("EY|");
             LocalDate date = gregorian(row.date());
 
@@ -194,9 +194,9 @@ public class ReadingsAgainstOpentorahTest {
 
     /**
      * Every Torah reading opentorah records: the seven aliyot and the maftir
-     * of a Shabbos morning, the five or six of a festival, the four of Chol
+     * of a Shabbat morning, the five or six of a festival, the four of Chol
      * HaMoed and of Rosh Chodesh, the three of a Monday, a Thursday, a fast
-     * and a Shabbos Mincha -- for all 26 customs, in both lands, over 81
+     * and a Shabbat Mincha -- for all 26 customs, in both lands, over 81
      * years.
      */
     @Test
