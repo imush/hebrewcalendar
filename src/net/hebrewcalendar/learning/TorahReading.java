@@ -187,8 +187,8 @@ public final class TorahReading {
      * festival has no weekly reading, so the search steps over it.
      */
     private static ChumashAliyot.Reading nextWeeklyReading(IDate<JewishCalendar> day, boolean inIsrael) {
-        int daysToShabbos = 7 - day.getDayOfWeek();   // 0 when the day is Shabbat
-        IDate<JewishCalendar> shabbat = ICalendar.JEWISH.addDays(day, daysToShabbos == 0 ? 7 : daysToShabbos);
+        int daysToShabbat = 7 - day.getDayOfWeek();   // 0 when the day is Shabbat
+        IDate<JewishCalendar> shabbat = ICalendar.JEWISH.addDays(day, daysToShabbat == 0 ? 7 : daysToShabbat);
         // a year is enough: no run of festival Shabbatos comes close to it
         for (int week = 0; week < 54; week++) {
             ChumashAliyot.Reading reading = readingOn(shabbat, inIsrael);

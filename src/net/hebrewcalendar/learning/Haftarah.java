@@ -299,7 +299,7 @@ public final class Haftarah {
         // Hagadol. This is a property of the *day*, not of which branch
         // below fires — Chabad keeps the weekly haftarah on Shabbat Hagadol,
         // but the day is still a special Shabbat for the Rosh Chodesh rules.
-        boolean isSpecialShabbos = shabbatShekalim || shabbatZachor || shabbatParah
+        boolean isSpecialShabbat = shabbatShekalim || shabbatZachor || shabbatParah
                                 || shabbatHachodesh || shabbatHagadol;
 
         // ── Base reading ─────────────────────────────────────────────
@@ -406,7 +406,7 @@ public final class Haftarah {
         if (rc > 0 && rc != TISHREI) {
             // Tevet is always Chanukah and Av is always the Three Weeks, so in
             // both the day's own haftarah outranks Rosh Chodesh.
-            boolean allowReplace = !isSpecialShabbos && rc != TEVES && rc != AV;
+            boolean allowReplace = !isSpecialShabbat && rc != TEVET && rc != AV;
             // In Elul the Shiva d'Nechemta hold their ground — except for
             // Chabad, who read the Rosh Chodesh haftarah.
             if (allowReplace && (rc != ELUL || custom == Custom.CHABAD)) {
@@ -420,8 +420,8 @@ public final class Haftarah {
         if (mc > 0 && mc != TISHREI) {
             // A Shabbat that is itself Rosh Chodesh reads the Rosh Chodesh
             // haftarah, not Machar Chodesh.
-            boolean allowReplace = !isSpecialShabbos && rc <= 0
-                                && mc != TEVES && mc != AV && mc != ELUL;
+            boolean allowReplace = !isSpecialShabbat && rc <= 0
+                                && mc != TEVET && mc != AV && mc != ELUL;
             // Fes never replaces — it always takes the addition instead.
             if (allowReplace && custom != Custom.FES) {
                 Result r = special(Occasion.MACHAR_CHODESH, "ErevRoshChodesh_SHABBAT", custom);
@@ -435,7 +435,7 @@ public final class Haftarah {
     }
 
     // Hebrew month numbers used by the Rosh Chodesh rules.
-    private static final int AV = 5, ELUL = 6, TISHREI = 7, TEVES = 10;
+    private static final int AV = 5, ELUL = 6, TISHREI = 7, TEVET = 10;
 
     /** Month whose Rosh Chodesh falls on this Hebrew date, or -1. Day 30 is
      *  the first of a two-day Rosh Chodesh and belongs to the next month;
