@@ -46,20 +46,85 @@ public final class TorahReading {
         }
     }
 
-    /** When in the day a reading is read. */
-    public enum Slot { MORNING, AFTERNOON }
+    /** When in the day a reading is read. The Jewish day begins at night, so
+     *  EVENING comes first: one reading falls there, on Simchat Torah. */
+    public enum Slot { EVENING, MORNING, AFTERNOON }
 
     /** The day's reading: its aliyot in order, and the maftir if there is one. */
     public static final class Result {
         public final Slot slot;
         public final List<Span> aliyot;
         public final Span maftir;
+        /**
+         * The parshiyos this reading is of -- one, or two for a joined week --
+         * and empty when the reading is not the weekly parsha at all, which is
+         * every festival and fast. A caller naming the reading needs to know
+         * the difference: on those days the parsha is not what is read, and on
+         * a Monday, a Thursday or at Mincha the parsha named is the one of the
+         * Shabbos ahead rather than of the day itself.
+         */
+        public final List<Parsha> parshiyot;
+        /**
+         * What is worth saying about this reading beyond the verses, or null.
+         * Only the night of Simchat Torah has one: who reads it, and that the
+         * split over how much is read does not follow rite lines.
+         */
+        public final String note;
+        /**
+         * Which scroll each aliyah is read from, 1-based and parallel to
+         * {@link #aliyot}; {@link #maftirSefer} says the same for the maftir,
+         * or 0 where there is none.
+         *
+         * <p>A scroll is taken out for each passage read from a different
+         * place, so this follows from where each passage came from, not from
+         * how far apart the verses are: an ordinary maftir repeats the tail of
+         * the parsha, and Rosh Chodesh's own aliyot overlap one another, so
+         * measuring the gaps would answer wrongly in both directions.
+         */
+        public final List<Integer> aliyotSefer;
+        public final int maftirSefer;
 
-        Result(Slot slot, List<Span> aliyot, Span maftir) {
+        Result(Slot slot, List<Span> aliyot, Span maftir, List<Parsha> parshiyot) {
+            this(slot, aliyot, maftir, parshiyot, null);
+        }
+
+        Result(Slot slot, List<Span> aliyot, Span maftir, List<Parsha> parshiyot, String note) {
+            // Everything from one place unless a caller says otherwise, which
+            // is every reading but the four that take out more than one.
+            this(slot, aliyot, maftir, parshiyot, note, allFrom(aliyot.size(), 1),
+                 maftir == null ? 0 : 1);
+        }
+
+        Result(Slot slot, List<Span> aliyot, Span maftir, List<Parsha> parshiyot, String note,
+               List<Integer> aliyotSefer, int maftirSefer) {
             this.slot = slot;
             this.aliyot = Collections.unmodifiableList(aliyot);
             this.maftir = maftir;
+            this.parshiyot = Collections.unmodifiableList(parshiyot);
+            this.note = note;
+            this.aliyotSefer = Collections.unmodifiableList(aliyotSefer);
+            this.maftirSefer = maftirSefer;
         }
+
+        /** How many scrolls are taken out for this reading. */
+        public int sefarim() {
+            int most = maftirSefer;
+            for (int n : aliyotSefer) most = Math.max(most, n);
+            return most;
+        }
+    }
+
+    private static List<Integer> allFrom(int count, int sefer) {
+        List<Integer> out = new ArrayList<>();
+        for (int i = 0; i < count; i++) out.add(sefer);
+        return out;
+    }
+
+    /** The parshiyos of a generated reading, by its Parsha keys. */
+    private static List<Parsha> parshiyotOf(ChumashAliyot.Reading reading) {
+        List<Parsha> out = new ArrayList<>();
+        for (String key : reading.parshiyot) out.add(Parsha.valueOf(key));
+        return out;
     }
 
     /** "1:1-1:5" in the named book. */
@@ -122,7 +187,7 @@ public final class TorahReading {
                 List<Span> aliyot = new ArrayList<>();
                 for (String range : reading.aliyotFor(custom)) aliyot.add(parse(book, range));
                 Span maftir = reading.maftir == null ? null : parse(book, reading.maftir);
-                morning = withSpecialDays(occasion, aliyot, maftir);
+                morning = withSpecialDays(occasion, aliyot, maftir, parshiyotOf(reading));
             }
         } else if (morning == null && occasion.roshChodesh) {
             morning = roshChodeshWeekday(custom);
@@ -133,16 +198,43 @@ public final class TorahReading {
         }
         if (morning != null) out.add(morning);
 
+        Result evening = simchatTorahEvening(occasion, custom);
+        if (evening != null) out.add(0, evening);
+
         if (occasion.yomKippur)
-            out.add(new Result(Slot.AFTERNOON, torah("YomKippur_afternoonTorah"), null));
+            out.add(new Result(Slot.AFTERNOON, torah("YomKippur_afternoonTorah"), null, java.util.List.of()));
         else if (occasion.fast)
-            out.add(new Result(Slot.AFTERNOON, fastTorah(), null));
+            out.add(new Result(Slot.AFTERNOON, fastTorah(), null, java.util.List.of()));
         else if (shabbat) {
             Result mincha = weekdayParsha(h, inIsrael, Slot.AFTERNOON);
             if (mincha != null) out.add(mincha);
         }
 
         return out;
+    }
+
+    /**
+     * The reading of the night of Simchat Torah, after the hakafot, or null.
+     *
+     * <p>Ashkenaz only, and not all of them: the first five aliyot of Vezot
+     * Haberachah, though some read only the first three. That split does not
+     * follow rite lines, so it cannot be a custom of its own and is said in
+     * the note instead. Outside Israel only -- in Israel the day is Shemini
+     * Atzeret and Simchat Torah together, and opentorah records no reading for
+     * its night.
+     */
+    private static Result simchatTorahEvening(Occasion occasion, Custom custom) {
+        if (occasion.festival != JewishSpecialDay.SIMCHAT_TORAH_C) return null;
+        if (!custom.isUnder(Custom.ASHKENAZ)) return null;
+        ChumashAliyot.Reading vezotHaberachah = ChumashAliyot.READINGS.get("VEZOT_HABRACHA");
+        String book = ChumashAliyot.BOOKS[vezotHaberachah.book];
+        List<Span> aliyot = new ArrayList<>();
+        for (String range : java.util.Arrays.asList(vezotHaberachah.aliyotFor(custom)).subList(0, 5))
+            aliyot.add(parse(book, range));
+        return new Result(Slot.EVENING, aliyot, null, java.util.List.of(),
+                "Read by Ashkenaz, and not by all of them. Some read only the first "
+                + "three of these aliyot. The split does not follow rite lines. "
+                + "Nitei Gavriel, Hilchos Sukkos.");
     }
 
     /** The opening three aliyot of the parsha of the Shabbat ahead. */
@@ -152,7 +244,7 @@ public final class TorahReading {
         String book = ChumashAliyot.BOOKS[next.book];
         List<Span> aliyot = new ArrayList<>();
         for (String range : next.aliyotWeekday) aliyot.add(parse(book, range));
-        return new Result(slot, aliyot, null);
+        return new Result(slot, aliyot, null, parshiyotOf(next));
     }
 
     /** Whether Pesach of this year begins on a Thursday, which shifts the
@@ -207,7 +299,8 @@ public final class TorahReading {
      * instead becomes the seventh aliyah, the parsha's own seventh folding
      * back into the sixth to make room.
      */
-    private static Result withSpecialDays(Occasion occasion, List<Span> aliyot, Span maftir) {
+    private static Result withSpecialDays(Occasion occasion, List<Span> aliyot, Span maftir,
+                                          List<Parsha> parshiyot) {
         boolean roshChodesh = occasion.roshChodesh, shushanPurim = occasion.shushanPurim;
         String parshaMaftir = occasion.parshaMaftir;
         int chanukahDay = occasion.chanukahDay;
@@ -227,18 +320,27 @@ public final class TorahReading {
             maftir = roshChodeshSpan();
             roshChodesh = false;
         }
+        // whether the day's own reading displaced the parsha's maftir
+        boolean maftirReplaced = shushanPurim || parshaMaftir != null || chanukahDay != 0
+                || occasion.roshChodesh;
+
+        List<Integer> sefer = allFrom(aliyot.size(), 1);
+        int maftirSefer = maftir == null ? 0 : (maftirReplaced ? 2 : 1);
 
         if (roshChodesh) {
             // Something else has the maftir, so Rosh Chodesh is read as the
-            // seventh aliyah and the parsha's seventh joins the sixth.
+            // seventh aliyah and the parsha's seventh joins the sixth. Three
+            // scrolls: the parsha, Rosh Chodesh, and whatever took the maftir.
             int n = aliyot.size();
             Span sixth = aliyot.get(n - 2), seventh = aliyot.get(n - 1);
             aliyot.set(n - 2, new Span(sixth.book, sixth.fromCh, sixth.fromV,
                                        seventh.toCh, seventh.toV));
             aliyot.set(n - 1, roshChodeshSpan());
+            sefer.set(n - 1, 2);
+            maftirSefer = 3;
         }
 
-        return new Result(Slot.MORNING, aliyot, maftir);
+        return new Result(Slot.MORNING, aliyot, maftir, parshiyot, null, sefer, maftirSefer);
     }
 
     /** Numbers 28:9-15 -- the Shabbat of Rosh Chodesh, its last two fragments. */
@@ -369,8 +471,15 @@ public final class TorahReading {
                 return festival(shabbat ? torah("FestivalEnd_shabbosTorah")
                                         : merge(torah("FestivalEnd_shabbosTorah"), 2, 3),
                                 korbanot(7));
-            case SIMCHAT_TORAH_C: case SIMCHAT_TORAH_I:
-                return festival(simchasTorahTorah(), korbanot(7));
+            case SIMCHAT_TORAH_C: case SIMCHAT_TORAH_I: {
+                // Vezot Haberachah, Bereishit begun from a second scroll, and
+                // the maftir from a third.
+                List<Span> stAliyot = simchatTorahTorah();
+                List<Integer> stSefer = allFrom(stAliyot.size(), 1);
+                stSefer.set(stAliyot.size() - 1, 2);
+                return new Result(Slot.MORNING, stAliyot, korbanot(7), java.util.List.of(),
+                                  null, stSefer, 3);
+            }
             case FIRST_DAY_PESACH:
                 return festival(shabbat ? torah("Pesach1_shabbosTorah")
                                         : merge(torah("Pesach1_shabbosTorah"), 4, 7),
@@ -389,22 +498,22 @@ public final class TorahReading {
             case SHAVUOT_2C:
                 return festival(festivalEndTorah(shabbat), joined(torah("Shavuos1_maftir")));
             case PURIM:
-                return new Result(Slot.MORNING, torah("Purim_torah"), null);
+                return new Result(Slot.MORNING, torah("Purim_torah"), null, java.util.List.of());
             case SHUSHAN_PURIM:
                 // Purim Meshulash: on Shabbat the parsha is still read, and
                 // Purim's reading becomes its maftir. That is withSpecialDays.
-                return shabbat ? null : new Result(Slot.MORNING, torah("Purim_torah"), null);
+                return shabbat ? null : new Result(Slot.MORNING, torah("Purim_torah"), null, java.util.List.of());
             case FAST_AV_9:
-                return new Result(Slot.MORNING, torah("TishaBeAv_torah"), null);
+                return new Result(Slot.MORNING, torah("TishaBeAv_torah"), null, java.util.List.of());
             case TZOM_GEDALIA: case TENTH_TEVET: case TAANIT_ESTHER: case FAST_TAMUZ_17:
-                return new Result(Slot.MORNING, fastTorah(), null);
+                return new Result(Slot.MORNING, fastTorah(), null, java.util.List.of());
             default:
                 return null;
         }
     }
 
     private static Result festival(List<Span> aliyot, Span maftir) {
-        return new Result(Slot.MORNING, aliyot, maftir);
+        return new Result(Slot.MORNING, aliyot, maftir, java.util.List.of());
     }
 
     /** Sukkot day 1 and 2, and Pesach day 2, share one division. */
@@ -421,7 +530,7 @@ public final class TorahReading {
     }
 
     /** Vezot Haberachah read to its end, with Bereishis begun after it. */
-    private static List<Span> simchasTorahTorah() {
+    private static List<Span> simchatTorahTorah() {
         ChumashAliyot.Reading vezosHaberachah = ChumashAliyot.READINGS.get("VEZOT_HABRACHA");
         String book = ChumashAliyot.BOOKS[vezosHaberachah.book];
         List<Span> out = new ArrayList<>();
@@ -435,7 +544,7 @@ public final class TorahReading {
                                              Custom custom) {
         Span today = korbanotToday(o.sukkotIntermediate, inIsrael);
         if (shabbat)
-            return new Result(Slot.MORNING, torah("IntermediateShabbos_torah"), today);
+            return new Result(Slot.MORNING, torah("IntermediateShabbos_torah"), today, java.util.List.of());
 
         // The korbanot run out before the days do, so from the fourth
         // intermediate day on the same three are read.
@@ -449,7 +558,7 @@ public final class TorahReading {
             aliyot.add(korbanot(n + 2));
             aliyot.add(today);
         }
-        return new Result(Slot.MORNING, aliyot, null);
+        return new Result(Slot.MORNING, aliyot, null, java.util.List.of());
     }
 
     /** Outside Israel each day of Chol HaMoed reads the korbanot of both days
@@ -461,7 +570,7 @@ public final class TorahReading {
     private static Result pesachIntermediate(Occasion o, boolean shabbat, boolean pesachOnThursday) {
         Span maftir = joined(torah("PesachIntermediate_maftirEnd"));
         if (shabbat)
-            return new Result(Slot.MORNING, torah("IntermediateShabbos_torah"), maftir);
+            return new Result(Slot.MORNING, torah("IntermediateShabbos_torah"), maftir, java.util.List.of());
 
         // When Pesach begins on a Thursday the fourth and fifth days fall on
         // Shabbat and the day after, and the readings shift back by one.
@@ -481,7 +590,7 @@ public final class TorahReading {
         }
         List<Span> aliyot = new ArrayList<>(first3);
         aliyot.add(maftir);   // read as the fourth aliyah, not as a maftir
-        return new Result(Slot.MORNING, aliyot, null);
+        return new Result(Slot.MORNING, aliyot, null, java.util.List.of());
     }
 
     /**
@@ -512,7 +621,7 @@ public final class TorahReading {
             if (n != 8) aliyot.add(sefard ? chanukahFull(n) : chanukahFull(n + 1));
             else aliyot.add(sefard ? join(chanukahFull(n), zos) : zos);
         }
-        return new Result(Slot.MORNING, aliyot, null);
+        return new Result(Slot.MORNING, aliyot, null, java.util.List.of());
     }
 
     /** Rosh Chodesh on a weekday: four aliyot, and the Gra divides the middle
@@ -526,7 +635,7 @@ public final class TorahReading {
                 : join(t.get(1), t.get(2)));
         aliyot.add(join(t.get(3), t.get(4)));
         aliyot.add(t.get(5));
-        return new Result(Slot.MORNING, aliyot, null);
+        return new Result(Slot.MORNING, aliyot, null, java.util.List.of());
     }
 
     /** The same reading pressed into three aliyot, to leave room for Chanukah. */

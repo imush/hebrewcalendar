@@ -71,9 +71,21 @@ public final class Haftarah {
     public static final class Result {
         public final Occasion occasion;
         public final List<Haftarot.Reference> refs;
+        /**
+         * The key this reading came from in the special-day data, or null for
+         * a weekly haftarah. A caller wanting what is recorded against the
+         * reading -- its sources, and any remark -- looks it up by this;
+         * without it the mapping from occasion to key would have to be
+         * written out a second time and kept in step.
+         */
+        public final String key;
         Result(Occasion occasion, List<Haftarot.Reference> refs) {
+            this(occasion, refs, null);
+        }
+        Result(Occasion occasion, List<Haftarot.Reference> refs, String key) {
             this.occasion = occasion;
             this.refs = refs;
+            this.key = key;
         }
     }
 
@@ -189,7 +201,7 @@ public final class Haftarah {
 
     private static void addSpecial(List<Result> out, Occasion occ, String key, Custom custom) {
         List<Haftarot.Reference> refs = SpecialHaftarot.forOccasion(key, custom);
-        if (refs != null) out.add(new Result(occ, refs));
+        if (refs != null) out.add(new Result(occ, refs, key));
     }
 
     /** Fast-day afternoon haftarah.
@@ -209,16 +221,21 @@ public final class Haftarah {
         if (which == JewishSpecialDay.FAST_AV_9) {
             List<Haftarot.Reference> own =
                 SpecialHaftarot.forOccasion("TishaBeAv_AFTERNOON", custom);
-            if (own != null) out.add(new Result(occ, own));
+            if (own != null) out.add(new Result(occ, own, "TishaBeAv_AFTERNOON"));
             return;
         }
         if (which == JewishSpecialDay.TZOM_GEDALIA) {
             List<Haftarot.Reference> exc =
                 SpecialHaftarot.forOccasion("FastOfGedalia_AFTERNOON_EXCEPTIONS", custom);
-            if (exc != null) { out.add(new Result(occ, exc)); return; }
+            if (exc != null) { out.add(new Result(occ, exc, "FastOfGedalia_AFTERNOON_EXCEPTIONS")); return; }
         }
         List<Haftarot.Reference> base = SpecialHaftarot.forOccasion("Fast_AFTERNOON_DEFAULT", custom);
-        if (base != null) out.add(new Result(occ, base));
+        // A custom with no entry reads nothing at Mincha -- which is a fact
+        // about the day, not a gap: it is what several of the sources are
+        // attesting. Say so with an empty reading rather than by returning
+        // nothing at all, so a caller can still reach what is recorded here.
+        out.add(base != null ? new Result(occ, base, "Fast_AFTERNOON_DEFAULT")
+                             : new Result(occ, java.util.List.of(), "Fast_AFTERNOON_DEFAULT"));
     }
 
     private static Result fromFestivalPublic(JewishSpecialDay sd, Custom custom) {
@@ -476,11 +493,11 @@ public final class Haftarah {
             default: return null;
         }
         List<Haftarot.Reference> refs = SpecialHaftarot.forOccasion(key, custom);
-        return refs == null ? null : new Result(occ, refs);
+        return refs == null ? null : new Result(occ, refs, key);
     }
 
     private static Result special(Occasion occ, String key, Custom custom) {
         List<Haftarot.Reference> refs = SpecialHaftarot.forOccasion(key, custom);
-        return refs == null ? null : new Result(occ, refs);
+        return refs == null ? null : new Result(occ, refs, key);
     }
 }

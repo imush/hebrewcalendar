@@ -223,14 +223,28 @@ public class HaftarahTest {
         // Morocco reads nothing.
         assertDay(LocalDate.of(2026, 7, 2), Custom.MARRAKESH, false,
                   Haftarah.Occasion.FAST_AFTERNOON, "Hosea", 14, 2, 14, 10);
-        assertTrue(Haftarah.forDay(LocalDate.of(2026, 7, 2), Custom.MOROCCO, false).isEmpty());
+        assertReadsNothing(LocalDate.of(2026, 7, 2), Custom.MOROCCO);
     }
 
     @Test public void fastDay_someCustomsHaveNoHaftarah() {
         // opentorah leaves Fast.defaultAfternoonHaftarah undefined for the
-        // Sefard and Teiman branches — they read no haftarah at mincha.
-        assertTrue(Haftarah.forDay(LocalDate.of(2026, 7, 2), Custom.SEFARD, false).isEmpty());
-        assertTrue(Haftarah.forDay(LocalDate.of(2026, 7, 2), Custom.TEIMAN, false).isEmpty());
+        // Sefard and Teiman branches — they read no haftarah at mincha. The
+        // occasion still applies, and says so with an empty reading: that a
+        // custom reads nothing here is what several of the sources attest, and
+        // a caller showing them needs to be able to reach the entry.
+        assertReadsNothing(LocalDate.of(2026, 7, 2), Custom.SEFARD);
+        assertReadsNothing(LocalDate.of(2026, 7, 2), Custom.TEIMAN);
+    }
+
+    /** The fast's Mincha occasion applies, and this custom reads nothing at it. */
+    private static void assertReadsNothing(LocalDate date, Custom custom) {
+        List<Haftarah.Result> results = Haftarah.forDay(date, custom, false);
+        for (Haftarah.Result r : results)
+            if (r.occasion == Haftarah.Occasion.FAST_AFTERNOON) {
+                assertTrue(custom + " should read nothing at mincha", r.refs.isEmpty());
+                return;
+            }
+        fail(custom + ": expected a FAST_AFTERNOON occasion recording that nothing is read");
     }
 
     @Test public void ordinaryWeekdayAndCholHamoed_haveNone() {

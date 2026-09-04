@@ -152,7 +152,12 @@ public class ReadingsAgainstOpentorahTest {
                 String got = "-";
                 try {
                     for (Haftarah.Result r : Haftarah.forDay(date, custom, inIsrael)) {
-                        if (isAfternoon(r.occasion) == afternoon) { got = render(r.refs); break; }
+                        // an occasion that applies but is read by nobody in this
+                        // custom renders as "-", the same as no occasion at all
+                        if (isAfternoon(r.occasion) == afternoon) {
+                            got = r.refs.isEmpty() ? "-" : render(r.refs);
+                            break;
+                        }
                     }
                 } catch (RuntimeException e) {
                     got = "threw " + e.getClass().getSimpleName();
@@ -214,8 +219,10 @@ public class ReadingsAgainstOpentorahTest {
             boolean torah = "torah".equals(row.kind()), maftir = "maftir".equals(row.kind());
             if (!torah && !maftir) continue;
             String[] parts = row.situation().split("\\|");
-            TorahReading.Slot slot = "afternoon".equals(parts[4])
-                    ? TorahReading.Slot.AFTERNOON : TorahReading.Slot.MORNING;
+            TorahReading.Slot slot =
+                    "afternoon".equals(parts[4]) ? TorahReading.Slot.AFTERNOON
+                  : "evening".equals(parts[4])   ? TorahReading.Slot.EVENING
+                  :                                TorahReading.Slot.MORNING;
             boolean inIsrael = row.situation().startsWith("EY|");
             LocalDate date = gregorian(row.date());
 

@@ -1,7 +1,7 @@
 # Expected readings, exported from opentorah — the oracle for the Java port.
 #
-# opentorah 38390bc07fa5165d1dd7e00c32692969cd7734f2  (Apache 2.0; see opentorah/LICENSE.md)
-# generated 2026-09-03 over Jewish years 5780-5860, both locations
+# opentorah 706afc2f87705773d5b807b6d012d1ca8589aa08  (Apache 2.0; see opentorah/LICENSE.md)
+# generated 2026-09-04 over Jewish years 5780-5860, both locations
 #
 # date<TAB>situation<TAB>customs<TAB>kind<TAB>value
 #
@@ -183,6 +183,8 @@
 2019-10-21	chul|Monday|Bereishis|SheminiAtzeres|morning	ALL	torah	1:Deuteronomy:14:22:15:23 2:Deuteronomy:16:1:16:3 3:Deuteronomy:16:4:16:8 4:Deuteronomy:16:9:16:12 5:Deuteronomy:16:13:16:17
 2019-10-21	chul|Monday|Bereishis|SheminiAtzeres|morning	Agadir+Algeria+Algiers+Ashkenaz+Baladi+Bavlim+ChayeyOdom+Djerba+Fes+Frankfurt+Hagra+Libya+Lita+Magreb+Marrakesh+Morocco+Persia+Poznan+PureSephardim+Romania+Sefard+Shami+Teiman+Toshbim	haftarah	KingsI:8:54:8:66
 2019-10-21	chul|Monday|Bereishis|SheminiAtzeres|morning	Chabad+Italki	haftarah	KingsI:8:54:9:1
+2019-10-22	chul|Tuesday|Bereishis|SimchasTorah|evening	Agadir+Algeria+Algiers+Baladi+Bavlim+Chabad+Djerba+Fes+Libya+Magreb+Marrakesh+Morocco+Persia+PureSephardim+Romania+Sefard+Shami+Teiman+Toshbim	torah	-
+2019-10-22	chul|Tuesday|Bereishis|SimchasTorah|evening	Ashkenaz+ChayeyOdom+Frankfurt+Hagra+Italki+Lita+Poznan	torah	1:Deuteronomy:33:1:33:7 2:Deuteronomy:33:8:33:12 3:Deuteronomy:33:13:33:17 4:Deuteronomy:33:18:33:21 5:Deuteronomy:33:22:33:26
 2019-10-22	chul|Tuesday|Bereishis|SimchasTorah|morning	ALL	maftir	Numbers:29:35:30:1
 2019-10-22	chul|Tuesday|Bereishis|SimchasTorah|morning	ALL	torah	1:Deuteronomy:33:1:33:7 2:Deuteronomy:33:8:33:12 3:Deuteronomy:33:13:33:17 4:Deuteronomy:33:18:33:21 5:Deuteronomy:33:22:33:26 6:Deuteronomy:33:27:34:12 7:Genesis:1:1:2:3
 2019-10-22	chul|Tuesday|Bereishis|SimchasTorah|morning	Agadir+Algeria+Algiers+Bavlim+Djerba+Fes+Libya+Magreb+Marrakesh+Morocco+Persia+PureSephardim+Sefard+Toshbim	haftarah	Joshua:1:1:1:9
@@ -1842,6 +1844,8 @@
 2020-10-10	chul|shabbos|-|SheminiAtzeres|morning	ALL	torah	1:Deuteronomy:14:22:14:29 2:Deuteronomy:15:1:15:18 3:Deuteronomy:15:19:15:23 4:Deuteronomy:16:1:16:3 5:Deuteronomy:16:4:16:8 6:Deuteronomy:16:9:16:12 7:Deuteronomy:16:13:16:17
 2020-10-10	chul|shabbos|-|SheminiAtzeres|morning	Agadir+Algeria+Algiers+Ashkenaz+Baladi+Bavlim+ChayeyOdom+Djerba+Fes+Frankfurt+Hagra+Libya+Lita+Magreb+Marrakesh+Morocco+Persia+Poznan+PureSephardim+Romania+Sefard+Shami+Teiman+Toshbim	haftarah	KingsI:8:54:8:66
 2020-10-10	chul|shabbos|-|SheminiAtzeres|morning	Chabad+Italki	haftarah	KingsI:8:54:9:1
+2020-10-11	chul|Sunday|Bereishis|SimchasTorah|evening	Agadir+Algeria+Algiers+Baladi+Bavlim+Chabad+Djerba+Fes+Libya+Magreb+Marrakesh+Morocco+Persia+PureSephardim+Romania+Sefard+Shami+Teiman+Toshbim	torah	-
+2020-10-11	chul|Sunday|Bereishis|SimchasTorah|evening	Ashkenaz+ChayeyOdom+Frankfurt+Hagra+Italki+Lita+Poznan	torah	1:Deuteronomy:33:1:33:7 2:Deuteronomy:33:8:33:12 3:Deuteronomy:33:13:33:17 4:Deuteronomy:33:18:33:21 5:Deuteronomy:33:22:33:26
 2020-10-11	chul|Sunday|Bereishis|SimchasTorah|morning	ALL	maftir	Numbers:29:35:30:1
 2020-10-11	chul|Sunday|Bereishis|SimchasTorah|morning	ALL	torah	1:Deuteronomy:33:1:33:7 2:Deuteronomy:33:8:33:12 3:Deuteronomy:33:13:33:17 4:Deuteronomy:33:18:33:21 5:Deuteronomy:33:22:33:26 6:Deuteronomy:33:27:34:12 7:Genesis:1:1:2:3
 2020-10-11	chul|Sunday|Bereishis|SimchasTorah|morning	Agadir+Algeria+Algiers+Bavlim+Djerba+Fes+Libya+Magreb+Marrakesh+Morocco+Persia+PureSephardim+Sefard+Toshbim	haftarah	Joshua:1:1:1:9
@@ -2720,6 +2724,8 @@
 2021-09-28	chul|Tuesday|Bereishis|SheminiAtzeres|morning	ALL	torah	1:Deuteronomy:14:22:15:23 2:Deuteronomy:16:1:16:3 3:Deuteronomy:16:4:16:8 4:Deuteronomy:16:9:16:12 5:Deuteronomy:16:13:16:17
 2021-09-28	chul|Tuesday|Bereishis|SheminiAtzeres|morning	Agadir+Algeria+Algiers+Ashkenaz+Baladi+Bavlim+ChayeyOdom+Djerba+Fes+Frankfurt+Hagra+Libya+Lita+Magreb+Marrakesh+Morocco+Persia+Poznan+PureSephardim+Romania+Sefard+Shami+Teiman+Toshbim	haftarah	KingsI:8:54:8:66
 2021-09-28	chul|Tuesday|Bereishis|SheminiAtzeres|morning	Chabad+Italki	haftarah	KingsI:8:54:9:1
+2021-09-29	chul|Wednesday|Bereishis|SimchasTorah|evening	Agadir+Algeria+Algiers+Baladi+Bavlim+Chabad+Djerba+Fes+Libya+Magreb+Marrakesh+Morocco+Persia+PureSephardim+Romania+Sefard+Shami+Teiman+Toshbim	torah	-
+2021-09-29	chul|Wednesday|Bereishis|SimchasTorah|evening	Ashkenaz+ChayeyOdom+Frankfurt+Hagra+Italki+Lita+Poznan	torah	1:Deuteronomy:33:1:33:7 2:Deuteronomy:33:8:33:12 3:Deuteronomy:33:13:33:17 4:Deuteronomy:33:18:33:21 5:Deuteronomy:33:22:33:26
 2021-09-29	chul|Wednesday|Bereishis|SimchasTorah|morning	ALL	maftir	Numbers:29:35:30:1
 2021-09-29	chul|Wednesday|Bereishis|SimchasTorah|morning	ALL	torah	1:Deuteronomy:33:1:33:7 2:Deuteronomy:33:8:33:12 3:Deuteronomy:33:13:33:17 4:Deuteronomy:33:18:33:21 5:Deuteronomy:33:22:33:26 6:Deuteronomy:33:27:34:12 7:Genesis:1:1:2:3
 2021-09-29	chul|Wednesday|Bereishis|SimchasTorah|morning	Agadir+Algeria+Algiers+Bavlim+Djerba+Fes+Libya+Magreb+Marrakesh+Morocco+Persia+PureSephardim+Sefard+Toshbim	haftarah	Joshua:1:1:1:9
@@ -3974,6 +3980,8 @@
 2024-10-24	chul|Thursday|Bereishis|SheminiAtzeres|morning	ALL	torah	1:Deuteronomy:14:22:15:23 2:Deuteronomy:16:1:16:3 3:Deuteronomy:16:4:16:8 4:Deuteronomy:16:9:16:12 5:Deuteronomy:16:13:16:17
 2024-10-24	chul|Thursday|Bereishis|SheminiAtzeres|morning	Agadir+Algeria+Algiers+Ashkenaz+Baladi+Bavlim+ChayeyOdom+Djerba+Fes+Frankfurt+Hagra+Libya+Lita+Magreb+Marrakesh+Morocco+Persia+Poznan+PureSephardim+Romania+Sefard+Shami+Teiman+Toshbim	haftarah	KingsI:8:54:8:66
 2024-10-24	chul|Thursday|Bereishis|SheminiAtzeres|morning	Chabad+Italki	haftarah	KingsI:8:54:9:1
+2024-10-25	chul|Friday|Bereishis|SimchasTorah|evening	Agadir+Algeria+Algiers+Baladi+Bavlim+Chabad+Djerba+Fes+Libya+Magreb+Marrakesh+Morocco+Persia+PureSephardim+Romania+Sefard+Shami+Teiman+Toshbim	torah	-
+2024-10-25	chul|Friday|Bereishis|SimchasTorah|evening	Ashkenaz+ChayeyOdom+Frankfurt+Hagra+Italki+Lita+Poznan	torah	1:Deuteronomy:33:1:33:7 2:Deuteronomy:33:8:33:12 3:Deuteronomy:33:13:33:17 4:Deuteronomy:33:18:33:21 5:Deuteronomy:33:22:33:26
 2024-10-25	chul|Friday|Bereishis|SimchasTorah|morning	ALL	maftir	Numbers:29:35:30:1
 2024-10-25	chul|Friday|Bereishis|SimchasTorah|morning	ALL	torah	1:Deuteronomy:33:1:33:7 2:Deuteronomy:33:8:33:12 3:Deuteronomy:33:13:33:17 4:Deuteronomy:33:18:33:21 5:Deuteronomy:33:22:33:26 6:Deuteronomy:33:27:34:12 7:Genesis:1:1:2:3
 2024-10-25	chul|Friday|Bereishis|SimchasTorah|morning	Agadir+Algeria+Algiers+Bavlim+Djerba+Fes+Libya+Magreb+Marrakesh+Morocco+Persia+PureSephardim+Sefard+Toshbim	haftarah	Joshua:1:1:1:9

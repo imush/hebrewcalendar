@@ -51,6 +51,19 @@ final class ExportReadingsTest extends AnyFlatSpec:
             if !seen.contains(situation) then
               seen(situation) = (date, lines(situation, reading, customs))
           )
+        // The Jewish day begins at night, and one reading falls there: Simchas
+        // Torah, and only for some. It is not a Reading -- it has no maftir and
+        // no haftarah, and some customs read nothing -- so it renders on its own.
+        daySchedule.evening.foreach(evening =>
+          val situation = s"$prefix|evening"
+          if !seen.contains(situation) then
+            val byValue = customs.groupBy(custom =>
+              evening.torah.doFind(custom).fold("-")(renderTorah))
+            val ls = byValue.toSeq.sortBy((_, cs) => cs.head.toString).map((value, cs) =>
+              val who = if cs.size == customs.size then "ALL" else cs.sortBy(_.toString).map(_.toString).mkString("+")
+              s"$situation\t$who\ttorah\t$value")
+            seen(situation) = (date, ls)
+        )
 
     val out = seen.values.toSeq
       .flatMap((date, ls) => ls.map(line => s"$date\t$line"))
