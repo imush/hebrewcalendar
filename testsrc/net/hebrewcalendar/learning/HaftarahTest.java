@@ -48,16 +48,16 @@ public class HaftarahTest {
 
     @Test public void weekly_haazinu() {
         assertDay(LocalDate.of(2025, 10, 4), Custom.ASHKENAZ, false,
-                  Haftarah.Occasion.WEEKLY, "II Samuel", 22, 1, 22, 51);
+                  Haftarah.Occasion.WEEKLY, "Samuel II", 22, 1, 22, 51);
     }
 
     // ── special Shabbatot ────────────────────────────────────────────
 
     @Test public void arbaParshiyot_5786() {
         assertDay(LocalDate.of(2026, 2, 14), Custom.ASHKENAZ, false,
-                  Haftarah.Occasion.PARSHAT_SHEKALIM,  "II Kings", 12,  1, 12, 17);
+                  Haftarah.Occasion.PARSHAT_SHEKALIM,  "Kings II", 12,  1, 12, 17);
         assertDay(LocalDate.of(2026, 2, 28), Custom.ASHKENAZ, false,
-                  Haftarah.Occasion.PARSHAT_ZACHOR,    "I Samuel", 15,  2, 15, 34);
+                  Haftarah.Occasion.PARSHAT_ZACHOR,    "Samuel I", 15,  2, 15, 34);
         assertDay(LocalDate.of(2026, 3,  7), Custom.ASHKENAZ, false,
                   Haftarah.Occasion.PARSHAT_PARAH,     "Ezekiel",  36, 16, 36, 38);
         assertDay(LocalDate.of(2026, 3, 14), Custom.ASHKENAZ, false,
@@ -81,7 +81,7 @@ public class HaftarahTest {
 
     @Test public void macharChodeshShabbat() {
         assertDay(LocalDate.of(2026, 5, 16), Custom.ASHKENAZ, false,
-                  Haftarah.Occasion.MACHAR_CHODESH, "I Samuel", 20, 18, 20, 42);
+                  Haftarah.Occasion.MACHAR_CHODESH, "Samuel I", 20, 18, 20, 42);
     }
 
     @Test public void roshChodeshNisan_yieldsToHachodesh() {
@@ -109,10 +109,10 @@ public class HaftarahTest {
         LocalDate d = LocalDate.of(2015, 8, 15);
         assertEquals("Isaiah 54:11-55:5;", render(d, Custom.ASHKENAZ, false));
         assertEquals("Isaiah 66:1-66:24;Isaiah 66:23-66:23;"
-                   + "I Samuel 20:18-20:18;I Samuel 20:42-20:42;",
+                   + "Samuel I 20:18-20:18;Samuel I 20:42-20:42;",
                      render(d, Custom.CHABAD, false));
         // Fes never replaces for Machar Chodesh — it only ever appends.
-        assertEquals("Isaiah 54:11-55:5;I Samuel 20:18-20:18;I Samuel 20:42-20:42;",
+        assertEquals("Isaiah 54:11-55:5;Samuel I 20:18-20:18;Samuel I 20:42-20:42;",
                      render(d, Custom.FES, false));
     }
 
@@ -133,7 +133,7 @@ public class HaftarahTest {
         LocalDate d = LocalDate.of(2015, 12, 12);
         assertEquals("Zechariah 2:14-4:7;"
                    + "Isaiah 66:1-66:1;Isaiah 66:23-66:24;Isaiah 66:23-66:23;"
-                   + "I Samuel 20:18-20:18;I Samuel 20:42-20:42;",
+                   + "Samuel I 20:18-20:18;Samuel I 20:42-20:42;",
                      render(d, Custom.CHABAD, false));
         assertEquals("Zechariah 2:14-4:7;", render(d, Custom.ASHKENAZ, false));
     }
@@ -141,7 +141,7 @@ public class HaftarahTest {
     @Test public void macharChodeshElul_isSuppressed() {
         LocalDate d = LocalDate.of(2021, 8, 7);   // 29 Av
         assertEquals("Isaiah 54:11-55:5;", render(d, Custom.ASHKENAZ, false));
-        assertEquals("Isaiah 54:11-55:5;I Samuel 20:18-20:18;I Samuel 20:42-20:42;",
+        assertEquals("Isaiah 54:11-55:5;Samuel I 20:18-20:18;Samuel I 20:42-20:42;",
                      render(d, Custom.CHABAD, false));
     }
 
@@ -162,12 +162,12 @@ public class HaftarahTest {
     @Test public void chanukah_splitsOnDayNumberNotParsha() {
         // opentorah: `if dayNumber < 8 then shabbos1Haftarah else shabbos2Haftarah`.
         // Two Chanukah Shabbatot happen exactly when 25 Kislev is a Shabbat;
-        // day 8 is then also a Shabbat and reads I Kings 7. In 5787,
+        // day 8 is then also a Shabbat and reads Kings I 7. In 5787,
         // 25 Kislev = 2026-12-05 and the eighth day = 2026-12-12.
         assertDay(LocalDate.of(2026, 12, 5), Custom.ASHKENAZ, false,
                   Haftarah.Occasion.CHANUKAH_SHABBAT_1, "Zechariah", 2, 14, 4, 7);
         assertDay(LocalDate.of(2026, 12, 12), Custom.ASHKENAZ, false,
-                  Haftarah.Occasion.CHANUKAH_SHABBAT_2, "I Kings", 7, 40, 7, 50);
+                  Haftarah.Occasion.CHANUKAH_SHABBAT_2, "Kings I", 7, 40, 7, 50);
     }
 
     // ── Yom Tov, fasts, empty days ───────────────────────────────────
@@ -202,7 +202,7 @@ public class HaftarahTest {
         // an applies(inIsrael) filter the Israel-only Simchat Torah day was
         // hijacking 22 Tishrei in the Diaspora too.
         assertDay(LocalDate.of(2026, 10, 3), Custom.ASHKENAZ, false,
-                  Haftarah.Occasion.SHMINI_ATZERET, "I Kings", 8, 54, 8, 66);
+                  Haftarah.Occasion.SHMINI_ATZERET, "Kings I", 8, 54, 8, 66);
     }
 
     @Test public void tzomGedalia_marrakeshHasItsOwnAfternoonHaftarah() {

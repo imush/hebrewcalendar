@@ -92,10 +92,17 @@ public class ReadingsAgainstOpentorahTest {
      * spells them as they are cited. Not a disagreement, so normalise it away
      * rather than let it drown the real ones.
      */
+    /**
+     * opentorah names a book by its Scala case, "SamuelI", and the exporter
+     * writes that through unchanged. This library names the paired books
+     * "Samuel I" -- the order a reader looking one up would say, and the order
+     * every citation resolves by -- so the two are reconciled here, in the one
+     * place where opentorah's spelling meets ours.
+     */
     private static String normalizeBooks(String value) {
-        return value.replace("SamuelI:", "I Samuel:").replace("SamuelII:", "II Samuel:")
-                    .replace("KingsI:", "I Kings:").replace("KingsII:", "II Kings:")
-                    .replace("ChroniclesI:", "I Chronicles:").replace("ChroniclesII:", "II Chronicles:");
+        return value.replace("SamuelI:", "Samuel I:").replace("SamuelII:", "Samuel II:")
+                    .replace("KingsI:", "Kings I:").replace("KingsII:", "Kings II:")
+                    .replace("ChroniclesI:", "Chronicles I:").replace("ChroniclesII:", "Chronicles II:");
     }
 
     private static List<Custom> customsOf(String field) {
