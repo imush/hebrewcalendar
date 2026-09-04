@@ -31,7 +31,13 @@ import static org.junit.Assert.fail;
  *
  * <p>Regenerate by running the exporter against an opentorah checkout; see the
  * header of the fixture for the commit it came from.
- */
+  *
+ * <p>To regenerate the fixture after opentorah changes:
+ * {@code testsrc/oracle/export_readings.sh <opentorah checkout>
+ * testsrc/resources/opentorah-readings.tsv}. The exporter it runs is a
+ * Scala test only because reaching opentorah's schedule needs their
+ * classpath; the script borrows their checkout and leaves it as found.
+*/
 public class ReadingsAgainstOpentorahTest {
 
     private static final String FIXTURE = "/resources/opentorah-readings.tsv";
