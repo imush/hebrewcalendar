@@ -27,7 +27,7 @@ import java.util.List;
  * deliberately rather than one calling the other. If you change the
  * precedence here, change it there too.
  *
- * Known gap in both: opentorah's {@code shabbosAdditionalHaftarah} — the
+ * Known gap in both: opentorah's {@code shabbatAdditionalHaftarah} — the
  * extra verses Chabad and Fes append when a Rosh Chodesh or Machar
  * Chodesh haftarah is displaced by a higher-precedence reading — is not
  * applied.
@@ -106,15 +106,15 @@ public final class Haftarah {
         // Shabbat: same lookup as forDate (upcomingShabbat == today) — but that
         // answers for the morning only, and Yom Kippur is read again at Mincha
         // whichever day it falls on. Tisha BeAv needs no such case: when it
-        // falls on Shabbos it is deferred to Sunday.
+        // falls on Shabbat it is deferred to Sunday.
         if (dow == 7) {
-            List<Result> shabbos = new java.util.ArrayList<>();
+            List<Result> shabbat = new java.util.ArrayList<>();
             Result r = forDate(date, custom, inIsrael);
-            if (r != null) shabbos.add(r);
+            if (r != null) shabbat.add(r);
             if (JewishSpecialDay.YOM_KIPPUR.matches(h)) {
-                addSpecial(shabbos, Occasion.YOM_KIPPUR_AFTERNOON, "YomKippur_AFTERNOON", custom);
+                addSpecial(shabbat, Occasion.YOM_KIPPUR_AFTERNOON, "YomKippur_AFTERNOON", custom);
             }
-            return java.util.Collections.unmodifiableList(shabbos);
+            return java.util.Collections.unmodifiableList(shabbat);
         }
 
         // Weekday: check for Yom Tov / Yom Kippur / fast days.
@@ -295,9 +295,9 @@ public final class Haftarah {
             }
         }
 
-        // opentorah's SpecialShabbos: the four parshiyot plus Shabbos
+        // opentorah's SpecialShabbos: the four parshiyot plus Shabbat
         // Hagadol. This is a property of the *day*, not of which branch
-        // below fires — Chabad keeps the weekly haftarah on Shabbos Hagadol,
+        // below fires — Chabad keeps the weekly haftarah on Shabbat Hagadol,
         // but the day is still a special Shabbat for the Rosh Chodesh rules.
         boolean isSpecialShabbos = shabbatShekalim || shabbatZachor || shabbatParah
                                 || shabbatHachodesh || shabbatHagadol;
@@ -327,12 +327,12 @@ public final class Haftarah {
         if (result == null && shabbatHachodesh)
             result = special(Occasion.PARSHAT_HACHODESH, "ParshasHachodesh_MAIN", custom);
 
-        // Shabbos Hagadol (Chabad keeps weekly unless it IS erev Pesach)
+        // Shabbat Hagadol (Chabad keeps weekly unless it IS erev Pesach)
         if (result == null && shabbatHagadol && (custom != Custom.CHABAD || erevPesach))
             result = special(Occasion.SHABBAT_HAGADOL, "ShabbosHagodol_MAIN", custom);
 
         // Chanukah. opentorah splits on the day number, not the parsha:
-        //   `if dayNumber < 8 then shabbos1Haftarah else shabbos2Haftarah`.
+        //   `if dayNumber < 8 then shabbat1Haftarah else shabbat2Haftarah`.
         // The eighth day is only ever a Shabbat when 25 Kislev was itself a
         // Shabbat — exactly the years that have two Chanukah Shabbatot.
         if (result == null && chanukah) {
@@ -366,8 +366,8 @@ public final class Haftarah {
         }
 
         // Pinchas read after 17 Tammuz is inside the three weeks, and takes the
-        // first haftarah of rebuke — which is Mattos's — instead of its own.
-        // opentorah calls this correctPinchas. In a year where Mattos and Masei
+        // first haftarah of rebuke — which is Matot's — instead of its own.
+        // opentorah calls this correctPinchas. In a year where Matot and Masei
         // combine, Pinchas falls before the fast and keeps its own.
         if (result == null && parshas.size() == 1 && parshas.get(0) == Parsha.PINCHAS
                 && afterSeventeenTammuz(h)) {
@@ -404,7 +404,7 @@ public final class Haftarah {
 
         // Rosh Chodesh Tishrei is Rosh Hashana — never mentioned as Rosh Chodesh.
         if (rc > 0 && rc != TISHREI) {
-            // Teves is always Chanukah and Av is always the Three Weeks, so in
+            // Tevet is always Chanukah and Av is always the Three Weeks, so in
             // both the day's own haftarah outranks Rosh Chodesh.
             boolean allowReplace = !isSpecialShabbos && rc != TEVES && rc != AV;
             // In Elul the Shiva d'Nechemta hold their ground — except for
