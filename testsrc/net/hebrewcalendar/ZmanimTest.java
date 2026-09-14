@@ -365,4 +365,69 @@ public class ZmanimTest {
             assertEquals(m.name(), z.getBurningChometz(m).getTime(),  z.getBurnChometzZman(m).getTime());
         }
     }
+
+    // ── Fasts, dated ────────────────────────────────────────────────────────
+    // 5787: Tzom Gedalia Mon 14 Sep 2026; erev Yom Kippur Sun 20, Yom Kippur
+    // Mon 21. 5786: erev 9 Av Wed 22 Jul 2026, 9 Av Thu 23. 5789: 17 Tammuz
+    // on Shabbat 30 Jun 2029, fast Sunday 1 Jul; 9 Av on Shabbat 21 Jul,
+    // fast Sunday 22 Jul -- beginning at Saturday's sunset.
+
+    @Test
+    public void fast_minorFastRunsDawnToNightfall() {
+        Zmanim z = at(2026, 9, 14, false);
+        assertEquals(z.getDawn().getTime(),                 z.getFastBeginsZman().getTime());
+        assertEquals(z.getNightfallMediumStars().getTime(), z.getFastEndsZman().getTime());
+        Zmanim before = at(2026, 9, 13, false);
+        assertNull("a dawn fast does not begin the evening before", before.getFastBeginsZman());
+        assertNull(before.getFastEndsZman());
+    }
+
+    @Test
+    public void fast_yomKippurBeginsAtSunsetAndEndsWithTheYomTov() {
+        Zmanim erev = at(2026, 9, 20, false);
+        assertEquals(erev.getSunset().getTime(), erev.getFastBeginsZman().getTime());
+        assertNull(erev.getFastEndsZman());
+        Zmanim yk = at(2026, 9, 21, false);
+        assertNull(yk.getFastBeginsZman());
+        assertNull("Yom Kippur ends with the Yom Tov", yk.getFastEndsZman());
+        assertNotNull(yk.getEndOfRestDayZman());
+    }
+
+    @Test
+    public void fast_tishaBAvBeginsAtSunsetTheEveningBefore() {
+        Zmanim erev = at(2026, 7, 22, false);
+        assertEquals(erev.getSunset().getTime(), erev.getFastBeginsZman().getTime());
+        assertNull(erev.getFastEndsZman());
+        Zmanim av9 = at(2026, 7, 23, false);
+        assertNull("no dawn start on Tisha b'Av itself", av9.getFastBeginsZman());
+        assertEquals(av9.getNightfallMediumStars().getTime(), av9.getFastEndsZman().getTime());
+    }
+
+    @Test
+    public void fast_deferredTishaBAvBeginsAtShabbatSunset() {
+        Zmanim shabbat = at(2029, 7, 21, false);
+        assertEquals("eating stops at sunset, not at the end of Shabbat",
+                     shabbat.getSunset().getTime(), shabbat.getFastBeginsZman().getTime());
+        assertNull("9 Av on Shabbat is not itself a fast", shabbat.getFastEndsZman());
+        Zmanim sunday = at(2029, 7, 22, false);
+        assertNull(sunday.getFastBeginsZman());
+        assertEquals(sunday.getNightfallMediumStars().getTime(), sunday.getFastEndsZman().getTime());
+    }
+
+    @Test
+    public void fast_deferredMinorFastMovesToSunday() {
+        Zmanim shabbat = at(2029, 6, 30, false);
+        assertNull("17 Tammuz on Shabbat is not a fast", shabbat.getFastBeginsZman());
+        assertNull(shabbat.getFastEndsZman());
+        Zmanim sunday = at(2029, 7, 1, false);
+        assertEquals(sunday.getDawn().getTime(), sunday.getFastBeginsZman().getTime());
+        assertNotNull(sunday.getFastEndsZman());
+    }
+
+    @Test
+    public void fast_nullOnAnOrdinaryDay() {
+        Zmanim z = at(2026, 9, 15, false);
+        assertNull(z.getFastBeginsZman());
+        assertNull(z.getFastEndsZman());
+    }
 }

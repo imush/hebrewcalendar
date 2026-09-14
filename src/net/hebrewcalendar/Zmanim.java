@@ -255,6 +255,44 @@ public class Zmanim {
     /** Sof Zman Biur Chametz per the given {@link ShaahMethod}. */
     public Zman getBurningChometz(final ShaahMethod method) { return portionOfDay(method, 5); }
 
+    // ── Fasts, dated ──────────────────────────────────────────────────────────
+    // A minor fast runs from dawn to nightfall on its own day. Tisha b'Av and
+    // Yom Kippur begin at sunset the evening before -- on a Shabbat too, when
+    // 9 Av is deferred to Sunday: eating stops at sunset, not when Shabbat ends.
+
+    private boolean isFastDay(final IDate<JewishCalendar> h, final boolean includeAv9) {
+        final boolean inIsrael = location.isInIsrael();
+        for (JewishSpecialDay d : JewishSpecialDay.values()) {
+            if (!d.isFast() || !d.applies(inIsrael) || !d.matches(h)) continue;
+            if (includeAv9 || d != JewishSpecialDay.FAST_AV_9) return true;
+        }
+        return false;
+    }
+
+    /**
+     * When a fast begins, if one begins on this date: dawn on a minor fast
+     * day, or sunset on the eve of Tisha b'Av or Yom Kippur -- including a
+     * Shabbat eve when Tisha b'Av is deferred to Sunday. Null otherwise.
+     */
+    public Zman getFastBeginsZman() {
+        final IDate<GregorianCalendar> todayGreg =
+            ICalendar.GREGORIAN.fromYMD(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
+        final IDate<JewishCalendar> tomorrow = ICalendar.JEWISH.convert(todayGreg.addDays(1));
+        if (JewishSpecialDay.FAST_AV_9.matches(tomorrow) || JewishSpecialDay.YOM_KIPPUR.matches(tomorrow)) {
+            return getSunset();
+        }
+        return isFastDay(hebrewDate(), false) ? getDawn() : null;
+    }
+
+    /**
+     * When a fast ends, if one ends on this date: nightfall (three medium
+     * stars) on a minor fast or on Tisha b'Av. Null otherwise -- including
+     * Yom Kippur, which ends with the Yom Tov ({@link #getEndOfRestDayZman()}).
+     */
+    public Zman getFastEndsZman() {
+        return isFastDay(hebrewDate(), true) ? getNightfallMediumStars() : null;
+    }
+
     // ── Chametz deadlines, dated ──────────────────────────────────────────────
     // getLatestShacharis and getBurningChometz are hour marks on any day. These
     // answer what a calendar actually asks -- is there such a deadline today?
