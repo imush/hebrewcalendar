@@ -316,4 +316,53 @@ public class ZmanimTest {
         assertFalse("Chol Hamoed is not a rest day",
                     Zmanim.isRestDay(ICalendar.GREGORIAN.fromYMD(2026, 9, 29), false));
     }
+
+    // ── Chametz deadlines, dated ────────────────────────────────────────────
+    // 14 Nisan 5785 was Shabbat (Sat 12 Apr 2025): chametz is burned on Friday
+    // 11 Apr; eaten and disposed of on Shabbat. 14 Nisan 5786 is a Wednesday
+    // (1 Apr 2026).
+
+    @Test
+    public void chometz_weekdayErevPesach() {
+        Zmanim z = at(2026, 4, 1, false);
+        assertEquals(z.getLatestShacharis().getTime(), z.getEatChometzZman().getTime());
+        assertEquals(z.getBurningChometz().getTime(),  z.getBurnChometzZman().getTime());
+        assertNull("dispose is only for a Shabbat erev Pesach", z.getDisposeChometzZman());
+
+        Zmanim dayBefore = at(2026, 3, 31, false);
+        assertNull(dayBefore.getEatChometzZman());
+        assertNull("13 Nisan on a weekday is not a burn day", dayBefore.getBurnChometzZman());
+    }
+
+    @Test
+    public void chometz_shabbatErevPesach_burnsOnFriday() {
+        Zmanim fri = at(2025, 4, 11, false);
+        assertNotNull("Friday 13 Nisan is the burn day", fri.getBurnChometzZman());
+        assertEquals(fri.getBurningChometz().getTime(), fri.getBurnChometzZman().getTime());
+        assertNull(fri.getEatChometzZman());
+        assertNull(fri.getDisposeChometzZman());
+
+        Zmanim sat = at(2025, 4, 12, false);
+        assertNull("nothing is burned on Shabbat", sat.getBurnChometzZman());
+        assertEquals(sat.getLatestShacharis().getTime(), sat.getEatChometzZman().getTime());
+        assertNotNull(sat.getDisposeChometzZman());
+        assertEquals(sat.getBurningChometz().getTime(), sat.getDisposeChometzZman().getTime());
+    }
+
+    @Test
+    public void chometz_nullOnAnOrdinaryDay() {
+        Zmanim z = at(2026, 9, 14, false);
+        assertNull(z.getEatChometzZman());
+        assertNull(z.getBurnChometzZman());
+        assertNull(z.getDisposeChometzZman());
+    }
+
+    @Test
+    public void chometz_followsTheShaahMethod() {
+        Zmanim z = at(2026, 4, 1, false);
+        for (Zmanim.ShaahMethod m : Zmanim.ShaahMethod.values()) {
+            assertEquals(m.name(), z.getLatestShacharis(m).getTime(), z.getEatChometzZman(m).getTime());
+            assertEquals(m.name(), z.getBurningChometz(m).getTime(),  z.getBurnChometzZman(m).getTime());
+        }
+    }
 }

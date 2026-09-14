@@ -255,6 +255,59 @@ public class Zmanim {
     /** Sof Zman Biur Chametz per the given {@link ShaahMethod}. */
     public Zman getBurningChometz(final ShaahMethod method) { return portionOfDay(method, 5); }
 
+    // ── Chametz deadlines, dated ──────────────────────────────────────────────
+    // getLatestShacharis and getBurningChometz are hour marks on any day. These
+    // answer what a calendar actually asks -- is there such a deadline today?
+    // When 14 Nisan is Shabbat, chametz is burned on Friday, at that day's fifth
+    // hour as in any other year; on Shabbat itself what remains is disposed of
+    // by the fifth hour instead, and nothing is burned.
+
+    private IDate<JewishCalendar> hebrewDate() {
+        return ICalendar.JEWISH.convert(
+            ICalendar.GREGORIAN.fromYMD(date.getYear(), date.getMonthValue(), date.getDayOfMonth()));
+    }
+
+    private static boolean isErevPesach(final IDate<JewishCalendar> h) {
+        return h.getMonth() == 1 && h.getDay() == 14;
+    }
+
+    /** Latest time to eat chametz: the fourth hour, on 14 Nisan only; otherwise null. */
+    public Zman getEatChometzZman() { return getEatChometzZman(ShaahMethod.CHABAD_AMITI); }
+
+    /** {@link #getEatChometzZman()} per the given {@link ShaahMethod}. */
+    public Zman getEatChometzZman(final ShaahMethod method) {
+        return isErevPesach(hebrewDate()) ? portionOfDay(method, 4) : null;
+    }
+
+    /**
+     * Latest time to burn chametz: the fifth hour on the day it is burned --
+     * 14 Nisan, or Friday 13 Nisan when 14 Nisan is Shabbat. Null otherwise,
+     * including on a Shabbat 14 Nisan (see {@link #getDisposeChometzZman()}).
+     */
+    public Zman getBurnChometzZman() { return getBurnChometzZman(ShaahMethod.CHABAD_AMITI); }
+
+    /** {@link #getBurnChometzZman()} per the given {@link ShaahMethod}. */
+    public Zman getBurnChometzZman(final ShaahMethod method) {
+        final IDate<JewishCalendar> h = hebrewDate();
+        final boolean erevPesachWeekday = isErevPesach(h) && h.getDayOfWeek() != 7;
+        final boolean fridayBeforeShabbatErevPesach =
+            h.getMonth() == 1 && h.getDay() == 13 && h.getDayOfWeek() == 6;
+        return (erevPesachWeekday || fridayBeforeShabbatErevPesach) ? portionOfDay(method, 5) : null;
+    }
+
+    /**
+     * On a Shabbat 14 Nisan: the fifth hour, by which remaining chametz must be
+     * disposed of, since it cannot be burned that day. Null on
+     * every other day.
+     */
+    public Zman getDisposeChometzZman() { return getDisposeChometzZman(ShaahMethod.CHABAD_AMITI); }
+
+    /** {@link #getDisposeChometzZman()} per the given {@link ShaahMethod}. */
+    public Zman getDisposeChometzZman(final ShaahMethod method) {
+        final IDate<JewishCalendar> h = hebrewDate();
+        return (isErevPesach(h) && h.getDayOfWeek() == 7) ? portionOfDay(method, 5) : null;
+    }
+
     // ── Midday and afternoon zmanim ───────────────────────────────────────────
 
     /**
