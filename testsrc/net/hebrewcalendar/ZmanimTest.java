@@ -258,4 +258,62 @@ public class ZmanimTest {
         assertTrue("Chatzot should agree with GR\"A midpoint",
                 Math.abs(chatzot.toEpochSecond() - griMid) < 10);
     }
+
+    // ── End of a rest day ───────────────────────────────────────────────────
+    // 5787: Rosh Hashana Sat 12 + Sun 13 Sep 2026; Yom Kippur Mon 21 Sep;
+    // Sukkot Sat 26 Sep with a diaspora second day on Sun 27; Chol Hamoed
+    // after that. The rule is location-driven, so coordinates stay Montreal's
+    // and only the Israel flag varies.
+
+    private static Zmanim at(int y, int m, int d, boolean inIsrael) {
+        Location loc = new Location(MTL_LAT, MTL_LON, 0.0, MTL_TZ, inIsrael, false);
+        return new Zmanim(LocalDate.of(y, m, d), loc);
+    }
+
+    @Test
+    public void endOfRestDay_plainShabbat_isNightfall() {
+        Zmanim z = at(2026, 9, 19, false);
+        Zman end = z.getEndOfRestDayZman();
+        assertNotNull("Shabbat followed by a weekday ends", end);
+        assertEquals(z.getEndOfShabbatZman().getTime(), end.getTime());
+    }
+
+    @Test
+    public void endOfRestDay_nullOnAWeekday() {
+        assertNull(at(2026, 9, 14, false).getEndOfRestDayZman());
+    }
+
+    @Test
+    public void endOfRestDay_nullOnShabbatRunningIntoYomTov() {
+        // Rosh Hashana day 1 on Shabbat: nightfall starts day 2, it ends nothing.
+        assertNull(at(2026, 9, 12, false).getEndOfRestDayZman());
+    }
+
+    @Test
+    public void endOfRestDay_yomTovEndingOnAWeekday() {
+        assertNotNull("Rosh Hashana day 2, Sunday", at(2026, 9, 13, false).getEndOfRestDayZman());
+        assertNotNull("Yom Kippur, Monday",         at(2026, 9, 21, false).getEndOfRestDayZman());
+    }
+
+    @Test
+    public void endOfRestDay_nullOnCholHamoed() {
+        assertNull(at(2026, 9, 29, false).getEndOfRestDayZman());
+    }
+
+    @Test
+    public void endOfRestDay_followsTheLocationsYomTovSchedule() {
+        // Sukkot day 1 on Shabbat: the last rest day in Israel, not in the diaspora.
+        assertNull   ("diaspora: day 2 follows", at(2026, 9, 26, false).getEndOfRestDayZman());
+        assertNotNull("Israel: one day only",    at(2026, 9, 26, true ).getEndOfRestDayZman());
+        assertNotNull("diaspora: day 2 ends",    at(2026, 9, 27, false).getEndOfRestDayZman());
+        assertNull   ("Israel: Chol Hamoed",     at(2026, 9, 27, true ).getEndOfRestDayZman());
+    }
+
+    @Test
+    public void isRestDay_acceptsAGregorianDate() {
+        assertTrue (Zmanim.isRestDay(ICalendar.GREGORIAN.fromYMD(2026, 9, 13), false));
+        assertFalse(Zmanim.isRestDay(ICalendar.GREGORIAN.fromYMD(2026, 9, 14), false));
+        assertFalse("Chol Hamoed is not a rest day",
+                    Zmanim.isRestDay(ICalendar.GREGORIAN.fromYMD(2026, 9, 29), false));
+    }
 }

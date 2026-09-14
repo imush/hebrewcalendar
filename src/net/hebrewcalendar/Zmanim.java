@@ -426,11 +426,42 @@ public class Zmanim {
         return getCandleLightingZmanInternal(todayIsRest, tomorrowIsYomTov);
     }
 
-    /** Saturday (7 in IDate) or any Yom Tov applicable at the given location. */
-    private static boolean isRestDay(final IDate<JewishCalendar> date, final boolean inIsrael) {
-        if (date.getDayOfWeek() == 7) return true;
-        for (JewishSpecialDay h : JewishSpecialDay.values()) {
-            if (h.isYomTov() && h.applies(inIsrael) && h.matches(date)) return true;
+    /**
+     * End of Shabbat or Yom Tov, at the Alter Rebbe's nightfall -- but only on
+     * the last rest day of a run. Null on an ordinary day, and null on a rest
+     * day that runs straight into another (Shabbat into Yom Tov, or the first
+     * day of a two-day Yom Tov), where nightfall ends nothing.
+     *
+     * <p>The mirror of {@link #getCandleLightingZman()}, which is null unless
+     * tomorrow is a rest day. {@link #getEndOfShabbatZman()} gives the same time
+     * unconditionally, for callers that want this nightfall regardless.
+     *
+     * @return the end-of-rest-day {@link Zman}, or {@code null}
+     */
+    public Zman getEndOfRestDayZman() {
+        final IDate<GregorianCalendar> todayGreg    = ICalendar.GREGORIAN.fromYMD(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
+        final IDate<GregorianCalendar> tomorrowGreg = todayGreg.addDays(1);
+        final boolean inIsrael = location.isInIsrael();
+        if (!isRestDay(todayGreg, inIsrael) || isRestDay(tomorrowGreg, inIsrael)) return null;
+        return getEndOfShabbatZman();
+    }
+
+    /**
+     * Whether {@code date} is a day that ends with havdalah: Shabbat, or any
+     * Yom Tov applicable at the location. Chol Hamoed is not.
+     *
+     * <p>Public so callers deciding how to present a day use the same rule this
+     * class uses for candle lighting and the end of a rest day, rather than a
+     * copy of it.
+     *
+     * @param date     a date in any calendar
+     * @param inIsrael whether the Israeli Yom Tov schedule applies
+     */
+    public static boolean isRestDay(final IDate<?> date, final boolean inIsrael) {
+        final IDate<JewishCalendar> h = ICalendar.JEWISH.convert(date);
+        if (h.getDayOfWeek() == 7) return true; // Saturday = 7 in IDate
+        for (JewishSpecialDay d : JewishSpecialDay.values()) {
+            if (d.isYomTov() && d.applies(inIsrael) && d.matches(h)) return true;
         }
         return false;
     }
