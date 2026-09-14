@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.EnumSet;
 
 /**
  * Computes halachic times (zmanim) for a given date and geographic location.
@@ -44,7 +45,9 @@ public class Zmanim {
         /** Today is a rest day and tomorrow is Yom Tov; candles are lit after nightfall. */
         CANDLES_AFTER_NIGHTFALL,
         /** Today is Yom Tov and tomorrow is Shabbat; candles are lit before sunset from existing flame. */
-        CANDLES_BEFORE_SHABBAT
+        CANDLES_BEFORE_SHABBAT,
+        /** Eve of Yom Kippur: the fast begins when the candles are lit. */
+        FAST_BEGINS
     }
 
     /**
@@ -271,16 +274,17 @@ public class Zmanim {
 
     /**
      * When a fast begins, if one begins on this date: dawn on a minor fast
-     * day, or sunset on the eve of Tisha b'Av or Yom Kippur -- including a
-     * Shabbat eve when Tisha b'Av is deferred to Sunday. Null otherwise.
+     * day; sunset on the eve of Tisha b'Av, including a Shabbat eve when it is
+     * deferred to Sunday; candle lighting on the eve of Yom Kippur, returned
+     * as {@link #getCandleLightingZman()} with {@link Flag#FAST_BEGINS}, so a
+     * page can show the two as one line. Null otherwise.
      */
     public Zman getFastBeginsZman() {
         final IDate<GregorianCalendar> todayGreg =
             ICalendar.GREGORIAN.fromYMD(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
         final IDate<JewishCalendar> tomorrow = ICalendar.JEWISH.convert(todayGreg.addDays(1));
-        if (JewishSpecialDay.FAST_AV_9.matches(tomorrow) || JewishSpecialDay.YOM_KIPPUR.matches(tomorrow)) {
-            return getSunset();
-        }
+        if (JewishSpecialDay.YOM_KIPPUR.matches(tomorrow)) return getCandleLightingZman();
+        if (JewishSpecialDay.FAST_AV_9.matches(tomorrow)) return getSunset();
         return isFastDay(hebrewDate(), false) ? getDawn() : null;
     }
 
@@ -514,7 +518,11 @@ public class Zmanim {
         if (!isRestDay(tomorrowHeb, location.isInIsrael())) return null;
         final boolean todayIsRest      = isRestDay(todayHeb, location.isInIsrael());
         final boolean tomorrowIsYomTov = tomorrowHeb.getDayOfWeek() != 7; // Saturday = 7 in IDate
-        return getCandleLightingZmanInternal(todayIsRest, tomorrowIsYomTov);
+        final Zman candles = getCandleLightingZmanInternal(todayIsRest, tomorrowIsYomTov);
+        if (!JewishSpecialDay.YOM_KIPPUR.matches(tomorrowHeb)) return candles;
+        final EnumSet<Flag> flags = EnumSet.of(Flag.FAST_BEGINS);
+        flags.addAll(candles.getFlags());
+        return new Zman(candles.getTime(), flags.toArray(new Flag[0]));
     }
 
     /**

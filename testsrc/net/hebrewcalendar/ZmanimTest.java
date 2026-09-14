@@ -383,9 +383,14 @@ public class ZmanimTest {
     }
 
     @Test
-    public void fast_yomKippurBeginsAtSunsetAndEndsWithTheYomTov() {
+    public void fast_yomKippurBeginsAtCandleLightingAndEndsWithTheYomTov() {
         Zmanim erev = at(2026, 9, 20, false);
-        assertEquals(erev.getSunset().getTime(), erev.getFastBeginsZman().getTime());
+        Zman candles = erev.getCandleLightingZman();
+        assertTrue(candles.hasFlag(Zmanim.Flag.FAST_BEGINS));
+        assertEquals(candles.getTime(), erev.getFastBeginsZman().getTime());
+        assertTrue(erev.getFastBeginsZman().hasFlag(Zmanim.Flag.FAST_BEGINS));
+        assertFalse("a plain Friday's candles begin no fast",
+            at(2026, 9, 25, false).getCandleLightingZman().hasFlag(Zmanim.Flag.FAST_BEGINS));
         assertNull(erev.getFastEndsZman());
         Zmanim yk = at(2026, 9, 21, false);
         assertNull(yk.getFastBeginsZman());
