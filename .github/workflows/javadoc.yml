@@ -1,4 +1,4 @@
-name: Publish Javadoc
+name: Publish project page
 
 on:
   push:
@@ -27,9 +27,15 @@ jobs:
           cache: maven
       - name: Generate Javadoc
         run: mvn javadoc:javadoc --no-transfer-progress
+      - name: Assemble site
+        # The landing page at the root, the Javadoc under /api/.
+        run: |
+          mkdir -p site/api
+          cp -R docs/. site/
+          cp -R target/site/apidocs/. site/api/
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: target/site/apidocs
+          path: site
 
   deploy:
     needs: build

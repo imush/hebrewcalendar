@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hebrew Calendar — Java library for Jewish calendar computations</title>
+<meta name="description" content="A Java library for the Jewish calendar: date conversion, festivals and fasts, zmanim, Torah readings and daily learning. It powers hebrewcalendar.net.">
+<style>
+  :root {
+    --ink: #1a1a1a; --dim: #5b6670; --line: #dfe3e8;
+    --bg: #ffffff; --panel: #f6f8fa; --accent: #1a5276; --accent-ink: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #e8eaed; --dim: #a3adb8; --line: #2c333a;
+      --bg: #14181c; --panel: #1b2026; --accent: #7fb2d8; --accent-ink: #0d1116;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+  header { background: var(--panel); border-bottom: 1px solid var(--line); padding: 56px 0 44px; }
+  h1 { margin: 0 0 8px; font-size: 2.4rem; letter-spacing: -0.5px; }
+  .tagline { margin: 0 0 24px; font-size: 1.15rem; color: var(--dim); }
+  .links a {
+    display: inline-block; margin: 0 8px 8px 0; padding: 8px 16px; border-radius: 6px;
+    text-decoration: none; font-weight: 600; font-size: 0.95rem;
+    background: var(--accent); color: var(--accent-ink);
+  }
+  .links a.secondary { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+  .meta { margin-top: 18px; color: var(--dim); font-size: 0.9rem; }
+  h2 { margin: 40px 0 12px; font-size: 1.4rem; }
+  h3 { margin: 0 0 6px; font-size: 1.02rem; }
+  p { margin: 0 0 16px; }
+  a { color: var(--accent); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin: 20px 0 8px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; }
+  .card p { margin: 0; color: var(--dim); font-size: 0.95rem; }
+  pre {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+    padding: 16px; overflow-x: auto; font-size: 0.88rem; line-height: 1.5;
+  }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  footer { border-top: 1px solid var(--line); margin-top: 48px; padding: 24px 0 40px; color: var(--dim); font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Hebrew Calendar</h1>
+    <p class="tagline">A Java library for Jewish calendar computations — dates, festivals, zmanim, readings and daily learning.</p>
+    <div class="links">
+      <a href="api/">API documentation</a>
+      <a class="secondary" href="https://github.com/imush/hebrewcalendar">Source on GitHub</a>
+      <a class="secondary" href="https://github.com/imush/hebrewcalendar/releases">Releases</a>
+    </div>
+    <p class="meta">BSD 3-Clause · Java 11 · no runtime dependencies</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <h2>It powers hebrewcalendar.net</h2>
+  <p>
+    Every date, zman and reading on <a href="https://hebrewcalendar.net">hebrewcalendar.net</a> — its
+    calendars, zmanim pages, printable schedules and shul displays — is computed by this library.
+    The mobile app runs the same calendar as a companion C library, checked against this one day by day.
+  </p>
+
+  <h2>What it does</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Dates</h3>
+      <p>Jewish, Gregorian and Julian calendars, converted in any direction; leap years, month lengths,
+         anniversaries and yahrzeits, including the dates that fall only in some years.</p>
+    </div>
+    <div class="card">
+      <h3>Festivals and fasts</h3>
+      <p>Yom Tov, chol hamoed, rosh chodesh, fasts and their deferrals, the named Shabbatot, the omer,
+         Chabad dates, and a separate set of US holidays. Israel and the diaspora each keep their own schedule.</p>
+    </div>
+    <div class="card">
+      <h3>Zmanim</h3>
+      <p>Sunrise and sunset from the NOAA solar calculations, dawn and nightfall in several opinions,
+         candle lighting, chametz deadlines, when a fast begins and ends, and sane answers where the sun
+         does not rise or set.</p>
+    </div>
+    <div class="card">
+      <h3>Tekufot and the molad</h3>
+      <p>The four solar seasons according to Shmuel or Rav Ada, the molad of any month,
+         when Tal uMatar begins, and Birkat HaChama.</p>
+    </div>
+    <div class="card">
+      <h3>Torah readings</h3>
+      <p>The weekly parsha with its aliyot, festival and special readings, and haftarot across twenty-six
+         customs, resolved through their fallback tree.</p>
+    </div>
+    <div class="card">
+      <h3>Daily learning</h3>
+      <p>Chumash, Daf Yomi, Rambam (one chapter and three), Sefer HaMitzvot, Tanya, Tehillim by day of the
+         month and through Elul, Pirkei Avot, and the Sotah sefirah count.</p>
+    </div>
+  </div>
+
+  <h2>Using it</h2>
+  <p>
+    Build the jar with <code>mvn package</code>, or take one from the
+    <a href="https://github.com/imush/hebrewcalendar/releases">releases</a>. Calendar names and reading
+    schedules come from the shared <a href="https://github.com/imush/hebrewcalendar-data">hebrewcalendar-data</a>
+    repository, included as a submodule.
+  </p>
+<pre><code>// A Gregorian date as a Jewish one
+IDate&lt;JewishCalendar&gt; today =
+    ICalendar.JEWISH.convert(ICalendar.GREGORIAN.fromYMD(2026, 9, 18));
+
+// Zmanim for a place and a day
+Location montreal = new Location(45.5017, -73.5673, 0.0, "America/Montreal", false, false);
+Zmanim zmanim = new Zmanim(LocalDate.now(), montreal);
+
+ZonedDateTime sunset = zmanim.getSunset().getTime();
+Zman candles = zmanim.getCandleLightingZman();   // null unless candles are lit tonight
+</code></pre>
+  <p>The <a href="api/">API documentation</a> covers the rest.</p>
+
+  <h2>See also</h2>
+  <div class="grid">
+    <div class="card">
+      <h3><a href="https://hebrewcalendar.net">hebrewcalendar.net</a></h3>
+      <p>The site this library computes: calendars, zmanim, readings and daily learning in English,
+         Hebrew, Russian and French, and the displays that hang in shuls.</p>
+    </div>
+    <div class="card">
+      <h3><a href="https://github.com/imush/calendar">The C library</a></h3>
+      <p>The same calendar in C, for the mobile app, checked against this one day by day.</p>
+    </div>
+    <div class="card">
+      <h3><a href="https://www.opentorah.org">opentorah.org</a></h3>
+      <p>Where the Torah reading and haftarah data comes from, custom by custom, and the reference this
+         library checks its readings and its dates against.</p>
+    </div>
+    <div class="card">
+      <h3><a href="https://github.com/imush/hebrewcalendar-data">hebrewcalendar-data</a></h3>
+      <p>Calendar names, reading schedules and learning cycles, shared by both libraries and
+         generated into Java, C and Dart.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="wrap">
+  © 2026 Isaac Mushinsky · BSD 3-Clause ·
+  <a href="https://github.com/imush/hebrewcalendar">github.com/imush/hebrewcalendar</a>
+</footer>
+</body>
+</html>
