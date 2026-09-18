@@ -18,6 +18,10 @@ if [ -z "$checkout" ] || [ -z "$out" ]; then
 fi
 
 here="$(cd "$(dirname "$0")" && pwd)"
+# Absolute before anything changes directory: the exporter runs from inside the
+# checkout, where a relative path would mean somewhere else entirely.
+mkdir -p "$(dirname "$out")"
+out="$(cd "$(dirname "$out")" && pwd)/$(basename "$out")"
 dest="$checkout/texts/src/test/scala/org/opentorah/schedule/tanach/ExportReadingsTest.scala"
 
 # A copy of ours already in the checkout is used where it stands and left
@@ -37,7 +41,7 @@ fi
 cleanup() { [ "$borrowed" = yes ] && rm -f "$dest"; }
 trap cleanup EXIT
 ( cd "$checkout" \
-  && EXPORT_READINGS="$(cd "$(dirname "$out")" && pwd)/$(basename "$out")" \
+  && EXPORT_READINGS="$out" \
      EXPORT_COMMIT="$(git rev-parse HEAD)" \
      ./gradlew :opentorah-texts:test --tests '*ExportReadingsTest*' -q --rerun-tasks )
 
