@@ -106,11 +106,16 @@
 
   <h2>Using it</h2>
   <p>
-    Build the jar with <code>mvn package</code>, or take one from the
-    <a href="https://github.com/imush/hebrewcalendar/releases">releases</a>. Calendar names and reading
-    schedules come from the shared <a href="https://github.com/imush/hebrewcalendar-data">hebrewcalendar-data</a>
-    repository, included as a submodule.
+    It is on Maven Central. Calendar names and reading schedules are compiled in, from the shared
+    <a href="https://github.com/imush/hebrewcalendar-data">hebrewcalendar-data</a> repository, so nothing
+    else is needed; building from source works too, with <code>mvn package</code>.
   </p>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;net.hebrewcalendar&lt;/groupId&gt;
+  &lt;artifactId&gt;hebrewcalendar&lt;/artifactId&gt;
+  &lt;version&gt;2.1.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
 <pre><code>// A Gregorian date as a Jewish one
 IDate&lt;JewishCalendar&gt; today =
     ICalendar.JEWISH.convert(ICalendar.GREGORIAN.fromYMD(2026, 9, 18));
