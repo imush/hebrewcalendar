@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Export every Jewish month opentorah reckons, as the oracle the ports check
-# their date conversion against (testsrc/resources/opentorah-dates.tsv).
+# their date conversion against (hebrewcalendar-data/oracle/opentorah-dates.tsv).
 #
 # Like export_readings.sh beside it: the exporter is a Scala test only because
 # reaching their calendar needs their classpath, so this drops it into a

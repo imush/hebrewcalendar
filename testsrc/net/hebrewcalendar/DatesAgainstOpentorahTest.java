@@ -23,11 +23,11 @@ import static org.junit.Assert.fail;
  *
  * <p>To regenerate it after opentorah changes:
  * {@code testsrc/oracle/export_dates.sh <opentorah checkout>
- * testsrc/resources/opentorah-dates.tsv}.
+ * hebrewcalendar-data/oracle/opentorah-dates.tsv}.
  */
 public class DatesAgainstOpentorahTest {
 
-    private static final String FIXTURE = "/resources/opentorah-dates.tsv";
+    private static final String FIXTURE = "/opentorah-dates.tsv";
 
     /**
      * Their month names, in our numbering: Nisan is 1, and a leap year's two

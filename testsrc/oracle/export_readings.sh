@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Export every reading opentorah produces, as the oracle the Java port checks
-# itself against (hebrewcalendar testsrc/resources/opentorah-readings.tsv).
+# itself against (hebrewcalendar hebrewcalendar-data/oracle/opentorah-readings.tsv).
 #
 # It lives here, beside the fixture it writes and the test that reads it, and
 # not in opentorah: it is a Scala test only because that is the only way to

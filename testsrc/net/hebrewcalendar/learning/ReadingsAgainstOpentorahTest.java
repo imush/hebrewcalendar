@@ -34,13 +34,13 @@ import static org.junit.Assert.fail;
   *
  * <p>To regenerate the fixture after opentorah changes:
  * {@code testsrc/oracle/export_readings.sh <opentorah checkout>
- * testsrc/resources/opentorah-readings.tsv}. The exporter it runs is a
+ * hebrewcalendar-data/oracle/opentorah-readings.tsv}. The exporter it runs is a
  * Scala test only because reaching opentorah's schedule needs their
  * classpath; the script borrows their checkout and leaves it as found.
 */
 public class ReadingsAgainstOpentorahTest {
 
-    private static final String FIXTURE = "/resources/opentorah-readings.tsv";
+    private static final String FIXTURE = "/opentorah-readings.tsv";
 
     /** One expected value: what these customs read, of this kind, that day. */
     private static final class Row {

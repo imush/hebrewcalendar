@@ -52,7 +52,14 @@
                 <directory>testsrc</directory>
                 <includes>
                     <include>**/*.json</include>
-                    <include>**/*.tsv</include>
+                </includes>
+            </testResource>
+            <!-- The opentorah oracles, shared with the C library rather than
+                 copied into each: see hebrewcalendar-data/oracle. -->
+            <testResource>
+                <directory>hebrewcalendar-data/oracle</directory>
+                <includes>
+                    <include>*.tsv</include>
                 </includes>
             </testResource>
         </testResources>
