@@ -506,6 +506,33 @@ public class ZmanimTest {
                 -5 * 3600, m.getOffset().getTotalSeconds());
     }
 
+    /**
+     * The zones that do not switch at the usual 1-3 AM, scanned out of tzdata
+     * for 2026: a zman of the evening or of the small hours can land on the
+     * far side of the switch from the day it belongs to.
+     */
+    @Test
+    public void zonesThatSwitchAtOtherHoursOfTheNight() {
+        // Cairo goes back at midnight on the last Thursday of October.
+        Zmanim cairo = atZone(2026, 10, 29, 30.0444, 31.2357, "Africa/Cairo");
+        assertNamedInZone("Cairo chatzot halayla", cairo.getMidnight(), "Africa/Cairo");
+        assertNamedInZone("Cairo sunset", cairo.getSunset(), "Africa/Cairo");
+
+        // Beirut, likewise at midnight.
+        Zmanim beirut = atZone(2026, 10, 24, 33.8938, 35.5018, "Asia/Beirut");
+        assertNamedInZone("Beirut chatzot halayla", beirut.getMidnight(), "Asia/Beirut");
+
+        // Santiago turns its clocks at 24:00 on the Saturday.
+        Zmanim santiago = atZone(2026, 4, 4, -33.4489, -70.6693, "America/Santiago");
+        assertNamedInZone("Santiago chatzot halayla", santiago.getMidnight(), "America/Santiago");
+        assertNamedInZone("Santiago nightfall", santiago.getNightfallAlterRebbe(), "America/Santiago");
+
+        // Nuuk switches at 23:00 -- before nightfall, not after it.
+        Zmanim nuuk = atZone(2026, 10, 24, 64.1836, -51.7214, "America/Nuuk");
+        assertNamedInZone("Nuuk nightfall", nuuk.getNightfallAlterRebbe(), "America/Nuuk");
+        assertNamedInZone("Nuuk chatzot halayla", nuuk.getMidnight(), "America/Nuuk");
+    }
+
     @Test
     public void ordinaryDaysAreUnaffected() {
         for (int[] ymd : new int[][] {{2026, 10, 31}, {2026, 11, 2}, {2026, 6, 15}}) {
