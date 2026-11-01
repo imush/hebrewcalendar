@@ -3,6 +3,7 @@ package net.hebrewcalendar;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 import static org.junit.Assert.*;
@@ -434,5 +435,67 @@ public class ZmanimTest {
         Zmanim z = at(2026, 9, 15, false);
         assertNull(z.getFastBeginsZman());
         assertNull(z.getFastEndsZman());
+    }
+
+    // ── DST transition days ───────────────────────────────────────────────
+    // Zmanim are computed in one fixed offset for the whole day. That offset
+    // used to be read at midnight, which on a switchover day is the offset
+    // the day is leaving: every zman of 1 Nov 2026 came back named in EDT,
+    // an hour later than it is. Each zman falls after the 2 AM switch, so
+    // the offset that is right for all of them is the one in force by noon.
+
+    private static Zmanim atZone(int y, int m, int d, double lat, double lon, String tz) {
+        return new Zmanim(LocalDate.of(y, m, d), new Location(lat, lon, 0.0, tz, false, false));
+    }
+
+    /** The wall clock a zman is named in must be the zone's own at that instant. */
+    private static void assertNamedInZone(String label, Zman zman, String tz) {
+        assertNotNull(label + " must not be null", zman);
+        ZonedDateTime t = zman.getTime();
+        assertNotNull(label + " must not be null", t);
+        ZonedDateTime inZone = t.withZoneSameInstant(ZoneId.of(tz));
+        assertEquals(label + " is named " + t + ", but in " + tz + " that instant is " + inZone,
+                inZone.toLocalDateTime(), t.toLocalDateTime());
+    }
+
+    private static final double NYC_LAT = 40.6501;
+    private static final double NYC_LON = -73.9496;
+    private static final String NYC_TZ  = "America/New_York";
+
+    @Test
+    public void dstEnds_zmanimAreNamedInStandardTime() {
+        Zmanim z = atZone(2026, 11, 1, NYC_LAT, NYC_LON, NYC_TZ);   // clocks back at 2 AM
+        assertNamedInZone("sunrise", z.getSunrise(), NYC_TZ);
+        assertNamedInZone("sunset",  z.getSunset(),  NYC_TZ);
+        assertNamedInZone("dawn",    z.getDawn(),    NYC_TZ);
+        assertNamedInZone("nightfall", z.getNightfallAlterRebbe(), NYC_TZ);
+        assertEquals("sunrise is in the 6 o'clock hour, not the 7 it was before the clocks went back",
+                6, z.getSunrise().getTime().getHour());
+    }
+
+    @Test
+    public void dstBegins_zmanimAreNamedInDaylightTime() {
+        Zmanim z = atZone(2027, 3, 14, NYC_LAT, NYC_LON, NYC_TZ);   // clocks forward at 2 AM
+        assertNamedInZone("sunrise", z.getSunrise(), NYC_TZ);
+        assertNamedInZone("sunset",  z.getSunset(),  NYC_TZ);
+        assertEquals("sunrise is in the 7 o'clock hour once the clocks have gone forward",
+                7, z.getSunrise().getTime().getHour());
+    }
+
+    @Test
+    public void dstEnds_israelOnItsOwnDate() {
+        // Israel leaves DST on the last Sunday of October.
+        Zmanim z = atZone(2026, 10, 25, 31.7683, 35.2137, "Asia/Jerusalem");
+        assertNamedInZone("sunrise", z.getSunrise(), "Asia/Jerusalem");
+        assertNamedInZone("sunset",  z.getSunset(),  "Asia/Jerusalem");
+    }
+
+    @Test
+    public void ordinaryDaysAreUnaffected() {
+        for (int[] ymd : new int[][] {{2026, 10, 31}, {2026, 11, 2}, {2026, 6, 15}}) {
+            Zmanim z = atZone(ymd[0], ymd[1], ymd[2], NYC_LAT, NYC_LON, NYC_TZ);
+            assertNamedInZone(ymd[0] + "-" + ymd[1] + "-" + ymd[2] + " sunrise", z.getSunrise(), NYC_TZ);
+            assertNamedInZone(ymd[0] + "-" + ymd[1] + "-" + ymd[2] + " sunset",  z.getSunset(),  NYC_TZ);
+        }
     }
 }

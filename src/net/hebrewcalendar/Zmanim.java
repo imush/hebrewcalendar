@@ -105,7 +105,11 @@ public class Zmanim {
     private static final double VISUAL_ANGLE = -0.8333;
 
     private ZoneOffset tzOffset() {
-        return date.atStartOfDay(ZoneId.of(location.getTimezone())).getOffset();
+        // Read at noon, not at the start of the day. On the day a zone enters
+        // or leaves DST, midnight is still on the old offset while every zman
+        // of that day -- all of them after the 1-3 AM switch -- is on the new
+        // one, so midnight's offset named the whole day an hour wrong.
+        return date.atTime(12, 0).atZone(ZoneId.of(location.getTimezone())).getOffset();
     }
 
     private ZonedDateTime rise(double angle) {
