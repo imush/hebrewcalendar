@@ -104,20 +104,37 @@ public class Zmanim {
 
     private static final double VISUAL_ANGLE = -0.8333;
 
+    /** The offset NOAA anchors the day in; see {@link #inZone}. */
     private ZoneOffset tzOffset() {
-        // Read at noon, not at the start of the day. On the day a zone enters
-        // or leaves DST, midnight is still on the old offset while every zman
-        // of that day -- all of them after the 1-3 AM switch -- is on the new
-        // one, so midnight's offset named the whole day an hour wrong.
-        return date.atTime(12, 0).atZone(ZoneId.of(location.getTimezone())).getOffset();
+        return date.atTime(12, 0).atZone(zone()).getOffset();
+    }
+
+    private ZoneId zone() { return ZoneId.of(location.getTimezone()); }
+
+    /**
+     * The same instant, named in the location's own zone.
+     *
+     * <p>NOAA works in one fixed offset: it returns minutes from the local
+     * midnight that offset defines, counted from a midnight anchored at the
+     * same offset, so the instant it comes back with is the same whichever
+     * offset is passed -- only the wall clock it is dressed in changes. Which
+     * makes the zone, with its DST rules, the only thing fit to name it: every
+     * zman is then read off the clock its location is actually on at that
+     * moment. A fixed offset cannot do that for a whole day. On the day a zone
+     * leaves DST the offset in force at midnight is an hour from the one in
+     * force all day, and no single offset is right for both the afternoon and
+     * a chatzot halayla past midnight in a zone that switches at midnight.
+     */
+    private ZonedDateTime inZone(final ZonedDateTime t) {
+        return t == null ? null : t.withZoneSameInstant(zone());
     }
 
     private ZonedDateTime rise(double angle) {
-        return NOAA.sunEvent(date, location.getLatitude(), location.getLongitude(), tzOffset(), angle, true, 0.0);
+        return inZone(NOAA.sunEvent(date, location.getLatitude(), location.getLongitude(), tzOffset(), angle, true, 0.0));
     }
 
     private ZonedDateTime set(double angle) {
-        return NOAA.sunEvent(date, location.getLatitude(), location.getLongitude(), tzOffset(), angle, false, 0.0);
+        return inZone(NOAA.sunEvent(date, location.getLatitude(), location.getLongitude(), tzOffset(), angle, false, 0.0));
     }
 
     private ZonedDateTime sunsetOrNull()       { return set(VISUAL_ANGLE); }
@@ -127,7 +144,7 @@ public class Zmanim {
     private ZonedDateTime endOfShabbatOrNull() { return set(HAVDALAH_ANGLE); }
 
     private ZonedDateTime midnight() {
-        return NOAA.solarNoon(date, location.getLongitude(), tzOffset()).plusHours(12);
+        return inZone(NOAA.solarNoon(date, location.getLongitude(), tzOffset()).plusHours(12));
     }
 
     private int candleMinutesBeforeSunset() { return location.isInJerusalem() ? 40 : 18; }
@@ -156,7 +173,7 @@ public class Zmanim {
     // the "chatzot halaila" that closes today's daytime). Always computable
     // since it's a fixed offset from solar noon.
     private ZonedDateTime chatzotHaLailahStart() {
-        return NOAA.solarNoon(date, location.getLongitude(), tzOffset()).minusHours(12);
+        return inZone(NOAA.solarNoon(date, location.getLongitude(), tzOffset()).minusHours(12));
     }
 
     // Start / end anchors for the sha'ah-zmanit span, per method.
@@ -363,7 +380,7 @@ public class Zmanim {
     public Zman getChatzot() {
         final ZonedDateTime r = hanetzAmitiOrNull();
         final ZonedDateTime s = shkiahAmitisOrNull();
-        if (r == null || s == null) return new Zman(NOAA.solarNoon(date, location.getLongitude(), tzOffset()));
+        if (r == null || s == null) return new Zman(inZone(NOAA.solarNoon(date, location.getLongitude(), tzOffset())));
         return new Zman(r.plusSeconds(Duration.between(r, s).getSeconds() / 2));
     }
 

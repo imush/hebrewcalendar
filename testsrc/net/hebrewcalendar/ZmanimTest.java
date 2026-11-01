@@ -491,6 +491,22 @@ public class ZmanimTest {
     }
 
     @Test
+    public void chatzotHaLailah_crossesIntoTheNextDayAndIsNamedThere() {
+        // Havana puts its clocks back at 01:00 on 1 Nov 2026. Halachic
+        // midnight for 31 Oct falls after that, so it belongs to CST while
+        // the rest of that day is CDT -- no one offset can name both, which
+        // is why each zman is named in the zone rather than in an offset.
+        Zmanim z = atZone(2026, 10, 31, 23.1136, -82.3666, "America/Havana");
+        assertNamedInZone("chatzot halayla", z.getMidnight(), "America/Havana");
+        assertNamedInZone("sunset", z.getSunset(), "America/Havana");
+        ZonedDateTime m = z.getMidnight().getTime();
+        assertEquals("chatzot halayla falls on the next calendar day",
+                LocalDate.of(2026, 11, 1), m.toLocalDate());
+        assertEquals("and is told in standard time, the clocks having gone back",
+                -5 * 3600, m.getOffset().getTotalSeconds());
+    }
+
+    @Test
     public void ordinaryDaysAreUnaffected() {
         for (int[] ymd : new int[][] {{2026, 10, 31}, {2026, 11, 2}, {2026, 6, 15}}) {
             Zmanim z = atZone(ymd[0], ymd[1], ymd[2], NYC_LAT, NYC_LON, NYC_TZ);
